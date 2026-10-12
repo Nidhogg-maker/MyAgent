@@ -4,7 +4,6 @@ from typing import Literal
 from .semantic import Query
 from .tasks import Task
 from .skills import Pair, SkillExecutor
-from .retrieval import KnowledgeRetriever
 from .multi_fact import MultiFactQuery
 from .multi_plan import Proposals, PlanSelection, StepRequest
 from .retrieval_service import get_retrieval_service
@@ -39,8 +38,12 @@ class ResolveInput(BaseModel):
     expected_asset_version: str | None = None
 
 
-class AgentTools:
-    """固定白名单，不接受自由函数名、SQL 或模型声明的身份。"""
+class AgentToolRouter:
+    """模型动作适配器：公布工具 schema、验证参数并路由到业务服务/Skill。
+
+    不负责保存数据 release 或执行任意 SQL。tools 通常为带预算的 RuntimeTools，
+    其内层 QueryService 才是可信查询服务。两个边界不能因旧名称相同而混淆。
+    """
     inputs = {'search_business': SearchInput, 'describe_metric': MetricInput,
               'get_context': MetricInput, 'run_query': Query,
               'run_comparison': Pair, 'run_diagnosis': Task, 'run_multi_fact': MultiFactQuery,
@@ -105,3 +108,7 @@ class AgentTools:
         skill = {'run_query': 'metric-query', 'run_comparison': 'comparison',
                  'run_diagnosis': 'anomaly-analysis'}[name]
         return self.executor.run(skill, data.model_dump(mode='json'))['result']
+
+
+# 兼容早期导入，确保历史演示无需同步迁移；新代码使用 AgentToolRouter。
+AgentTools = AgentToolRouter

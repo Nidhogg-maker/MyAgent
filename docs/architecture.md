@@ -2,7 +2,7 @@
 
 本轮整体学习与运行验收入口：[完整学习手册](PROJECT-STUDY-GUIDE.md) · [整体验收报告](PROJECT-ACCEPTANCE.md)。其中提供三类运行入口的最终差异、真实执行证据及未完成边界。
 
-更新基线：2026-10-12。本文描述当前代码；历史证据数字不代表本次又执行了所有数据构建或模型请求。
+更新基线：2026-10-12。当前整体阅读入口为 [架构导航](../ARCHITECTURE.md) 与 [源码地图](code-map.md)。本文保留数据生产与 Workflow 的详细说明；历史证据数字不代表本次又执行了所有数据构建或模型请求。
 
 ## 设计目标与职责边界
 
@@ -17,7 +17,7 @@ flowchart LR
   G[BigQuery TheLook] --> I[thelook_ingest.py]
   I --> RAW[data/thelook.duckdb / raw]
   RAW --> C[warehouse-commerce / dbt]
-  C --> PUB[AgentTools.publish]
+  C --> PUB[QueryService.publish]
   PUB --> CAT[SQLite MetadataCatalog]
   PUB --> SNAP[指标数据库快照 / release]
   RAW --> FP[feature_pipeline.build]
@@ -46,7 +46,7 @@ sequenceDiagram
   participant T as TaskInterpreter
   participant H as HarnessRuntime / LangGraph
   participant S as SkillExecutor
-  participant A as AgentTools
+  participant A as QueryService
   participant C as SemanticRegistry / SQLCompiler
   participant W as Read-only Worker
   U->>R: question / query_input / task_input
@@ -75,11 +75,11 @@ sequenceDiagram
 |`cli.main` / `chat.chat_loop`|统一命令与持续问答|状态与退出码明确；不是 Web UI|
 |`feature_agent.UnifiedRuntime`|指标/画像任务分流|feature 会话与指标会话分存|
 |`tasks.TaskInterpreter.parse`|问题转 Task；规则或模型|语法正确不保证语义正确，歧义需澄清|
-|`retrieval.KnowledgeRetriever` / `retrieval_context`|词法候选、合同、元数据、维度值上下文|无向量模型或重排；不是全语言覆盖|
+|`retrieval_service.RetrievalService` / `semantic_context` / `retrieval_context`|词法、Dense、RRF、条件重排与权威结构解析|依模式启用真实模型；降级显式记录，不是全语言覆盖|
 |`semantic.Query` / `SemanticRegistry`|结构化 IR 与版本化口径|合同在 `contracts/commerce.json`；无自由表/SQL|
 |`semantic.SQLCompiler.compile`|指标递归展开为 SQLGlot AST|单事实聚合、同事实比例、合法维度；拒绝隐式 Join|
 |`catalog.MetadataCatalog`|实体/Aspect/关系、任务与字段血缘|SQLite；复杂 SQL 未解析显式保留|
-|`service.AgentTools.plan/execute`|服务端计划与读取|发布、身份、版本、hash、重新编译检查|
+|`service.QueryService.plan/execute`|服务端计划与读取|发布、身份、版本、hash、重新编译检查|
 |`skills.SkillRegistry/SkillExecutor`|注册输入输出、依赖与执行器|7 项查询/分析 Skill；加工 Skill 独立|
 |`harness.build_agent`|LangGraph 查询/诊断流程|有界固定分支，不是动态无限工具循环|
 |`diagnosis.DiagnosisEngine.run`|比较、组件拆解、下钻、质量、报告|验证前提；数值贡献不代表因果|
@@ -108,7 +108,7 @@ sequenceDiagram
 
 Tool 是确定性操作；Skill 规定业务步骤、输入输出与证据；Harness 管运行过程。Skill 目录中 SKILL.md、references 与 assets 会被读取，但文档不会自己执行代码。预算声明与实际执行控制不能混为一谈。
 
-MCP 只是工具发现和调用传输。本地工具为八项指标工具加五项画像工具；stdio 日志不能污染协议输出。`plan_id` 是服务会话内对象，跨进程或重启后重新规划。无远程服务、企业平台或模型自由函数选择循环。
+MCP 只是工具发现和调用传输。本地工具为八项指标工具加五项画像工具；stdio 日志不能污染协议输出。`plan_id` 是服务会话内对象，跨进程或重启后重新规划。没有远程 MCP 或企业平台；自主 Agent 在进程内逐轮选择工具，未使用原生 function_call 协议。
 
 ## 运行约束、恢复与观测
 
@@ -120,7 +120,7 @@ SQLite 记录任务、状态、事件、查询回执与熔断。恢复重验身�
 
 ## Trade-off 与当前缺口
 
-- 受限 IR 换取可验证口径，代价是不支持任意 SQL、多事实 Join 与任意分析问题。
+- 受限 IR 换取可验证口径，代价是不支持任意 SQL、任意多事实 Join 与任意分析问题；已支持注册共同维度上的先聚合后关联。
 - 本地 DuckDB 与 SQLite 简化部署，代价是没有分布式计算、远程授权或集中审计。
 - 独立发布数据产品减少半成品读取，但指标与画像两套发布尚未统一；单指针切换不等于分布式事务。
 - 全文件 hash 易解释但有 I/O 成本；版本一致不证明指标业务定义正确。

@@ -5,7 +5,7 @@ import sys
 import os
 from pathlib import Path
 from .semantic import ROOT, SemanticRegistry
-from .service import AgentTools
+from .service import QueryService
 from .harness import build_agent
 from .tasks import TaskInterpreter
 
@@ -70,7 +70,7 @@ def main(argv=None):
     lineage.add_argument('--column')
     args = parser.parse_args(argv)
     try:
-        tools = AgentTools(args.home,token=os.getenv('OWN_AGENT_TOKEN'))
+        tools = QueryService(args.home,token=os.getenv('OWN_AGENT_TOKEN'))
         if args.command in ('chat','session','resume','cancel','reply'):
             from .feature_agent import UnifiedRuntime
             runtime=UnifiedRuntime(tools,args.intent_mode)

@@ -1,6 +1,5 @@
 """本地可信工具服务：发布、计划、受限执行和审计都由自己的代码完成。"""
 import datetime as dt
-import hashlib
 import json
 import subprocess
 import sys
@@ -13,12 +12,14 @@ from .catalog import MetadataCatalog
 from .semantic import ROOT, Query, SemanticRegistry, SQLCompiler, file_hash
 from .access import AccessController, AccessDenied
 from .temporal import coverage, check_window
+from .integrity import fingerprint
 
-def fingerprint(value):
-    return hashlib.sha256(json.dumps(value, sort_keys=True, default=str).encode()).hexdigest()
+class QueryService:
+    """可信指标查询服务，负责数据发布、元数据、计划、授权和只读执行。
 
-class AgentTools:
-    """本地单用户工具边界；身份在服务侧固定，模型不能提交 principal。"""
+    模型动作的选择与分发属于 AgentToolRouter；本服务不运行模型决策循环。
+    身份在服务侧固定，模型不能提交 principal，也不能替换执行 SQL。
+    """
     def __init__(self, home=ROOT / 'data/own-agent', registry=None, token=None):
         self.home = Path(home)
         self.home.mkdir(parents=True, exist_ok=True)
@@ -300,3 +301,7 @@ class AgentTools:
                                  'delta': float(new) - float(old) if old is not None and new is not None else None})
         return {'observations': observations, 'evidence': evidence, 'causal_claim': False,
                 'conclusion': 'Only observed changes; no proven cause or coverage completeness'}
+
+
+# 历史脚本/测试继续可用；新运行入口使用职责明确的 QueryService 名称。
+AgentTools = QueryService

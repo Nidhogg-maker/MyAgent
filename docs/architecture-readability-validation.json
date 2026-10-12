@@ -1,0 +1,96 @@
+{
+  "purpose": "architecture readability verification",
+  "baseline_commit": "18a8e97a72ecd770ace95402142454ecb8494bb4",
+  "behavior_contracts_changed": false,
+  "compatibility": {
+    "query_service_alias": true,
+    "agent_router_alias": true,
+    "fingerprint_equivalence": true
+  },
+  "documentation_links_checked": 292,
+  "modules_mapped": 39,
+  "regressions": {
+    "architecture-readability-regression": {
+      "tests": "229",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "323.047"
+    },
+    "architecture-readability-targeted": {
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "66.776"
+    },
+    "architecture-readability-baseline": {
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "69.097"
+    }
+  },
+  "diagnostic_runs": [
+    {
+      "source": "current",
+      "status": "STOPPED",
+      "error": "Skill deadline exceeded",
+      "successful_query_events": 14,
+      "skill_elapsed_seconds": [
+        62.56299999996554
+      ]
+    },
+    {
+      "source": "baseline modules loaded from git show before pytest",
+      "status": "STOPPED",
+      "error": "Skill deadline exceeded",
+      "successful_query_events": 13,
+      "skill_elapsed_seconds": [
+        63.25
+      ]
+    }
+  ],
+  "source_sha256": {
+    "src/local_agent/access.py": "c3717670511e50701b094a05d46528ed42be8bf1d467db02a5afbd359d9c9f92",
+    "src/local_agent/agent_loop.py": "d73871d4c7c0159ca6f6bad86e89979fa5efe53587bd1265ec1083f044cccf39",
+    "src/local_agent/agent_tools.py": "d9cf3ee29419ca412d28927ed67e7b5151a6c41b168e9d76bf255bcf1a4b3593",
+    "src/local_agent/assets.py": "82c04a13517bc4120ff36c89df79e6b3c04f5d1a306d560bf3cd2ad20a83e18c",
+    "src/local_agent/catalog.py": "83c31fd7d8b3eb8e909b8ba1f7ebdcfdc2bd896d9d1beaa4c3ea9bfe744f3eb5",
+    "src/local_agent/chat.py": "d81b6926dd73bd27091289ad696e4c9beb0d3528da2e435e4046adbe05f2b892",
+    "src/local_agent/cli.py": "435b00163a5b94eb1f8107535a2c4549f2b971151dc4683aeac13687ed6eceb3",
+    "src/local_agent/control_lineage.py": "fe5e93815958b4274a53a409b58f6092e71dbe282bc94d4da4bffbc68cac2e62",
+    "src/local_agent/dense_retrieval.py": "540b623cea14c1a46ac596a8ab45fcd9a6e6db51d6bff055404abfc977429e5f",
+    "src/local_agent/diagnosis.py": "020bf4d5b55d5694998ffa52f4e3b57062a075f242962f64bb6179c6b6f21061",
+    "src/local_agent/dimensions.py": "97c80ecc502045130cb143685342224d0ff001e56a7a9c1131a758d3943d0706",
+    "src/local_agent/evaluation.py": "93724b3aae3ccce0ac946ed74c15453a99ee464a9b59802d1fa996f82f1cdfac",
+    "src/local_agent/feature_agent.py": "ebd9d7fe622bf08e9690c543d50906415dfe208472eb207f2a03fdde3384bdd5",
+    "src/local_agent/feature_pipeline.py": "d6ab24c094b6dd17c248649ba8fa3914eaf791d251f144df123e91f4932591b6",
+    "src/local_agent/harness.py": "6494eca0bd0d9f1016ba8507d789fa6ef13c8822797d285639f7c4d2e43b1f19",
+    "src/local_agent/history.py": "fa76d5e6761b67ebf149daa08a3a7b6d587614130d42e87b91937ab26dd91956",
+    "src/local_agent/integrity.py": "449a4221b0f4e3eabe2305755c6570a2c2d38c4c7495b9e8cc4558e909bbaf18",
+    "src/local_agent/mcp_server.py": "0d1fc816e01986ab6d110d7fef601e40f9b20a209acc699078e5ec6db6602605",
+    "src/local_agent/multi_fact.py": "483204eaf96f8ba3588d93804669d3567e955e91d336b15ba725392d85e45f05",
+    "src/local_agent/multi_plan.py": "6114c64964c2e30bd8aa79c5cf4503d2a622d7b3348a29f39540e6a422bbc440",
+    "src/local_agent/openai_provider.py": "cf9590b1d6c49de921204ea681f228429aa6e33fb985c76091b79c411038dd34",
+    "src/local_agent/query_templates.py": "6ccfc3fd43af3d4b01a11b40174773c704c751f74729331f8c61fea96b8df702",
+    "src/local_agent/reporting.py": "51c44e8b26e97e9835b59152e85b85bed302317523d1cab978b402ae98276331",
+    "src/local_agent/reranking.py": "8aa5cc28d2de3886699ecfcfafc920b5a9e93e3426b7cd84ee01270249447bfa",
+    "src/local_agent/resilience.py": "f465b9cee70a61a9ad831bfcedce9b77e1abcf55c33d8ab6240b2395c7762886",
+    "src/local_agent/retrieval.py": "ecaf2e2113daa1821e8758208d7c3cafaa4d9e648150c8402d334c6f8af8c982",
+    "src/local_agent/retrieval_context.py": "0cb5703b6db959d1d823d7c932e524ac2824f75e56f18077a17e04480278ab0f",
+    "src/local_agent/retrieval_service.py": "c9c21640da02d0d0b52c502b09561d1f2eaad7a718e283770eb5920f2c08a766",
+    "src/local_agent/runtime.py": "be59c7918cf8fc1f5857d77227722425aa9b47ac4ccf8ea1a628f3fc68574976",
+    "src/local_agent/semantic.py": "de5ab9f09b75d41e59d4a35e78f615914b14052877e9b6d8f3f8ccf7c869b890",
+    "src/local_agent/semantic_context.py": "63a12ee26b25849f14a2ed74a4e24b0687866713cd565ed47a0fca056ab9c76b",
+    "src/local_agent/service.py": "7c27cf67f0c87336c60015537f70a48102a7c86efc1c839cfb03c8d95095d282",
+    "src/local_agent/skills.py": "39771f92dff8d5e63bbdfcc913421c5d936bc6270a48997639f0903035504f2a",
+    "src/local_agent/skill_resources.py": "9f66f4c4c579c2c0239778e7101833e59fca5b54890b3360599a45343bbc06c3",
+    "src/local_agent/structure.py": "5d46d675935e86e35e40e76a2c3703ca42ffdf9bacfe6909eacf020b105e28c0",
+    "src/local_agent/tasks.py": "5344515c02e0188e8e98fbfa59509b4e3a8f470475cce3852d6dbe2df84a4bb3",
+    "src/local_agent/temporal.py": "836cd25fa19410fa02a94ea35e100b65ae55759b9a30c730e4c883c8a9cc1468",
+    "src/local_agent/worker.py": "c47299d7f6d8b2303fb2ce185e754d0acda19088583d28c40b64ecf4381b8aaa",
+    "src/local_agent/__init__.py": "6adfdb8ab81d145193912b5834c3d9d3af4b098dda277655deb9fcd14fd70a2c"
+  }
+}

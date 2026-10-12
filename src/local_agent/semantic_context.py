@@ -2,7 +2,7 @@
 from pydantic import BaseModel, ConfigDict, Field
 from .semantic import ROOT, file_hash
 from pathlib import Path
-from .service import fingerprint
+from .integrity import fingerprint
 
 
 def asset_version(tools):

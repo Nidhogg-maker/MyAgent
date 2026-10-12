@@ -5,7 +5,7 @@ import sqlite3
 import time
 import uuid
 from pathlib import Path
-from .service import fingerprint
+from .integrity import fingerprint
 from .semantic import Query
 from .harness import build_agent
 from .tasks import TaskInterpreter

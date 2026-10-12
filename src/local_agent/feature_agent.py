@@ -13,7 +13,7 @@ import time
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from .semantic import ROOT, file_hash
-from .service import fingerprint
+from .integrity import fingerprint
 from .runtime import SessionStore, HarnessRuntime
 
 PRODUCTS={

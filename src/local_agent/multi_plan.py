@@ -3,7 +3,7 @@ import uuid
 import json
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
-from .service import fingerprint
+from .integrity import fingerprint
 
 
 class PlanStep(BaseModel):

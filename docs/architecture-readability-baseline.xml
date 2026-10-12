@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="69.097" timestamp="2026-10-12T22:33:40.592741+11:00" hostname="DESKTOP-Long"><testcase classname="tests.test_runtime_skills" name="test_full_ratio_workflow_quality_and_dimension_contributions" time="67.839"><failure message="AssertionError: {'session_id': '04bc9d7d4fce4b48acec161a265af658', 'task_input': {'kind': 'diagnose', 'query': {'metric_id': 'complete..._rate@1', 'start': '2026-08-01', 'end': '2026-08-08', 'group_by': [], ...}, 'expected_direction': 'unknown', ...}, ...}&#10;assert 'STOPPED' == 'INSUFFICIENT_EVIDENCE'&#10;  &#10;  - INSUFFICIENT_EVIDENCE&#10;  + STOPPED">tests\test_runtime_skills.py:103: in test_full_ratio_workflow_quality_and_dimension_contributions
+    assert result['status']=='INSUFFICIENT_EVIDENCE',result
+E   AssertionError: {'session_id': '04bc9d7d4fce4b48acec161a265af658', 'task_input': {'kind': 'diagnose', 'query': {'metric_id': 'complete..._rate@1', 'start': '2026-08-01', 'end': '2026-08-08', 'group_by': [], ...}, 'expected_direction': 'unknown', ...}, ...}
+E   assert 'STOPPED' == 'INSUFFICIENT_EVIDENCE'
+E     
+E     - INSUFFICIENT_EVIDENCE
+E     + STOPPED</failure></testcase></testsuite></testsuites>

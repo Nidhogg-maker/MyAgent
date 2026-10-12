@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="66.776" timestamp="2026-10-12T22:31:36.963712+11:00" hostname="DESKTOP-Long"><testcase classname="tests.test_runtime_skills" name="test_full_ratio_workflow_quality_and_dimension_contributions" time="66.006"><failure message="AssertionError: {'session_id': '8cd9f1060a2842838c53c7b8a41949d0', 'task_input': {'kind': 'diagnose', 'query': {'metric_id': 'complete_order_rate@1', 'start': '2026-09-01', 'end': '2026-09-08', 'filters': {'gender': 'M'}}, 'baseline': {'metric_id': 'complete_order_rate@1', 'start': '2026-08-01', 'end': '2026-08-08', 'filters': {'gender': 'M'}}, 'expected_direction': 'unknown'}, 'query': {'metric_id': 'complete_order_rate@1', 'start': '2026-09-01', 'end': '2026-09-08', 'group_by': [], ...}, 'task': {'kind': 'diagnose', 'query': {'metric_id': 'complete_order_rate@1', 'start': '2026-09-01', 'end': '2026-09-08', 'group_by': [], ...}, 'baseline': {'metric_id': 'complete_order_rate@1', 'start': '2026-08-01', 'end': '2026-08-08', 'group_by': [], ...}, 'expected_direction': 'unknown', ...}, ...}&#10;assert 'STOPPED' == 'INSUFFICIENT_EVIDENCE'&#10;  &#10;  - INSUFFICIENT_EVIDENCE&#10;  + STOPPED">tools = &lt;local_agent.service.QueryService object at 0x0000020DD7C9BCE0&gt;
+tmp_path = WindowsPath('C:/Users/Nidhog/AppData/Local/Temp/pytest-of-Nidhog/pytest-139/test_full_ratio_workflow_quali0')
+
+    def test_full_ratio_workflow_quality_and_dimension_contributions(tools,tmp_path):
+        runtime=HarnessRuntime(tools,store=SessionStore(tmp_path/'sessions.sqlite'))
+        current={'metric_id':'complete_order_rate@1','start':'2026-09-01','end':'2026-09-08','filters':{'gender':'M'}}
+        baseline={**current,'start':'2026-08-01','end':'2026-08-08'}
+        result=runtime.start({'task_input':{'kind':'diagnose','query':current,'baseline':baseline,'expected_direction':'unknown'}})
+&gt;       assert result['status']=='INSUFFICIENT_EVIDENCE',result
+E       AssertionError: {'session_id': '8cd9f1060a2842838c53c7b8a41949d0', 'task_input': {'kind': 'diagnose', 'query': {'metric_id': 'complete_order_rate@1', 'start': '2026-09-01', 'end': '2026-09-08', 'filters': {'gender': 'M'}}, 'baseline': {'metric_id': 'complete_order_rate@1', 'start': '2026-08-01', 'end': '2026-08-08', 'filters': {'gender': 'M'}}, 'expected_direction': 'unknown'}, 'query': {'metric_id': 'complete_order_rate@1', 'start': '2026-09-01', 'end': '2026-09-08', 'group_by': [], ...}, 'task': {'kind': 'diagnose', 'query': {'metric_id': 'complete_order_rate@1', 'start': '2026-09-01', 'end': '2026-09-08', 'group_by': [], ...}, 'baseline': {'metric_id': 'complete_order_rate@1', 'start': '2026-08-01', 'end': '2026-08-08', 'group_by': [], ...}, 'expected_direction': 'unknown', ...}, ...}
+E       assert 'STOPPED' == 'INSUFFICIENT_EVIDENCE'
+E         
+E         - INSUFFICIENT_EVIDENCE
+E         + STOPPED
+
+tests\test_runtime_skills.py:103: AssertionError</failure></testcase></testsuite></testsuites>

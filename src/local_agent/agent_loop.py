@@ -8,9 +8,9 @@ from typing import Literal
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 from .access import AccessDenied
-from .agent_tools import AgentTools
+from .agent_tools import AgentToolRouter
 from .runtime import HarnessRuntime, RuntimeTools, encode
-from .service import fingerprint
+from .integrity import fingerprint
 
 
 class Decision(BaseModel):
@@ -145,7 +145,7 @@ class AgentLoop(HarnessRuntime):
                 raise TimeoutError('Session deadline exceeded')
             return remaining
         proxy = RuntimeTools(self.tools, self.store, identifier, check)
-        adapter = AgentTools(proxy)
+        adapter = AgentToolRouter(proxy)
         from .multi_plan import MultiPlanManager
         adapter.planner = MultiPlanManager(adapter, lambda name, data: self.guard_request(question, name, data, proxy))
         seen, searches = set(), 0

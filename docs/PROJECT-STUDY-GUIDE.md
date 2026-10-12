@@ -1,5 +1,7 @@
 # MyAgent 整体学习手册：从数据开发到自主 Agent
 
+> 可读性整理说明：本手册的代码片段及行号对应整理前验收基线 `18a8e97`。当前业务服务名为 `QueryService`，模型工具路由器名为 `AgentToolRouter`，各自旧 `AgentTools` 导入保留兼容。当前调用导航与行号见 [架构导航](../ARCHITECTURE.md)、[源码地图](code-map.md)。Word 保留原验收快照。
+
 本手册对应本次整体项目验收的源码，实现基线为第四阶段完成后的 MyAgent。它解释实际执行，不把设计愿景当作已实现能力。验收结果、时间和可机器读取证据见 [整体验收报告](PROJECT-ACCEPTANCE.md)、[核心执行回执](project-final-acceptance.json)。
 
 阅读规则：先理解一次查询怎样得到可信数字，再理解 Agent 怎样选择动作，最后阅读检索、诊断、加工与运行管理。旧阶段报告和早期 Word 文档是历史记录；本手册与本次验收报告是当前学习入口。

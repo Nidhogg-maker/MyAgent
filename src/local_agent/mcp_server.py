@@ -3,10 +3,10 @@ import os
 from pathlib import Path
 from mcp.server.fastmcp import FastMCP
 from .semantic import ROOT, Query
-from .service import AgentTools
+from .service import QueryService
 
 server = FastMCP('own-commerce-agent')
-tools = AgentTools(Path(os.getenv('OWN_AGENT_HOME', str(ROOT / 'data/own-agent'))),token=os.getenv('OWN_AGENT_TOKEN'))
+tools = QueryService(Path(os.getenv('OWN_AGENT_HOME', str(ROOT / 'data/own-agent'))),token=os.getenv('OWN_AGENT_TOKEN'))
 
 @server.tool()
 def describe_metric(metric_id: str) -> dict:
