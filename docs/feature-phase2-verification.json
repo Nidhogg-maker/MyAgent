@@ -1,11 +1,11 @@
 {
   "status": "PASS",
-  "release_id": "2026-10-11-7abc6af92efb",
+  "release_id": "2026-10-11-ae6535b1c1cc",
   "as_of_date": "2026-10-11",
   "source_observed_at": "2026-10-11T10:19:14.558627+00:00",
-  "source_sha256": "a7f4906c3dc73cfbf498d22b28a38adebacd4f27a47c1561d2eadfe73d35edbc",
-  "database": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\feature-mart\\releases\\2026-10-11-7abc6af92efb\\features.duckdb",
-  "database_sha256": "6186c52af30df234a4128ceebc0f44b65adf1f060f83eaaa943f831a63b2b535",
+  "source_sha256": "28d617c12c005721cb41c7e7f8fea543b53f3a63f271f604a2ef267a3a79739b",
+  "database": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\feature-mart\\releases\\2026-10-11-ae6535b1c1cc\\features.duckdb",
+  "database_sha256": "09740ec850bbb523145a6c5094d9b152e624ca82ad07dd2ad967c6c5a224631c",
   "quality": {
     "status": "PASS",
     "checks": [
@@ -334,9 +334,9 @@
     "method": "all tables count + xor/sum row hashes, with independent feature reconciliation",
     "tables": 10
   },
-  "metadata": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\feature-mart\\releases\\2026-10-11-7abc6af92efb\\metadata.json",
-  "metadata_sha256": "061109dabae6e1c4e089cbb11b786ca718b8ecc50b7b7dc22734e49ebc43962a",
-  "table_contracts_sha256": "1331eae0c26f271b9d1aa02e70f319f6ff9f29d49e16757a3c174734bcb128b7",
+  "metadata": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\feature-mart\\releases\\2026-10-11-ae6535b1c1cc\\metadata.json",
+  "metadata_sha256": "e81686f0487ed45684ff1c6594ca6a093b2d535d843f3b2b748db49377b96cda",
+  "table_contracts_sha256": "71ea1a582db0930d74183990812a33d295385a150d59c2158e82f27efc574a71",
   "temporal_completeness_verified": false,
   "historical_attribute_versions_verified": false,
   "source_consistency": "sequential public table reads; not a cross-table atomic snapshot"

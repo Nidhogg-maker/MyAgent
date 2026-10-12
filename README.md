@@ -1,5 +1,9 @@
 # MyAgent · 电商数据开发与证据驱动分析 Agent
 
+**当前学习入口**：[完整项目学习手册（源码、调用链、核心代码与30个进阶回答）](docs/PROJECT-STUDY-GUIDE.md) · [整体验收报告与能力边界](docs/PROJECT-ACCEPTANCE.md)。本轮完整回归229项通过，真实模型/双路检索/数仓画像/MCP/多事实对账均有独立运行证据；旧阶段和早期Word文档按历史记录阅读。
+
+Word版本：[整体项目学习手册](docs/MyAgent-整体项目学习手册.docx) · [整体项目验收报告](docs/MyAgent-整体项目验收报告.docx)。
+
 基于 TheLook 公共模拟电商数据，自主实现一个可在本地运行的数据开发与分析闭环：**数仓生产可信数据，语义层固定计算口径，Agent 理解问题并调用受控工具，Harness 保存执行状态与证据。**
 
 本项目重点是数据工程与可靠查询，不训练推荐算法。核心实现位于 `src/local_agent/`，代码含中文注释。MetricFlow、DataHub、WrenAI 是源码研究与设计参考，**不是运行服务依赖，也没有直接复制它们的核心类**。
@@ -14,7 +18,7 @@
 - 7 项注册查询/分析 Skill，另有独立数据加工 Skill；本地 stdio MCP 暴露 13 个工具。
 - 指标路径支持有限瞬时错误重试与持久熔断；保存任务事件、查询回执、版本与质量证据。
 
-这里的“双路检索”是词法候选发现与结构化上下文解析；没有 embedding 或向量重排。默认 ask/chat 使用有界 Workflow；新增 agent 自主工具选择与 --multi-plan 候选方案模式，详见下文。仍不是任意 SQL 或自由任务 DAG。
+当前“双路检索”已经完成四阶段：Flat 路使用 BM25-style、可选真实 Dense、RRF 与条件 Cross-Encoder，Structured 路读取权威 Registry 和 SQLite 语义关系；两路最终进入同一受控语义编译器。普通 CLI 默认词法模式，真实 Agent 启动脚本默认 hybrid + auto 重排。默认 ask/chat 使用有界 Workflow；agent 是自主工具选择入口，支持 --multi-plan 候选方案。仍不是任意 SQL 或自由任务 DAG。
 
 ## 整体架构
 
@@ -26,7 +30,7 @@ flowchart TD
   B --> E[dbt features / DWD DWS ADS 十表]
   E --> F[独立 release / 画像契约 / JSON Metadata]
   U[自然语言 / 结构化请求] --> R[UnifiedRuntime]
-  R --> T[指标任务理解 / 词法与结构化上下文]
+  R --> T[指标任务理解 / 统一双路检索上下文]
   T --> H[Harness / LangGraph / Skill]
   H --> S[SemanticRegistry / Query IR / SQLCompiler]
   S --> W[只读 DuckDB Worker]
@@ -176,7 +180,7 @@ Agent 运行依赖 DuckDB、SQLGlot、Pydantic、LangGraph、HTTPX、MCP SDK；d
 
 已统一RetrievalService、SemanticContextResolver与QueryContextBroker。自主Agent首次决策自动获得轻量候选与权威语义，可继续自主search_business/resolve_semantics；Task模型、CLI search和原MCP search复用相同服务。每次查询计划重新解析Registry，记录语义/资产/release/权限绑定。
 
-词法索引复用同进程缓存；默认不扫描全部维度枚举。第一阶段只使用词法召回；第二阶段已增加可选本地Dense与RRF，仍无Cross-Encoder，规则模式仍为有限语言解析。真实TheLook演示经检索选择客单价并通过raw独立回算，歧义请求零查询停止。
+词法索引复用同进程缓存；默认不扫描全部维度枚举。第一阶段当时只使用词法召回；当前已完成第二阶段Dense/RRF、第三阶段Cross-Encoder和第四阶段统一资产与关系索引。规则模式仍为有限语言解析。真实TheLook演示经检索选择客单价并通过raw独立回算，歧义请求零查询停止。
 
 ```powershell
 .\.venv\Scripts\python.exe -m local_agent.cli search "2026年9月平均每张订单的金额是多少"

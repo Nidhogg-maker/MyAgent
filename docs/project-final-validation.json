@@ -1,0 +1,68 @@
+{
+  "status": "PASS",
+  "generated_at_utc": "2026-10-12T11:15:43.844712+00:00",
+  "engineering_regression": {
+    "passed": 229,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "console_seconds": 280.51
+  },
+  "initial_quality_expiry_preserved": {
+    "passed": 122,
+    "errors": 106,
+    "failures": 1,
+    "cause": "expired real dbt evidence; actual build rerun, no TTL bypass"
+  },
+  "core_scenarios": 7,
+  "diagnostic_queries": 14,
+  "feature_dbt_checks": 23,
+  "feature_raw_checks": 48,
+  "repeat_tables": 10,
+  "multi_fact_groups_reconciled": 58,
+  "live_model": {
+    "model": "gpt-6.1-sol",
+    "calls": 2,
+    "queries": 1,
+    "actual_equals_raw": true
+  },
+  "dependency_checks": {
+    "agent": "PASS",
+    "warehouse": "PASS",
+    "retrieval": "PASS"
+  },
+  "docx_qa": {
+    "renderer": "skill render_docx.py with Windows Word PDF conversion adapter and bundled Poppler",
+    "pages": [
+      {
+        "name": "MyAgent-整体项目学习手册",
+        "pages": 24,
+        "text_outside_page_safe_bounds": [],
+        "pngs": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\docs\\.docx-build\\final\\MyAgent-整体项目学习手册"
+      },
+      {
+        "name": "MyAgent-整体项目验收报告",
+        "pages": 7,
+        "text_outside_page_safe_bounds": [],
+        "pngs": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\docs\\.docx-build\\final\\MyAgent-整体项目验收报告"
+      }
+    ],
+    "all_pages_visually_inspected": true,
+    "title_border_removed": true,
+    "code_and_ascii_preserved": true
+  },
+  "core_source_hashes_unchanged": true,
+  "artifact_sha256": {
+    "PROJECT-STUDY-GUIDE.md": "84c4f202b47aad42b9d1e9e24d3c50c2bfa9816fcab1f763c7f86747f3b7404e",
+    "PROJECT-ACCEPTANCE.md": "c759bcba341e69b3db6a4139875059e07be8ae539453f74191d26c1991842819",
+    "MyAgent-整体项目学习手册.docx": "c82987dc5114d64c1a2b36d6f3b7c7cdc87f969d49a98fdb8a324b1548cd08b5",
+    "MyAgent-整体项目验收报告.docx": "3fde4a567e03e88fa6f60514299fa3f4609594298b66e3057194d66e40f46bdc"
+  },
+  "not_certified": [
+    "LLM statistical accuracy",
+    "enterprise production deployment",
+    "causal root cause",
+    "strict PIT",
+    "scale SLA"
+  ]
+}

@@ -4,9 +4,11 @@
 使用现有 `OPENAI_API_KEY` 与 `OPENAI_MODEL`；每轮决策会请求模型。
 原 ask/chat 模式保持现有行为。首版自主模式仅支持指标工具，不支持画像。
 
-模型选择 search_business、describe_metric、get_context、run_query、run_comparison
-或 run_diagnosis；工具返回以后，模型再决定调用下一工具、clarify 或 finish。
-没有自动预检索。工具采用结构化决策分发，不是原生 function_call 协议。
+当前模型从12个进程内工具中选择，包括 search_business、resolve_semantics、query_relations、
+describe_metric、get_context、run_query、run_comparison、run_diagnosis、run_multi_fact
+以及 propose_plans/select_plan/run_plan_step；工具返回后再决定下一动作、clarify 或 finish。
+第一轮决策前已经由 QueryContextBroker 自动准备候选检索和权威语义上下文；模型仍可按需补充检索。
+工具采用结构化决策分发，不是原生 function_call 协议。
 参数使用 Pydantic 验证，执行复用现有 Skill、受控编译器和只读 Worker。
 
 最多 6 轮决策、3 次检索（可调上限为 12/6），默认沿用 16 次查询与 120 秒

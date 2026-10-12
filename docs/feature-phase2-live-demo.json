@@ -1,31 +1,31 @@
 {
   "mode": "local bounded rules, no model call",
-  "release_id": "2026-10-11-7abc6af92efb",
+  "release_id": "2026-10-11-ae6535b1c1cc",
   "questions": [
-    "查看用户76706截至2026-10-11的画像",
-    "查看商品23546截至2026-10-11的画像",
-    "查看用户76706和商品23546截至2026-10-11的交互特征",
-    "查看会话1099c32f-5fbd-4c6b-bc6c-8680ddada97e截至2026-10-11的行为",
+    "查看用户12989截至2026-10-11的画像",
+    "查看商品24447截至2026-10-11的画像",
+    "查看用户12989和商品24447截至2026-10-11的交互特征",
+    "查看会话8f7b7141-27e0-43e4-af2e-fb4733ad7c8e截至2026-10-11的行为",
     "说明截至2026-10-11的用户画像字段"
   ],
   "results": [
     {
-      "session_id": "feature-7399b08373c94899b1fd34d6f4d89039",
+      "session_id": "feature-781f8235e20e4ac9b21dba13b68f1f95",
       "feature_partial": {
         "data_product": "user_profile",
         "kind": "profile",
         "as_of": "2026-10-11",
-        "user_id": 76706
+        "user_id": 12989
       },
       "feature_task": {
         "kind": "profile",
         "data_product": "user_profile",
         "as_of": "2026-10-11",
-        "user_id": 76706,
+        "user_id": 12989,
         "product_id": null,
         "session_id": null
       },
-      "feature_release_id": "2026-10-11-7abc6af92efb",
+      "feature_release_id": "2026-10-11-ae6535b1c1cc",
       "status": "COMPLETE",
       "answer": {
         "kind": "profile",
@@ -33,7 +33,7 @@
         "evidence": {
           "data_product": "user_profile",
           "as_of": "2026-10-11",
-          "release_id": "2026-10-11-7abc6af92efb",
+          "release_id": "2026-10-11-ae6535b1c1cc",
           "definition": {
             "grain": [
               "as_of_date",
@@ -74,11 +74,11 @@
                 "sources": [
                   {
                     "table": "dws.dws_user_behavior_day",
-                    "column": "activity_date"
+                    "column": "product_view_count"
                   },
                   {
                     "table": "dws.dws_user_behavior_day",
-                    "column": "product_view_count"
+                    "column": "activity_date"
                   }
                 ],
                 "complete": true
@@ -231,11 +231,11 @@
                 "sources": [
                   {
                     "table": "dws.dws_user_behavior_day",
-                    "column": "activity_date"
+                    "column": "product_view_count"
                   },
                   {
                     "table": "dws.dws_user_behavior_day",
-                    "column": "product_view_count"
+                    "column": "activity_date"
                   }
                 ],
                 "complete": true
@@ -356,16 +356,16 @@
           "found": true,
           "rows": [
             [
-              76706,
+              12989,
               "2026-10-11",
               0,
-              9,
-              9,
-              1,
-              3,
-              "1168.9900",
-              "2026-09-16 20:11:38+10:00",
-              25,
+              17,
+              17,
+              2,
+              5,
+              "1280.9900",
+              "2026-09-30 18:24:56+10:00",
+              11,
               "snapshot-observed-history; not production point-in-time certified"
             ]
           ],
@@ -383,26 +383,26 @@
             "temporal_scope"
           ]
         },
-        "markdown": "# 数据产品查询\n\n数据产品：user_profile\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-7abc6af92efb\n\n{\"user_id\": 76706, \"as_of_date\": \"2026-10-11\", \"product_views_7d\": 0, \"product_views_30d\": 9, \"cart_events_30d\": 9, \"placed_orders_30d\": 1, \"placed_items_30d\": 3, \"booked_amount_30d\": \"1168.9900\", \"last_order_at\": \"2026-09-16 20:11:38+10:00\", \"days_since_last_order\": 25, \"temporal_scope\": \"snapshot-observed-history; not production point-in-time certified\"}\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
+        "markdown": "# 数据产品查询\n\n数据产品：user_profile\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-ae6535b1c1cc\n\n{\"user_id\": 12989, \"as_of_date\": \"2026-10-11\", \"product_views_7d\": 0, \"product_views_30d\": 17, \"cart_events_30d\": 17, \"placed_orders_30d\": 2, \"placed_items_30d\": 5, \"booked_amount_30d\": \"1280.9900\", \"last_order_at\": \"2026-09-30 18:24:56+10:00\", \"days_since_last_order\": 11, \"temporal_scope\": \"snapshot-observed-history; not production point-in-time certified\"}\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
       }
     },
     {
-      "session_id": "feature-f31d2a9973fe4c7490776262624a88cb",
+      "session_id": "feature-97b9ecc181fc4e0c93bf00aa7cb07697",
       "feature_partial": {
         "data_product": "product_profile",
         "kind": "profile",
         "as_of": "2026-10-11",
-        "product_id": 23546
+        "product_id": 24447
       },
       "feature_task": {
         "kind": "profile",
         "data_product": "product_profile",
         "as_of": "2026-10-11",
         "user_id": null,
-        "product_id": 23546,
+        "product_id": 24447,
         "session_id": null
       },
-      "feature_release_id": "2026-10-11-7abc6af92efb",
+      "feature_release_id": "2026-10-11-ae6535b1c1cc",
       "status": "COMPLETE",
       "answer": {
         "kind": "profile",
@@ -410,7 +410,7 @@
         "evidence": {
           "data_product": "product_profile",
           "as_of": "2026-10-11",
-          "release_id": "2026-10-11-7abc6af92efb",
+          "release_id": "2026-10-11-ae6535b1c1cc",
           "definition": {
             "grain": [
               "as_of_date",
@@ -448,11 +448,11 @@
                 "sources": [
                   {
                     "table": "dws.dws_product_behavior_day",
-                    "column": "activity_date"
+                    "column": "product_view_count"
                   },
                   {
                     "table": "dws.dws_product_behavior_day",
-                    "column": "product_view_count"
+                    "column": "activity_date"
                   }
                 ],
                 "complete": true
@@ -570,11 +570,11 @@
                 "sources": [
                   {
                     "table": "dws.dws_product_behavior_day",
-                    "column": "activity_date"
+                    "column": "product_view_count"
                   },
                   {
                     "table": "dws.dws_product_behavior_day",
-                    "column": "product_view_count"
+                    "column": "activity_date"
                   }
                 ],
                 "complete": true
@@ -663,10 +663,10 @@
           "found": true,
           "rows": [
             [
-              23546,
+              24447,
               "2026-10-11",
               0,
-              3,
+              4,
               0,
               1,
               "999.0000",
@@ -684,27 +684,27 @@
             "historical_catalog_availability_verified"
           ]
         },
-        "markdown": "# 数据产品查询\n\n数据产品：product_profile\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-7abc6af92efb\n\n{\"product_id\": 23546, \"as_of_date\": \"2026-10-11\", \"product_views_7d\": 0, \"product_views_30d\": 3, \"anonymous_views_30d\": 0, \"placed_items_30d\": 1, \"booked_amount_30d\": \"999.0000\", \"historical_catalog_availability_verified\": false}\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
+        "markdown": "# 数据产品查询\n\n数据产品：product_profile\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-ae6535b1c1cc\n\n{\"product_id\": 24447, \"as_of_date\": \"2026-10-11\", \"product_views_7d\": 0, \"product_views_30d\": 4, \"anonymous_views_30d\": 0, \"placed_items_30d\": 1, \"booked_amount_30d\": \"999.0000\", \"historical_catalog_availability_verified\": false}\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
       }
     },
     {
-      "session_id": "feature-a7269727fc9e44a492cc5fe8078d3a11",
+      "session_id": "feature-1ab8df5f34b34c34bcbe7173d3adf4c4",
       "feature_partial": {
         "data_product": "user_product",
         "kind": "profile",
         "as_of": "2026-10-11",
-        "user_id": 76706,
-        "product_id": 23546
+        "user_id": 12989,
+        "product_id": 24447
       },
       "feature_task": {
         "kind": "profile",
         "data_product": "user_product",
         "as_of": "2026-10-11",
-        "user_id": 76706,
-        "product_id": 23546,
+        "user_id": 12989,
+        "product_id": 24447,
         "session_id": null
       },
-      "feature_release_id": "2026-10-11-7abc6af92efb",
+      "feature_release_id": "2026-10-11-ae6535b1c1cc",
       "status": "COMPLETE",
       "answer": {
         "kind": "profile",
@@ -712,7 +712,7 @@
         "evidence": {
           "data_product": "user_product",
           "as_of": "2026-10-11",
-          "release_id": "2026-10-11-7abc6af92efb",
+          "release_id": "2026-10-11-ae6535b1c1cc",
           "definition": {
             "grain": [
               "as_of_date",
@@ -831,11 +831,11 @@
                 "sources": [
                   {
                     "table": "dws.dws_user_product_day",
-                    "column": "last_view_at"
+                    "column": "last_order_at"
                   },
                   {
                     "table": "dws.dws_user_product_day",
-                    "column": "last_order_at"
+                    "column": "last_view_at"
                   }
                 ],
                 "complete": true
@@ -844,11 +844,11 @@
                 "sources": [
                   {
                     "table": "dws.dws_user_product_day",
-                    "column": "last_view_at"
+                    "column": "last_order_at"
                   },
                   {
                     "table": "dws.dws_user_product_day",
-                    "column": "last_order_at"
+                    "column": "last_view_at"
                   }
                 ],
                 "complete": true
@@ -1005,11 +1005,11 @@
                 "sources": [
                   {
                     "table": "dws.dws_user_product_day",
-                    "column": "last_view_at"
+                    "column": "last_order_at"
                   },
                   {
                     "table": "dws.dws_user_product_day",
-                    "column": "last_order_at"
+                    "column": "last_view_at"
                   }
                 ],
                 "complete": true
@@ -1018,11 +1018,11 @@
                 "sources": [
                   {
                     "table": "dws.dws_user_product_day",
-                    "column": "last_view_at"
+                    "column": "last_order_at"
                   },
                   {
                     "table": "dws.dws_user_product_day",
-                    "column": "last_order_at"
+                    "column": "last_view_at"
                   }
                 ],
                 "complete": true
@@ -1069,18 +1069,18 @@
           "found": true,
           "rows": [
             [
-              76706,
-              23546,
+              12989,
+              24447,
               "2026-10-11",
               0,
-              3,
+              4,
               1,
               1,
               "999.0000",
-              "2026-09-16 16:55:20+10:00",
-              "2026-09-16 20:11:38+10:00",
-              "2026-09-16 20:11:38+10:00",
-              25,
+              "2026-09-30 18:08:49+10:00",
+              "2026-09-30 18:24:56+10:00",
+              "2026-09-30 18:24:56+10:00",
+              11,
               "observed-interaction pairs only; absence is not a negative label"
             ]
           ],
@@ -1100,16 +1100,16 @@
             "population_scope"
           ]
         },
-        "markdown": "# 数据产品查询\n\n数据产品：user_product\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-7abc6af92efb\n\n{\"user_id\": 76706, \"product_id\": 23546, \"as_of_date\": \"2026-10-11\", \"product_views_7d\": 0, \"product_views_30d\": 3, \"placed_items_30d\": 1, \"placed_orders_30d\": 1, \"booked_amount_30d\": \"999.0000\", \"last_view_at\": \"2026-09-16 16:55:20+10:00\", \"last_order_at\": \"2026-09-16 20:11:38+10:00\", \"last_interaction_at\": \"2026-09-16 20:11:38+10:00\", \"days_since_last_interaction\": 25, \"population_scope\": \"observed-interaction pairs only; absence is not a negative label\"}\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
+        "markdown": "# 数据产品查询\n\n数据产品：user_product\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-ae6535b1c1cc\n\n{\"user_id\": 12989, \"product_id\": 24447, \"as_of_date\": \"2026-10-11\", \"product_views_7d\": 0, \"product_views_30d\": 4, \"placed_items_30d\": 1, \"placed_orders_30d\": 1, \"booked_amount_30d\": \"999.0000\", \"last_view_at\": \"2026-09-30 18:08:49+10:00\", \"last_order_at\": \"2026-09-30 18:24:56+10:00\", \"last_interaction_at\": \"2026-09-30 18:24:56+10:00\", \"days_since_last_interaction\": 11, \"population_scope\": \"observed-interaction pairs only; absence is not a negative label\"}\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
       }
     },
     {
-      "session_id": "feature-a604b7afb9c74f349d15d3b91d00a24f",
+      "session_id": "feature-acd974d6eabe4ccfaa70d47165f82673",
       "feature_partial": {
         "data_product": "session",
         "kind": "profile",
         "as_of": "2026-10-11",
-        "session_id": "1099c32f-5fbd-4c6b-bc6c-8680ddada97e"
+        "session_id": "8f7b7141-27e0-43e4-af2e-fb4733ad7c8e"
       },
       "feature_task": {
         "kind": "profile",
@@ -1117,9 +1117,9 @@
         "as_of": "2026-10-11",
         "user_id": null,
         "product_id": null,
-        "session_id": "1099c32f-5fbd-4c6b-bc6c-8680ddada97e"
+        "session_id": "8f7b7141-27e0-43e4-af2e-fb4733ad7c8e"
       },
-      "feature_release_id": "2026-10-11-7abc6af92efb",
+      "feature_release_id": "2026-10-11-ae6535b1c1cc",
       "status": "COMPLETE",
       "answer": {
         "kind": "profile",
@@ -1127,7 +1127,7 @@
         "evidence": {
           "data_product": "session",
           "as_of": "2026-10-11",
-          "release_id": "2026-10-11-7abc6af92efb",
+          "release_id": "2026-10-11-ae6535b1c1cc",
           "definition": {
             "grain": [
               "as_of_date",
@@ -1206,11 +1206,11 @@
                 "sources": [
                   {
                     "table": "dwd.dwd_behavior_event",
-                    "column": "invalid_product_reference"
+                    "column": "event_type"
                   },
                   {
                     "table": "dwd.dwd_behavior_event",
-                    "column": "event_type"
+                    "column": "invalid_product_reference"
                   }
                 ],
                 "complete": true
@@ -1416,11 +1416,11 @@
                 "sources": [
                   {
                     "table": "dwd.dwd_behavior_event",
-                    "column": "invalid_product_reference"
+                    "column": "event_type"
                   },
                   {
                     "table": "dwd.dwd_behavior_event",
-                    "column": "event_type"
+                    "column": "invalid_product_reference"
                   }
                 ],
                 "complete": true
@@ -1556,19 +1556,19 @@
           "found": true,
           "rows": [
             [
-              "1099c32f-5fbd-4c6b-bc6c-8680ddada97e",
+              "8f7b7141-27e0-43e4-af2e-fb4733ad7c8e",
               "2026-10-11",
-              "2026-10-10 21:36:12.107226+11:00",
-              "2026-10-10 21:42:22.107226+11:00",
-              370,
-              6,
+              "2022-12-24 04:52:00+11:00",
+              "2022-12-24 05:04:00+11:00",
+              720,
               2,
               1,
-              2,
-              0,
               1,
-              96426,
               0,
+              0,
+              0,
+              null,
+              2,
               false,
               false,
               "UNKNOWN_NOT_VERIFIED_NEGATIVE",
@@ -1599,11 +1599,11 @@
             "payment_success_verified"
           ]
         },
-        "markdown": "# 数据产品查询\n\n数据产品：session\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-7abc6af92efb\n\n{\"session_id\": \"1099c32f-5fbd-4c6b-bc6c-8680ddada97e\", \"as_of_date\": \"2026-10-11\", \"first_observed_event_at\": \"2026-10-10 21:36:12.107226+11:00\", \"last_observed_event_at\": \"2026-10-10 21:42:22.107226+11:00\", \"observed_duration_seconds\": 370, \"event_count\": 6, \"product_view_count\": 2, \"distinct_viewed_product_count\": 1, \"cart_event_count\": 2, \"purchase_event_count\": 0, \"observed_user_count\": 1, \"observed_user_id\": 96426, \"anonymous_event_count\": 0, \"mixed_user_identity\": false, \"has_observed_purchase_event\": false, \"purchase_observation\": \"UNKNOWN_NOT_VERIFIED_NEGATIVE\", \"session_closure_verified\": false, \"order_attribution_verified\": false, \"payment_success_verified\": false}\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
+        "markdown": "# 数据产品查询\n\n数据产品：session\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-ae6535b1c1cc\n\n{\"session_id\": \"8f7b7141-27e0-43e4-af2e-fb4733ad7c8e\", \"as_of_date\": \"2026-10-11\", \"first_observed_event_at\": \"2022-12-24 04:52:00+11:00\", \"last_observed_event_at\": \"2022-12-24 05:04:00+11:00\", \"observed_duration_seconds\": 720, \"event_count\": 2, \"product_view_count\": 1, \"distinct_viewed_product_count\": 1, \"cart_event_count\": 0, \"purchase_event_count\": 0, \"observed_user_count\": 0, \"observed_user_id\": null, \"anonymous_event_count\": 2, \"mixed_user_identity\": false, \"has_observed_purchase_event\": false, \"purchase_observation\": \"UNKNOWN_NOT_VERIFIED_NEGATIVE\", \"session_closure_verified\": false, \"order_attribution_verified\": false, \"payment_success_verified\": false}\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
       }
     },
     {
-      "session_id": "feature-ada3be595dd846d192c03759f87b6785",
+      "session_id": "feature-78c18a7c8c2c42599c0f9f0f11e5de36",
       "feature_partial": {
         "data_product": "user_profile",
         "kind": "describe",
@@ -1617,7 +1617,7 @@
         "product_id": null,
         "session_id": null
       },
-      "feature_release_id": "2026-10-11-7abc6af92efb",
+      "feature_release_id": "2026-10-11-ae6535b1c1cc",
       "status": "COMPLETE",
       "answer": {
         "kind": "profile",
@@ -1625,7 +1625,7 @@
         "evidence": {
           "data_product": "user_profile",
           "as_of": "2026-10-11",
-          "release_id": "2026-10-11-7abc6af92efb",
+          "release_id": "2026-10-11-ae6535b1c1cc",
           "definition": {
             "grain": [
               "as_of_date",
@@ -1666,11 +1666,11 @@
                 "sources": [
                   {
                     "table": "dws.dws_user_behavior_day",
-                    "column": "activity_date"
+                    "column": "product_view_count"
                   },
                   {
                     "table": "dws.dws_user_behavior_day",
-                    "column": "product_view_count"
+                    "column": "activity_date"
                   }
                 ],
                 "complete": true
@@ -1823,11 +1823,11 @@
                 "sources": [
                   {
                     "table": "dws.dws_user_behavior_day",
-                    "column": "activity_date"
+                    "column": "product_view_count"
                   },
                   {
                     "table": "dws.dws_user_behavior_day",
-                    "column": "product_view_count"
+                    "column": "activity_date"
                   }
                 ],
                 "complete": true
@@ -1948,26 +1948,26 @@
           "found": null,
           "rows": []
         },
-        "markdown": "# 数据产品查询\n\n数据产品：user_profile\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-7abc6af92efb\n\n粒度：as_of_date, user_id\n\n字段：\n- user_id (BIGINT)\n- as_of_date (DATE)\n- product_views_7d (HUGEINT)\n- product_views_30d (HUGEINT)\n- cart_events_30d (HUGEINT)\n- placed_orders_30d (HUGEINT)\n- placed_items_30d (HUGEINT)\n- booked_amount_30d (DECIMAL(18,4))\n- last_order_at (TIMESTAMP WITH TIME ZONE)\n- days_since_last_order (BIGINT)\n- temporal_scope (VARCHAR)\n\n\"字段和粒度见结构化证据\"\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
+        "markdown": "# 数据产品查询\n\n数据产品：user_profile\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-ae6535b1c1cc\n\n粒度：as_of_date, user_id\n\n字段：\n- user_id (BIGINT)\n- as_of_date (DATE)\n- product_views_7d (HUGEINT)\n- product_views_30d (HUGEINT)\n- cart_events_30d (HUGEINT)\n- placed_orders_30d (HUGEINT)\n- placed_items_30d (HUGEINT)\n- booked_amount_30d (DECIMAL(18,4))\n- last_order_at (TIMESTAMP WITH TIME ZONE)\n- days_since_last_order (BIGINT)\n- temporal_scope (VARCHAR)\n\n\"字段和粒度见结构化证据\"\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
       }
     }
   ],
   "structured": {
-    "session_id": "feature-d447315040254657ad62a9a02d97c69f",
+    "session_id": "feature-a9c98f0867774c46b23b676a5cc8ad24",
     "feature_partial": {
       "data_product": "user_profile",
-      "user_id": 76706,
+      "user_id": 12989,
       "as_of": "2026-10-11"
     },
     "feature_task": {
       "kind": "profile",
       "data_product": "user_profile",
       "as_of": "2026-10-11",
-      "user_id": 76706,
+      "user_id": 12989,
       "product_id": null,
       "session_id": null
     },
-    "feature_release_id": "2026-10-11-7abc6af92efb",
+    "feature_release_id": "2026-10-11-ae6535b1c1cc",
     "status": "COMPLETE",
     "answer": {
       "kind": "profile",
@@ -1975,7 +1975,7 @@
       "evidence": {
         "data_product": "user_profile",
         "as_of": "2026-10-11",
-        "release_id": "2026-10-11-7abc6af92efb",
+        "release_id": "2026-10-11-ae6535b1c1cc",
         "definition": {
           "grain": [
             "as_of_date",
@@ -2016,11 +2016,11 @@
               "sources": [
                 {
                   "table": "dws.dws_user_behavior_day",
-                  "column": "activity_date"
+                  "column": "product_view_count"
                 },
                 {
                   "table": "dws.dws_user_behavior_day",
-                  "column": "product_view_count"
+                  "column": "activity_date"
                 }
               ],
               "complete": true
@@ -2173,11 +2173,11 @@
               "sources": [
                 {
                   "table": "dws.dws_user_behavior_day",
-                  "column": "activity_date"
+                  "column": "product_view_count"
                 },
                 {
                   "table": "dws.dws_user_behavior_day",
-                  "column": "product_view_count"
+                  "column": "activity_date"
                 }
               ],
               "complete": true
@@ -2298,16 +2298,16 @@
         "found": true,
         "rows": [
           [
-            76706,
+            12989,
             "2026-10-11",
             0,
-            9,
-            9,
-            1,
-            3,
-            "1168.9900",
-            "2026-09-16 20:11:38+10:00",
-            25,
+            17,
+            17,
+            2,
+            5,
+            "1280.9900",
+            "2026-09-30 18:24:56+10:00",
+            11,
             "snapshot-observed-history; not production point-in-time certified"
           ]
         ],
@@ -2325,7 +2325,7 @@
           "temporal_scope"
         ]
       },
-      "markdown": "# 数据产品查询\n\n数据产品：user_profile\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-7abc6af92efb\n\n{\"user_id\": 76706, \"as_of_date\": \"2026-10-11\", \"product_views_7d\": 0, \"product_views_30d\": 9, \"cart_events_30d\": 9, \"placed_orders_30d\": 1, \"placed_items_30d\": 3, \"booked_amount_30d\": \"1168.9900\", \"last_order_at\": \"2026-09-16 20:11:38+10:00\", \"days_since_last_order\": 25, \"temporal_scope\": \"snapshot-observed-history; not production point-in-time certified\"}\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
+      "markdown": "# 数据产品查询\n\n数据产品：user_profile\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-ae6535b1c1cc\n\n{\"user_id\": 12989, \"as_of_date\": \"2026-10-11\", \"product_views_7d\": 0, \"product_views_30d\": 17, \"cart_events_30d\": 17, \"placed_orders_30d\": 2, \"placed_items_30d\": 5, \"booked_amount_30d\": \"1280.9900\", \"last_order_at\": \"2026-09-30 18:24:56+10:00\", \"days_since_last_order\": 11, \"temporal_scope\": \"snapshot-observed-history; not production point-in-time certified\"}\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
     }
   },
   "mcp": {
@@ -2334,7 +2334,7 @@
     "result": {
       "data_product": "user_profile",
       "as_of": "2026-10-11",
-      "release_id": "2026-10-11-7abc6af92efb",
+      "release_id": "2026-10-11-ae6535b1c1cc",
       "definition": {
         "grain": [
           "as_of_date",
@@ -2375,11 +2375,11 @@
             "sources": [
               {
                 "table": "dws.dws_user_behavior_day",
-                "column": "activity_date"
+                "column": "product_view_count"
               },
               {
                 "table": "dws.dws_user_behavior_day",
-                "column": "product_view_count"
+                "column": "activity_date"
               }
             ],
             "complete": true
@@ -2532,11 +2532,11 @@
             "sources": [
               {
                 "table": "dws.dws_user_behavior_day",
-                "column": "activity_date"
+                "column": "product_view_count"
               },
               {
                 "table": "dws.dws_user_behavior_day",
-                "column": "product_view_count"
+                "column": "activity_date"
               }
             ],
             "complete": true
@@ -2657,16 +2657,16 @@
       "found": true,
       "rows": [
         [
-          76706,
+          12989,
           "2026-10-11",
           0,
-          9,
-          9,
-          1,
-          3,
-          "1168.9900",
-          "2026-09-16 20:11:38+10:00",
-          25,
+          17,
+          17,
+          2,
+          5,
+          "1280.9900",
+          "2026-09-30 18:24:56+10:00",
+          11,
           "snapshot-observed-history; not production point-in-time certified"
         ]
       ],

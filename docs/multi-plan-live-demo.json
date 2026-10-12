@@ -2,7 +2,7 @@
   "mode": "scripted model decisions; real local data; no live model request",
   "semantic_version": "commerce-v3-multi-fact",
   "result": {
-    "session_id": "e789bbfcf8864a57bb3a8495db1e5512",
+    "session_id": "d7a329ceb86c49f69815d1ec2eebccc1",
     "question": "UTC闭开[2026-09-01,2026-10-01)按国家和渠道查询订单量、商品件数与每单商品件数，保留分组并集",
     "decisions": [
       {
@@ -81,7 +81,7 @@
         "action": "tool",
         "tool": "select_plan",
         "arguments": {
-          "plan_id": "p-ddfb414dbc00"
+          "plan_id": "p-3f8506c5f6d9"
         },
         "message": "",
         "evidence_ids": []
@@ -90,7 +90,7 @@
         "action": "tool",
         "tool": "run_plan_step",
         "arguments": {
-          "plan_id": "p-ddfb414dbc00",
+          "plan_id": "p-3f8506c5f6d9",
           "step_index": 0
         },
         "message": "",
@@ -100,7 +100,7 @@
         "action": "tool",
         "tool": "run_plan_step",
         "arguments": {
-          "plan_id": "p-ddfb414dbc00",
+          "plan_id": "p-3f8506c5f6d9",
           "step_index": 1
         },
         "message": "",
@@ -192,7 +192,7 @@
           "selected_plan_id": null,
           "candidates": [
             {
-              "plan_id": "p-9f02db5e8465",
+              "plan_id": "p-0e728beca22c",
               "revision": 1,
               "label": "直接语义关联",
               "approach": "已知目标与合法共同维度，直接执行受控多事实查询",
@@ -226,7 +226,7 @@
               "cost_scope": "logical calls before transient retries; not latency/financial estimate"
             },
             {
-              "plan_id": "p-ddfb414dbc00",
+              "plan_id": "p-3f8506c5f6d9",
               "revision": 1,
               "label": "先核对事实上下文",
               "approach": "先查看订单事实来源与质量，再执行相同口径查询",
@@ -273,11 +273,11 @@
         "id": "e2",
         "tool": "select_plan",
         "arguments": {
-          "plan_id": "p-ddfb414dbc00"
+          "plan_id": "p-3f8506c5f6d9"
         },
         "status": "OK",
         "result": {
-          "plan_id": "p-ddfb414dbc00",
+          "plan_id": "p-3f8506c5f6d9",
           "revision": 1,
           "label": "先核对事实上下文",
           "approach": "先查看订单事实来源与质量，再执行相同口径查询",
@@ -321,12 +321,12 @@
         "id": "e3",
         "tool": "run_plan_step",
         "arguments": {
-          "plan_id": "p-ddfb414dbc00",
+          "plan_id": "p-3f8506c5f6d9",
           "step_index": 0
         },
         "status": "OK",
         "result": {
-          "plan_id": "p-ddfb414dbc00",
+          "plan_id": "p-3f8506c5f6d9",
           "step_index": 0,
           "tool": "get_context",
           "result": {
@@ -415,7 +415,7 @@
                 "verified_business_owner": false
               },
               "quality": {
-                "release_id": "39011fd5d151420ba485aa6978764491",
+                "release_id": "635ff256ec6e468a91534fb46c74d748",
                 "status": "PASS",
                 "checks": [
                   "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
@@ -431,7 +431,7 @@
                   "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
                 ],
                 "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
-                "verified_at": "2026-10-12T10:39:36.892054+00:00"
+                "verified_at": "2026-10-12T11:03:25.946834+00:00"
               },
               "schema": [
                 {
@@ -563,7 +563,7 @@
               "version": "phase1",
               "binding": {
                 "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
-                "release_id": "39011fd5d151420ba485aa6978764491",
+                "release_id": "635ff256ec6e468a91534fb46c74d748",
                 "asset_version": "35280ca639b64ef5a8ac44bb0ea6a923af520eb6ef6acc40b300c8677fc36ea3",
                 "subject": "local-study-user",
                 "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1",
@@ -686,7 +686,7 @@
                     "verified_business_owner": false
                   },
                   "quality": {
-                    "release_id": "39011fd5d151420ba485aa6978764491",
+                    "release_id": "635ff256ec6e468a91534fb46c74d748",
                     "status": "PASS",
                     "checks": [
                       "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
@@ -702,7 +702,7 @@
                       "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
                     ],
                     "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
-                    "verified_at": "2026-10-12T10:39:36.892054+00:00"
+                    "verified_at": "2026-10-12T11:03:25.946834+00:00"
                   },
                   "schema": [
                     {
@@ -808,12 +808,12 @@
         "id": "e4",
         "tool": "run_plan_step",
         "arguments": {
-          "plan_id": "p-ddfb414dbc00",
+          "plan_id": "p-3f8506c5f6d9",
           "step_index": 1
         },
         "status": "OK",
         "result": {
-          "plan_id": "p-ddfb414dbc00",
+          "plan_id": "p-3f8506c5f6d9",
           "step_index": 1,
           "tool": "run_multi_fact",
           "result": {
@@ -1265,8 +1265,8 @@
               "country",
               "traffic_source"
             ],
-            "release_id": "39011fd5d151420ba485aa6978764491",
-            "plan_id": "e1ad8c72fca34db29b6530a5cbaa0294",
+            "release_id": "635ff256ec6e468a91534fb46c74d748",
+            "plan_id": "a4dc6f2bf33a4652915b2477bb07ae84",
             "result_may_be_truncated": false,
             "logical_plan": {
               "branches": [
@@ -1305,7 +1305,7 @@
             "semantic_resolution": {
               "binding": {
                 "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
-                "release_id": "39011fd5d151420ba485aa6978764491",
+                "release_id": "635ff256ec6e468a91534fb46c74d748",
                 "asset_version": "35280ca639b64ef5a8ac44bb0ea6a923af520eb6ef6acc40b300c8677fc36ea3",
                 "subject": "local-study-user",
                 "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1",
@@ -1580,7 +1580,7 @@
         "version": "phase1",
         "binding": {
           "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
-          "release_id": "39011fd5d151420ba485aa6978764491",
+          "release_id": "635ff256ec6e468a91534fb46c74d748",
           "asset_version": "35280ca639b64ef5a8ac44bb0ea6a923af520eb6ef6acc40b300c8677fc36ea3",
           "subject": "local-study-user",
           "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1",
@@ -1791,7 +1791,7 @@
               "verified_business_owner": false
             },
             "quality": {
-              "release_id": "39011fd5d151420ba485aa6978764491",
+              "release_id": "635ff256ec6e468a91534fb46c74d748",
               "status": "PASS",
               "checks": [
                 "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
@@ -1807,7 +1807,7 @@
                 "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
               ],
               "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
-              "verified_at": "2026-10-12T10:39:36.892054+00:00"
+              "verified_at": "2026-10-12T11:03:25.946834+00:00"
             },
             "schema": [
               {
@@ -1982,7 +1982,7 @@
               "verified_business_owner": false
             },
             "quality": {
-              "release_id": "39011fd5d151420ba485aa6978764491",
+              "release_id": "635ff256ec6e468a91534fb46c74d748",
               "status": "PASS",
               "checks": [
                 "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
@@ -1998,7 +1998,7 @@
                 "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
               ],
               "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
-              "verified_at": "2026-10-12T10:39:36.892054+00:00"
+              "verified_at": "2026-10-12T11:03:25.946834+00:00"
             },
             "schema": [
               {
@@ -2103,10 +2103,10 @@
     },
     "planning": {
       "revision": 1,
-      "selected_plan_id": "p-ddfb414dbc00",
+      "selected_plan_id": "p-3f8506c5f6d9",
       "candidates": [
         {
-          "plan_id": "p-9f02db5e8465",
+          "plan_id": "p-0e728beca22c",
           "revision": 1,
           "label": "直接语义关联",
           "approach": "已知目标与合法共同维度，直接执行受控多事实查询",
@@ -2140,7 +2140,7 @@
           "cost_scope": "logical calls before transient retries; not latency/financial estimate"
         },
         {
-          "plan_id": "p-ddfb414dbc00",
+          "plan_id": "p-3f8506c5f6d9",
           "revision": 1,
           "label": "先核对事实上下文",
           "approach": "先查看订单事实来源与质量，再执行相同口径查询",
@@ -2192,12 +2192,12 @@
           "id": "e4",
           "tool": "run_plan_step",
           "arguments": {
-            "plan_id": "p-ddfb414dbc00",
+            "plan_id": "p-3f8506c5f6d9",
             "step_index": 1
           },
           "status": "OK",
           "result": {
-            "plan_id": "p-ddfb414dbc00",
+            "plan_id": "p-3f8506c5f6d9",
             "step_index": 1,
             "tool": "run_multi_fact",
             "result": {
@@ -2649,8 +2649,8 @@
                 "country",
                 "traffic_source"
               ],
-              "release_id": "39011fd5d151420ba485aa6978764491",
-              "plan_id": "e1ad8c72fca34db29b6530a5cbaa0294",
+              "release_id": "635ff256ec6e468a91534fb46c74d748",
+              "plan_id": "a4dc6f2bf33a4652915b2477bb07ae84",
               "result_may_be_truncated": false,
               "logical_plan": {
                 "branches": [
@@ -2689,7 +2689,7 @@
               "semantic_resolution": {
                 "binding": {
                   "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
-                  "release_id": "39011fd5d151420ba485aa6978764491",
+                  "release_id": "635ff256ec6e468a91534fb46c74d748",
                   "asset_version": "35280ca639b64ef5a8ac44bb0ea6a923af520eb6ef6acc40b300c8677fc36ea3",
                   "subject": "local-study-user",
                   "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1",
@@ -2779,7 +2779,7 @@
     },
     "runtime": {
       "queries_used": 1,
-      "elapsed_seconds": 10.781000000075437
+      "elapsed_seconds": 12.062000000034459
     }
   },
   "independent_raw_checks": [

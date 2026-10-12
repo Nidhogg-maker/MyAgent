@@ -100,7 +100,10 @@ def live_smoke(tools,expected):
 
 
 def main():
-    parser=argparse.ArgumentParser(); parser.add_argument('--live-llm',action='store_true'); args=parser.parse_args()
+    parser=argparse.ArgumentParser(); parser.add_argument('--live-llm',action='store_true')
+    # 整体验收单独保存回执，避免覆盖阶段报告中的历史运行证据。
+    parser.add_argument('--output', type=str, default=str(ROOT/'docs/retrieval-iteration-acceptance.json'))
+    args=parser.parse_args()
     os.environ['OWN_AGENT_RETRIEVAL_MODE']='hybrid-required'
     os.environ['OWN_AGENT_RERANK_MODE']='required'
     os.environ['OWN_AGENT_STRUCTURED_MODE']='required'
@@ -153,7 +156,8 @@ def main():
         'raw_check':{'actual':actual,'expected':expected,'pass':True},'field_impact':impact,
         'metadata':metadata,'lifecycle':changes,'live_llm':live,
         'not_certified':['model accuracy','production ANN/throughput','causal attribution','enterprise SSO','verified coverage watermark']}
-    output=ROOT/'docs/retrieval-iteration-acceptance.json'
+    from pathlib import Path
+    output=Path(args.output)
     output.write_text(json.dumps(report,ensure_ascii=False,default=str,indent=2),encoding='utf-8')
     print(json.dumps({'status':report['status'],'raw_check':True,'value':actual,'graph_nodes':manifest['delta']['graph']['nodes'],
         'graph_edges':manifest['delta']['graph']['edges'],'incremental_lifecycle':True,'live_llm':live['status'],'output':str(output)}))
