@@ -1,0 +1,29 @@
+version: 2
+sources:
+  - name: thelook
+    schema: raw
+    tables:
+      - name: users
+      - name: products
+      - name: orders
+      - name: order_items
+      - name: inventory_items
+      - name: distribution_centers
+      - name: events
+models:
+  - name: dim_users
+    columns:
+      - name: user_id
+        data_tests: [unique, not_null]
+  - name: dim_products
+    columns:
+      - name: product_id
+        data_tests: [unique, not_null]
+  - name: fct_order_items
+    columns:
+      - name: order_item_id
+        data_tests: [unique, not_null]
+  - name: fct_orders
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]

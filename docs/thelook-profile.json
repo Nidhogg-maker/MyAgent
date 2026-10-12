@@ -1,0 +1,646 @@
+{
+  "source_manifest": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\NL2SQL\\semantic-data-agent-lab\\data\\thelook-20261011\\manifest.json",
+  "profiled_at": "2026-10-11T10:19:23.314150+00:00",
+  "tables": {
+    "distribution_centers": {
+      "rows": 10,
+      "primary_key": "id",
+      "duplicate_or_null_key_rows": 0,
+      "null_key_rows": 0,
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "name": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "latitude": {
+          "type": "FLOAT",
+          "nulls": 0
+        },
+        "longitude": {
+          "type": "FLOAT",
+          "nulls": 0
+        },
+        "distribution_center_geom": {
+          "type": "GEOGRAPHY",
+          "nulls": 0
+        }
+      }
+    },
+    "products": {
+      "rows": 29120,
+      "primary_key": "id",
+      "duplicate_or_null_key_rows": 0,
+      "null_key_rows": 0,
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "cost": {
+          "type": "FLOAT",
+          "nulls": 0
+        },
+        "category": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "name": {
+          "type": "STRING",
+          "nulls": 2
+        },
+        "brand": {
+          "type": "STRING",
+          "nulls": 24
+        },
+        "retail_price": {
+          "type": "FLOAT",
+          "nulls": 0
+        },
+        "department": {
+          "type": "STRING",
+          "nulls": 0,
+          "values": [
+            [
+              "Women",
+              15989
+            ],
+            [
+              "Men",
+              13131
+            ]
+          ]
+        },
+        "sku": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "distribution_center_id": {
+          "type": "INTEGER",
+          "nulls": 0
+        }
+      }
+    },
+    "users": {
+      "rows": 100000,
+      "primary_key": "id",
+      "duplicate_or_null_key_rows": 0,
+      "null_key_rows": 0,
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "first_name": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "last_name": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "email": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "age": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "gender": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "state": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "street_address": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "postal_code": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "city": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "country": {
+          "type": "STRING",
+          "nulls": 0,
+          "values": [
+            [
+              "China",
+              33965
+            ],
+            [
+              "United States",
+              22508
+            ],
+            [
+              "Brasil",
+              14414
+            ],
+            [
+              "South Korea",
+              5339
+            ],
+            [
+              "France",
+              4747
+            ],
+            [
+              "United Kingdom",
+              4596
+            ],
+            [
+              "Germany",
+              4294
+            ],
+            [
+              "Spain",
+              3974
+            ],
+            [
+              "Japan",
+              2424
+            ],
+            [
+              "Australia",
+              2189
+            ],
+            [
+              "Belgium",
+              1313
+            ],
+            [
+              "Poland",
+              222
+            ],
+            [
+              "Colombia",
+              11
+            ],
+            [
+              "Austria",
+              2
+            ],
+            [
+              "Deutschland",
+              1
+            ],
+            [
+              "España",
+              1
+            ]
+          ]
+        },
+        "latitude": {
+          "type": "FLOAT",
+          "nulls": 0
+        },
+        "longitude": {
+          "type": "FLOAT",
+          "nulls": 0
+        },
+        "traffic_source": {
+          "type": "STRING",
+          "nulls": 0,
+          "values": [
+            [
+              "Search",
+              70068
+            ],
+            [
+              "Organic",
+              14999
+            ],
+            [
+              "Facebook",
+              6056
+            ],
+            [
+              "Email",
+              4917
+            ],
+            [
+              "Display",
+              3960
+            ]
+          ]
+        },
+        "created_at": {
+          "type": "TIMESTAMP",
+          "nulls": 0,
+          "min": "2019-01-02 12:04:00+11:00",
+          "max": "2026-10-11 06:39:47.782694+11:00"
+        },
+        "user_geom": {
+          "type": "GEOGRAPHY",
+          "nulls": 0
+        }
+      }
+    },
+    "orders": {
+      "rows": 125416,
+      "primary_key": "order_id",
+      "duplicate_or_null_key_rows": 0,
+      "null_key_rows": 0,
+      "columns": {
+        "order_id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "user_id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "status": {
+          "type": "STRING",
+          "nulls": 0,
+          "values": [
+            [
+              "Shipped",
+              37465
+            ],
+            [
+              "Complete",
+              31465
+            ],
+            [
+              "Processing",
+              25128
+            ],
+            [
+              "Cancelled",
+              18953
+            ],
+            [
+              "Returned",
+              12405
+            ]
+          ]
+        },
+        "gender": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "created_at": {
+          "type": "TIMESTAMP",
+          "nulls": 0,
+          "min": "2019-01-12 07:40:22+11:00",
+          "max": "2026-10-11 11:49:59.692090+11:00"
+        },
+        "returned_at": {
+          "type": "TIMESTAMP",
+          "nulls": 113011,
+          "min": "2019-02-16 23:32:41+11:00",
+          "max": "2026-10-21 00:56:25+11:00"
+        },
+        "shipped_at": {
+          "type": "TIMESTAMP",
+          "nulls": 44081,
+          "min": "2019-01-12 13:52:22+11:00",
+          "max": "2026-10-14 10:26:33.758552+11:00"
+        },
+        "delivered_at": {
+          "type": "TIMESTAMP",
+          "nulls": 81546,
+          "min": "2019-01-14 01:27:22+11:00",
+          "max": "2026-10-19 03:24:25+11:00"
+        },
+        "num_of_item": {
+          "type": "INTEGER",
+          "nulls": 0
+        }
+      }
+    },
+    "order_items": {
+      "rows": 181946,
+      "primary_key": "id",
+      "duplicate_or_null_key_rows": 0,
+      "null_key_rows": 0,
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "order_id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "user_id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "product_id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "inventory_item_id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "status": {
+          "type": "STRING",
+          "nulls": 0,
+          "values": [
+            [
+              "Shipped",
+              54291
+            ],
+            [
+              "Complete",
+              45587
+            ],
+            [
+              "Processing",
+              36485
+            ],
+            [
+              "Cancelled",
+              27478
+            ],
+            [
+              "Returned",
+              18105
+            ]
+          ]
+        },
+        "created_at": {
+          "type": "TIMESTAMP",
+          "nulls": 0,
+          "min": "2019-01-12 05:29:44+11:00",
+          "max": "2026-10-15 11:13:51.216575+11:00"
+        },
+        "shipped_at": {
+          "type": "TIMESTAMP",
+          "nulls": 63963,
+          "min": "2019-01-12 13:52:22+11:00",
+          "max": "2026-10-14 10:26:33.758552+11:00"
+        },
+        "delivered_at": {
+          "type": "TIMESTAMP",
+          "nulls": 118254,
+          "min": "2019-01-14 01:27:22+11:00",
+          "max": "2026-10-19 03:24:25+11:00"
+        },
+        "returned_at": {
+          "type": "TIMESTAMP",
+          "nulls": 163841,
+          "min": "2019-02-16 23:32:41+11:00",
+          "max": "2026-10-21 00:56:25+11:00"
+        },
+        "sale_price": {
+          "type": "FLOAT",
+          "nulls": 0
+        }
+      }
+    },
+    "inventory_items": {
+      "rows": 491228,
+      "primary_key": "id",
+      "duplicate_or_null_key_rows": 0,
+      "null_key_rows": 0,
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "product_id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "created_at": {
+          "type": "TIMESTAMP",
+          "nulls": 0,
+          "min": "2018-12-02 02:41:57+11:00",
+          "max": "2026-10-14 22:42:00.037604+11:00"
+        },
+        "sold_at": {
+          "type": "TIMESTAMP",
+          "nulls": 309282,
+          "min": "2019-01-12 05:29:44+11:00",
+          "max": "2026-10-15 11:13:51.216575+11:00"
+        },
+        "cost": {
+          "type": "FLOAT",
+          "nulls": 0
+        },
+        "product_category": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "product_name": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "product_brand": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "product_retail_price": {
+          "type": "FLOAT",
+          "nulls": 0
+        },
+        "product_department": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "product_sku": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "product_distribution_center_id": {
+          "type": "INTEGER",
+          "nulls": 0
+        }
+      }
+    },
+    "events": {
+      "rows": 2430702,
+      "primary_key": "id",
+      "duplicate_or_null_key_rows": 0,
+      "null_key_rows": 0,
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "user_id": {
+          "type": "INTEGER",
+          "nulls": 1124193
+        },
+        "sequence_number": {
+          "type": "INTEGER",
+          "nulls": 0
+        },
+        "session_id": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "created_at": {
+          "type": "TIMESTAMP",
+          "nulls": 0,
+          "min": "2019-01-02 11:14:00+11:00",
+          "max": "2026-10-15 11:13:51.216575+11:00"
+        },
+        "ip_address": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "city": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "state": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "postal_code": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "browser": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "traffic_source": {
+          "type": "STRING",
+          "nulls": 0,
+          "values": [
+            [
+              "Email",
+              1094259
+            ],
+            [
+              "Adwords",
+              729189
+            ],
+            [
+              "Facebook",
+              244553
+            ],
+            [
+              "YouTube",
+              241707
+            ],
+            [
+              "Organic",
+              120994
+            ]
+          ]
+        },
+        "uri": {
+          "type": "STRING",
+          "nulls": 0
+        },
+        "event_type": {
+          "type": "STRING",
+          "nulls": 0,
+          "values": [
+            [
+              "product",
+              845586
+            ],
+            [
+              "cart",
+              595350
+            ],
+            [
+              "department",
+              594926
+            ],
+            [
+              "purchase",
+              181946
+            ],
+            [
+              "cancel",
+              125089
+            ],
+            [
+              "home",
+              87805
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "relationships": [
+    {
+      "child": "orders",
+      "foreign_key": "user_id",
+      "parent": "users",
+      "missing_parent_rows": 0,
+      "null_foreign_key_rows": 0
+    },
+    {
+      "child": "order_items",
+      "foreign_key": "order_id",
+      "parent": "orders",
+      "missing_parent_rows": 0,
+      "null_foreign_key_rows": 0
+    },
+    {
+      "child": "order_items",
+      "foreign_key": "user_id",
+      "parent": "users",
+      "missing_parent_rows": 0,
+      "null_foreign_key_rows": 0
+    },
+    {
+      "child": "order_items",
+      "foreign_key": "product_id",
+      "parent": "products",
+      "missing_parent_rows": 0,
+      "null_foreign_key_rows": 0
+    },
+    {
+      "child": "order_items",
+      "foreign_key": "inventory_item_id",
+      "parent": "inventory_items",
+      "missing_parent_rows": 0,
+      "null_foreign_key_rows": 0
+    },
+    {
+      "child": "inventory_items",
+      "foreign_key": "product_id",
+      "parent": "products",
+      "missing_parent_rows": 0,
+      "null_foreign_key_rows": 0
+    },
+    {
+      "child": "products",
+      "foreign_key": "distribution_center_id",
+      "parent": "distribution_centers",
+      "missing_parent_rows": 0,
+      "null_foreign_key_rows": 0
+    },
+    {
+      "child": "events",
+      "foreign_key": "user_id",
+      "parent": "users",
+      "missing_parent_rows": 0,
+      "null_foreign_key_rows": 1124193
+    }
+  ],
+  "order_item_count_mismatches": 0,
+  "order_item_user_mismatches": 0,
+  "events": {
+    "sessions": 681946,
+    "anonymous_events": 1124193,
+    "duplicate_session_sequence_groups": 0,
+    "future_events_at_profile": 1672
+  },
+  "orders_shipped_before_created": 0,
+  "orders_delivered_before_shipped": 0,
+  "items_negative_price": 0,
+  "database_sha256": "b9c1a97b0a2cc2b882aa290caf9197c70bcb05871c5eea884d98ef7360039090"
+}

@@ -1,0 +1,148 @@
+{
+  "user": {
+    "columns": [
+      "user_id",
+      "as_of_date",
+      "product_views_7d",
+      "product_views_30d",
+      "cart_events_30d",
+      "placed_orders_30d",
+      "placed_items_30d",
+      "booked_amount_30d",
+      "last_order_at",
+      "days_since_last_order",
+      "temporal_scope"
+    ],
+    "rows": [
+      [
+        12989,
+        "2026-10-11",
+        0,
+        17,
+        17,
+        2,
+        5,
+        "1280.9900",
+        "2026-09-30 18:24:56+10:00",
+        11,
+        "snapshot-observed-history; not production point-in-time certified"
+      ],
+      [
+        88238,
+        "2026-10-11",
+        0,
+        25,
+        25,
+        4,
+        9,
+        "1240.3100",
+        "2026-09-26 00:40:52+10:00",
+        16,
+        "snapshot-observed-history; not production point-in-time certified"
+      ],
+      [
+        96573,
+        "2026-10-11",
+        0,
+        16,
+        16,
+        1,
+        4,
+        "1182.8800",
+        "2026-09-20 03:00:17+10:00",
+        22,
+        "snapshot-observed-history; not production point-in-time certified"
+      ],
+      [
+        76706,
+        "2026-10-11",
+        0,
+        9,
+        9,
+        1,
+        3,
+        "1168.9900",
+        "2026-09-16 20:11:38+10:00",
+        25,
+        "snapshot-observed-history; not production point-in-time certified"
+      ],
+      [
+        7012,
+        "2026-10-11",
+        0,
+        14,
+        14,
+        3,
+        6,
+        "1027.5000",
+        "2026-10-02 15:42:54+10:00",
+        9,
+        "snapshot-observed-history; not production point-in-time certified"
+      ]
+    ]
+  },
+  "product": {
+    "columns": [
+      "product_id",
+      "as_of_date",
+      "product_views_7d",
+      "product_views_30d",
+      "anonymous_views_30d",
+      "placed_items_30d",
+      "booked_amount_30d",
+      "historical_catalog_availability_verified"
+    ],
+    "rows": [
+      [
+        24083,
+        "2026-10-11",
+        0,
+        5,
+        1,
+        3,
+        "2274.0000",
+        false
+      ],
+      [
+        24428,
+        "2026-10-11",
+        1,
+        5,
+        0,
+        2,
+        "1806.0000",
+        false
+      ],
+      [
+        2793,
+        "2026-10-11",
+        1,
+        2,
+        0,
+        2,
+        "1806.0000",
+        false
+      ],
+      [
+        23803,
+        "2026-10-11",
+        2,
+        4,
+        0,
+        2,
+        "1630.0000",
+        false
+      ],
+      [
+        24061,
+        "2026-10-11",
+        2,
+        4,
+        0,
+        2,
+        "1190.0000",
+        false
+      ]
+    ]
+  }
+}

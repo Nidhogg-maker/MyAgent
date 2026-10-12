@@ -1,0 +1,255 @@
+{
+  "status": "PASS",
+  "release_id": "2026-10-11-c7df9c34302a",
+  "as_of_date": "2026-10-11",
+  "source_observed_at": "2026-10-11T10:19:14.558627+00:00",
+  "source_sha256": "a7f4906c3dc73cfbf498d22b28a38adebacd4f27a47c1561d2eadfe73d35edbc",
+  "database": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\feature-mart\\releases\\2026-10-11-c7df9c34302a\\features.duckdb",
+  "database_sha256": "6eff9669f07666a4e67741d9afb869255e80caa81fc2a3e267c3529d09565b3a",
+  "quality": {
+    "status": "PASS",
+    "checks": [
+      {
+        "name": "dwd.dwd_behavior_event:grain",
+        "status": "PASS",
+        "value": 2430702
+      },
+      {
+        "name": "dwd.dwd_behavior_event:null_key",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "dwd.dwd_product_view:grain",
+        "status": "PASS",
+        "value": 845586
+      },
+      {
+        "name": "dwd.dwd_product_view:null_key",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "dwd.dwd_order_item:grain",
+        "status": "PASS",
+        "value": 181946
+      },
+      {
+        "name": "dwd.dwd_order_item:null_key",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "dws.dws_user_behavior_day:grain",
+        "status": "PASS",
+        "value": 196306
+      },
+      {
+        "name": "dws.dws_user_behavior_day:null_key",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "dws.dws_product_behavior_day:grain",
+        "status": "PASS",
+        "value": 693193
+      },
+      {
+        "name": "dws.dws_product_behavior_day:null_key",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "ads.ads_user_profile_daily:grain",
+        "status": "PASS",
+        "value": 100000
+      },
+      {
+        "name": "ads.ads_user_profile_daily:null_key",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "ads.ads_product_profile_daily:grain",
+        "status": "PASS",
+        "value": 29120
+      },
+      {
+        "name": "ads.ads_product_profile_daily:null_key",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "event_rows_preserved",
+        "status": "PASS",
+        "value": 2430702
+      },
+      {
+        "name": "order_item_rows_preserved",
+        "status": "PASS",
+        "value": 181946
+      },
+      {
+        "name": "product_view_rows",
+        "status": "PASS",
+        "value": 845586
+      },
+      {
+        "name": "user_event_total",
+        "status": "PASS",
+        "value": 1304513
+      },
+      {
+        "name": "product_view_total",
+        "status": "PASS",
+        "value": 845563
+      },
+      {
+        "name": "user_booked_amount",
+        "status": "PASS",
+        "value": "10763020.3800"
+      },
+      {
+        "name": "user_placed_items",
+        "status": "PASS",
+        "value": 179965
+      },
+      {
+        "name": "product_booked_amount",
+        "status": "PASS",
+        "value": "10763020.3800"
+      },
+      {
+        "name": "product_placed_items",
+        "status": "PASS",
+        "value": 179965
+      },
+      {
+        "name": "user_order_count",
+        "status": "PASS",
+        "value": 124902
+      },
+      {
+        "name": "all_user_views_7d",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "all_product_views_7d",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "all_user_views_30d",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "all_product_views_30d",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "all_user_transaction_features_30d",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "all_product_transaction_features_30d",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "all_user_last_order_and_recency",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "dws.dws_user_behavior_day:cutoff",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "dws.dws_product_behavior_day:cutoff",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "ads.ads_user_profile_daily:as_of",
+        "status": "PASS",
+        "value": 0
+      },
+      {
+        "name": "ads.ads_product_profile_daily:as_of",
+        "status": "PASS",
+        "value": 0
+      }
+    ],
+    "tables": {
+      "dwd.dwd_behavior_event": {
+        "rows": 2430702,
+        "grain": [
+          "event_id"
+        ]
+      },
+      "dwd.dwd_product_view": {
+        "rows": 845586,
+        "grain": [
+          "event_id"
+        ]
+      },
+      "dwd.dwd_order_item": {
+        "rows": 181946,
+        "grain": [
+          "order_item_id"
+        ]
+      },
+      "dws.dws_user_behavior_day": {
+        "rows": 196306,
+        "grain": [
+          "activity_date",
+          "user_id"
+        ]
+      },
+      "dws.dws_product_behavior_day": {
+        "rows": 693193,
+        "grain": [
+          "activity_date",
+          "product_id"
+        ]
+      },
+      "ads.ads_user_profile_daily": {
+        "rows": 100000,
+        "grain": [
+          "as_of_date",
+          "user_id"
+        ]
+      },
+      "ads.ads_product_profile_daily": {
+        "rows": 29120,
+        "grain": [
+          "as_of_date",
+          "product_id"
+        ]
+      }
+    },
+    "source_observations": {
+      "anonymous_events": 1124193,
+      "future_at_capture": 1672,
+      "ineligible_events": 1996,
+      "unknown_users": 0,
+      "invalid_product_references": 0
+    }
+  },
+  "repeat_build": {
+    "verified": true,
+    "method": "all tables count + xor/sum row hashes, with independent feature reconciliation",
+    "tables": 7
+  },
+  "metadata": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\feature-mart\\releases\\2026-10-11-c7df9c34302a\\metadata.json",
+  "metadata_sha256": "c7d143418ff3d9d3492c913d771966e0e18b3aa9dc2ebedf63cebed34a0d8a9f",
+  "table_contracts_sha256": "79adc6d0ee318157eaa1ba0e02ca8da0ea324558bdc3f017d4c19c747670ac11",
+  "temporal_completeness_verified": false,
+  "historical_attribute_versions_verified": false,
+  "source_consistency": "sequential public table reads; not a cross-table atomic snapshot"
+}

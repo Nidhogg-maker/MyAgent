@@ -1,0 +1,621 @@
+# 企业级 AI Agent 架构设计、RAG 检索增强与工程化落地任务
+
+## 一、你的角色与任务目标
+
+你现在是一名资深的企业级 AI 系统架构师、大模型应用架构师和大数据平台工程师，具备以下技术领域的实际工程经验：
+
+- LLM、Agent、Multi-Agent、Tool Calling、Function Calling
+- RAG、Hybrid Search、BM25、Embedding、RRF、Cross-Encoder、Knowledge Graph
+- Semantic Layer、Metric Store、Metadata Management、Data Lineage、Text-to-SQL
+- Agent Skills、Skill Registry、MCP Server、MCP Client
+- Agent Harness、Workflow Engine、State Management、Observability
+- 大数据数仓、Spark SQL、Flink、Hive、Trino、Doris、ClickHouse
+- 企业级权限治理、数据安全、可观测性、成本控制与生产环境部署
+
+我希望构建一套面向企业内部数据分析场景的 AI Agent 系统。
+
+这套系统的目标不是简单实现一个聊天机器人或者基础 RAG Demo，而是能够理解企业业务语义、自动规划分析任务、准确识别指标与维度、生成安全可执行的数据查询，并通过企业级工具体系完成复杂的数据分析任务。
+
+**你的首要任务不是直接认可我的设计，而是对我的架构思路进行技术审查、纠错、补充和系统化重构，最终提出一套技术上合理、工程上可落地、具备生产环境扩展能力的方案。**
+
+请区分以下三个层次：
+
+1. 概念层：各组件的职责、边界和关系。
+2. 架构层：各组件如何协作、数据如何流转、状态如何管理。
+3. 工程层：代码结构、接口契约、运行机制、权限、测试、监控与部署。
+
+不得只停留在概念介绍或简单的示例代码。
+
+---
+
+## 二、核心业务场景
+
+假设企业内部已经建设了一套金融业务数据仓库，包含登录、支付、风控、核验、拦截、转化等业务指标。
+
+用户通过自然语言向 AI Agent 提问，例如：
+
+> 昨天男性用户的金融支付成功率为什么下降了？
+
+这个问题涉及的不仅是数据查询，还包含业务语义理解、时间解析、指标定义查找、维度识别、数据获取、历史对比和异常归因。
+
+我希望 Agent 能够自动完成完整的分析链路。
+
+### 2.1 自然语言理解
+
+Agent 首先需要解析用户输入，将自然语言转换为结构化任务表示。
+
+例如：
+
+- Intent：指标异常归因分析
+- Metric：金融支付成功率
+- Time Range：昨天
+- Dimension Filter：gender = male
+- Analysis Type：下降原因分析
+- Comparison：待确定的基准窗口
+- Required Capabilities：指标查询、历史比较、维度下钻、归因分析
+
+其中，“昨天”需要结合执行时刻、业务时区、数据更新状态和指标时间口径计算，不能简单硬编码日期。
+
+同时，用户并没有指定“下降”相对于哪一个基准，因此系统必须具备合理的比较基准选择策略，在无法可靠判断时进行必要澄清。
+
+请重点设计：
+
+1. Intent Recognition
+2. Entity Extraction
+3. Temporal Parsing
+4. Metric Resolution
+5. Dimension Resolution
+6. Ambiguity Detection
+7. Task Planning
+8. Structured Query Representation
+
+要求解释每一步应该由 LLM、规则引擎、语义层还是专门工具负责。
+
+### 2.2 指标异常分析
+
+我的目标并不仅仅是回答：
+
+“昨天男性支付成功率是 85%。”
+
+而是进一步分析：
+
+“支付成功率为什么下降？”
+
+因此，系统可能还需要自动执行：
+
+- 历史基准查询
+- 同比、环比或相邻周期比较
+- 分子、分母贡献分析
+- 渠道、地区、用户群等维度下钻
+- 数据质量与口径变化检查
+- 相关指标关联分析
+- 异常候选原因排序
+- 结论证据与可信度输出
+
+请设计一个企业级指标异常归因 Workflow，并明确统计相关性、贡献度和因果结论之间的区别。
+
+---
+
+## 三、双路 RAG 架构设计
+
+我目前设想了一种双路检索方案，暂时命名为：
+
+**Flat RAG + Structured RAG**
+
+这两个名字只是我暂时使用的概念，不要求你照搬。
+
+如果业界存在更合适的术语、架构模式或已有实践，请指出并重新命名。
+
+### 3.1 第一条检索路径：Flat RAG
+
+我的初步想法是，企业内部存在大量高频指标查询模式。
+
+例如：
+
+- 昨天男性的支付成功率
+- 昨天女性的支付成功率
+- 今天男性的支付成功率
+- 最近七天某个渠道的支付成功率
+
+对于这些常见查询组合，可以提前准备知识描述、查询模板、常见分析模式，必要时还可以预先计算高频指标聚合结果。
+
+这样能够减少每次查询时对完整元数据体系进行复杂检索的成本。
+
+检索过程中，我希望结合：
+
+1. BM25：词项与关键词匹配
+2. Vector Search：语义相似度检索
+3. RRF：融合不同检索器的候选结果
+4. Cross-Encoder：对候选结果重新排序
+5. Top-K Selection：选择最终上下文提供给 LLM
+
+需要特别分析：
+
+- 高频查询知识缓存、指标预聚合表、物化视图和 RAG 文档索引之间的区别
+- 哪些内容应该提前预计算，哪些应该实时查询
+- 是否需要将 Flat RAG 与指标缓存独立设计
+- 检索召回、融合、重排的合理顺序
+- 如何防止组合数量爆炸
+- 如何处理缓存过期、元数据版本变化和指标口径更新
+- 是否真的需要在所有场景使用 BM25、Vector、RRF 和 Cross-Encoder
+
+不要为了增加组件而增加组件。
+
+### 3.2 第二条检索路径：Structured RAG
+
+Flat RAG 无法穷举所有业务指标、过滤条件和维度组合。
+
+因此我希望设计一条基于结构化元数据的检索路径。
+
+以“金融支付成功率”为例，Semantic Layer 中应当存在完整的指标元数据，包括但不限于：
+
+- Metric ID
+- Metric Name
+- Business Description
+- Business Domain
+- Metric Type
+- Calculation Formula
+- Numerator / Denominator
+- Physical Column Mapping
+- Source Tables
+- Data Lineage
+- Available Dimensions
+- Supported Time Granularity
+- Allowed Filters
+- Aggregation Rules
+- Time Semantics
+- Owner
+- Version
+- Status
+- Verification Status
+- Access Permissions
+- Update Time
+
+Structured RAG 可以利用结构化数据库、元数据服务或者知识图谱，完成分层检索。
+
+例如：
+
+首先识别金融支付成功率指标。
+
+然后获取其定义、计算口径和时间粒度约束。
+
+再查询可用的性别、渠道、地区等维度，以及相关维度的表关联关系。
+
+之后检查用户请求的维度与指标是否兼容。
+
+最后构造可供查询规划器使用的受约束语义表示。
+
+请重点设计：
+
+1. Metric Registry
+2. Dimension Registry
+3. Semantic Metadata Schema
+4. Knowledge Graph Schema
+5. Metric-Dimension Compatibility
+6. Lineage Traversal
+7. Constraint Validation
+8. Structured Retrieval API
+
+特别需要解释：结构化检索应该采用关系数据库、图数据库、向量数据库还是混合方案，以及选择依据。
+
+### 3.3 两路检索结果的融合
+
+我希望把 Flat RAG 和 Structured RAG 进行融合，为 LLM 提供完整且可信的上下文。
+
+但是不能简单假设两条路径都返回普通文本片段。
+
+请设计合理的结果融合机制，并回答：
+
+- 两路检索应该串行、并行还是动态路由？
+- 什么情况下优先使用高频查询路径？
+- 什么情况下必须触发结构化元数据查询？
+- RRF 是否适用于两条路径的所有结果？
+- 如何保留结构化约束、字段血缘、指标公式和权限信息？
+- 如何解决两路检索结果之间的冲突？
+- 哪些元数据应当被视为权威来源？
+- 如何衡量检索质量、成本和延迟？
+
+最终要求输出能够被后续查询规划器消费的结构化 Retrieval Context，而不仅是拼接后的 Prompt 文本。
+
+---
+
+## 四、Semantic Layer 与 Semantic SQL 设计
+
+我不希望 LLM 直接生成自由形式的物理 SQL 并提交数据库执行。
+
+我希望建立一个语义查询中间层。
+
+例如用户说：
+
+> 查询昨天男性用户的金融支付成功率。
+
+Agent 不应该直接猜测具体表名、字段名和 Join 关系。
+
+我初步设想的中间表达类似：
+
+```sql
+SELECT 金融支付成功率
+WHERE 日期 = 昨天
+  AND 性别 = 男性
+```
+
+这段内容只用于表达意图，不是最终执行 SQL。
+
+请评估这种设计，并研究使用以下形式是否更合理：
+
+- Semantic SQL
+- Metric Query DSL
+- Typed Query AST
+- JSON-based Semantic Query
+- Logical Query Plan
+
+目标是构建完整的处理过程：
+
+Natural Language
+→ Structured Intent
+→ Semantic Query Representation
+→ Metadata Resolution
+→ Logical Plan
+→ Constraint Validation
+→ SQL Compilation
+→ Physical SQL
+→ Query Execution
+
+需要明确：
+
+1. Semantic SQL 或 DSL 应包含哪些字段和类型约束。
+2. 如何根据 Metric ID 找到真实计算公式。
+3. 如何根据维度关系和数据血缘确定物理表与 Join 路径。
+4. 如何确定时间字段、过滤条件和统计粒度。
+5. 如何避免指标重复聚合、Fanout Join、统计口径错误。
+6. 如何处理不兼容的维度和非法查询。
+7. 如何防止 SQL 注入、越权查询以及大规模全表扫描。
+8. 如何通过 Semantic Layer 实现 SQL 的确定性编译与执行前校验。
+
+请提供真实的语义查询 JSON、元数据结构和编译后的 SQL 示例，并完整解释每一步。
+
+---
+
+## 五、企业级 Skill 体系
+
+我的理解是 Skill 不应仅仅是一个包含简短 Markdown 描述的文件，而应该是企业内部可治理、可复用、可测试的能力单元。
+
+我希望设计两种能力组合模式。
+
+### 5.1 单 Skill 调用模式
+
+典型结构：
+
+Agent → Skill → Tool/MCP → Result
+
+例如：
+
+Agent 调用 `metric_query_skill`，Skill 根据预定义执行规范调用指标查询工具，最后返回标准化结果。
+
+请设计企业级 Skill 的完整契约，包括：
+
+- Skill ID、名称、描述和版本
+- Input Schema / Output Schema
+- Preconditions / Postconditions
+- Tool Dependencies
+- Permission Scope
+- Execution Policy
+- Timeout / Retry Policy
+- Error Handling
+- Idempotency
+- Logging / Tracing
+- Testing
+- Documentation
+
+同时区分 Skill 中的指令、配置、代码和实际 Tool 调用。
+
+### 5.2 复合 Skill 调用模式
+
+复杂任务可能需要多个 Skill 协同执行。
+
+例如：
+
+`anomaly_analysis_skill`
+
+依次组合：
+
+`metric_query_skill`
+
+`comparison_analysis_skill`
+
+`dimension_drilldown_skill`
+
+`data_quality_check_skill`
+
+`report_generation_skill`
+
+我希望支持 Skill 组合，但不希望出现无边界的递归调用。
+
+请设计：
+
+1. Skill Dependency Graph
+2. Composite Skill
+3. Maximum Call Depth
+4. Cycle Detection
+5. Execution Budget
+6. Timeout Propagation
+7. Error Propagation
+8. State and Context Passing
+9. Structured Input / Output Validation
+10. Failure Recovery
+
+同时评估：
+
+- Skill 是否应当直接调用其他 Skill？
+- 何时应该由 Agent 调度？
+- 何时应该由 Workflow Engine 编排？
+- 如何防止 Skill 嵌套产生不可控的调用深度？
+- 是否应限制调用次数、Token、耗时和资源预算？
+
+要求区分简单 Skill、复合 Skill 和 Workflow，不要混为一谈。
+
+---
+
+## 六、企业级 MCP 架构
+
+在我的设想中，MCP 是 Agent 与外部工具、服务和数据能力之间的重要集成接口。
+
+但我不希望将 MCP 简单理解成一个调用 Python 函数的包装器。
+
+请从企业级工程角度设计：
+
+- MCP Client
+- MCP Server
+- Tool Discovery
+- Tool Schema
+- Tool Registry
+- Authentication
+- Authorization
+- Audit Logging
+- Rate Limiting
+- Timeout
+- Retry
+- Circuit Breaker
+- Resource Isolation
+- Version Management
+- Error Handling
+
+假设系统需要连接：
+
+- Semantic Metadata Service
+- Hive / Spark SQL / Trino
+- Doris / ClickHouse
+- Knowledge Graph
+- Vector Database
+- Business API
+- Data Quality Service
+
+请说明哪些适合封装为 MCP Tool，哪些更适合作为内部微服务或直接 SDK 调用。
+
+明确 Agent、Skill、MCP 三者的职责边界，不要把业务流程、工具通信协议和运行时调度混在一起。
+
+需要提供一个相对完整的 MCP Server 工程示例，而不是只有几十行的 Demo。
+
+---
+
+## 七、企业级 Agent Harness 设计
+
+我希望明确 Agent Harness 与 Agent、Skill、Workflow、MCP 的区别。
+
+我的初步理解是：
+
+Agent 负责理解目标、规划和决策。
+
+Skill 提供可复用的操作规范与能力。
+
+MCP 提供与外部工具和资源交互的标准协议。
+
+Harness 则为 Agent 的执行提供运行时基础设施、控制机制和治理能力。
+
+请验证这种划分是否准确，并给出更加严谨的定义。
+
+重点设计以下能力：
+
+### 7.1 Runtime Management
+
+- Agent Execution Loop
+- Execution State
+- Session Management
+- Context Management
+- Checkpoint / Resume
+- Cancellation
+- Execution Budget
+
+### 7.2 Planning and Orchestration
+
+- Dynamic Planning
+- Workflow Execution
+- Skill Selection
+- Tool Routing
+- Dependency Management
+- Parallel / Sequential Execution
+- Loop Control
+
+### 7.3 Reliability
+
+- Error Classification
+- Retry
+- Timeout
+- Fallback
+- Circuit Breaker
+- Dead Letter Handling
+- Idempotency
+- Failure Recovery
+
+### 7.4 Security and Governance
+
+- User Identity Propagation
+- RBAC / ABAC
+- Data Access Control
+- Tool Permission Boundary
+- Prompt Injection Defense
+- Human Approval
+- Audit Trail
+- Sensitive Data Protection
+
+### 7.5 Observability
+
+- Structured Logging
+- Distributed Tracing
+- Metrics
+- Token and Cost Tracking
+- Tool Call Tracking
+- Skill Execution Tracking
+- Retrieval Evaluation
+- SQL Execution Monitoring
+
+重点解释：
+
+**哪些职责属于 Harness，哪些属于 Agent，哪些应该交给确定性的 Workflow Engine？**
+
+不要因为一个系统中存在 Harness 就认为不再需要 Workflow、Skill 或 RAG。
+
+---
+
+## 八、端到端架构与真实执行示例
+
+请以这个用户问题为例：
+
+> 昨天男性用户的金融支付成功率为什么下降了？
+
+展示一条完整执行链路。
+
+从用户输入开始，直到返回最终分析报告为止。
+
+必须包含：
+
+1. 自然语言解析与时间窗口解析
+2. 指标识别与歧义处理
+3. 双路 RAG 召回、约束检查与融合
+4. Semantic Query 构建
+5. 指标与维度合法性校验
+6. 物理 SQL 生成及执行前审查
+7. 数据库查询
+8. 历史对比和多维归因
+9. Skill 调用与组合
+10. MCP Tool 执行
+11. Harness 对状态、异常、权限和资源的管理
+12. 最终结果生成与证据溯源
+
+同时给出正常路径、检索失败路径、指标歧义路径、数据库执行失败路径和权限拒绝路径。
+
+---
+
+## 九、架构优化与设计审查
+
+请站在生产环境技术评审的角度，对我当前的方案进行严格审查。
+
+重点回答：
+
+- 我的整体理解有哪些正确之处？
+- 哪些概念被我混淆了？
+- Flat RAG 与 Structured RAG 的划分是否合理？
+- 高频维度预计算应属于 RAG、缓存层还是 OLAP 预聚合层？
+- Structured RAG 是否真的需要知识图谱？
+- Semantic Layer 与 RAG 的职责如何避免重叠？
+- Semantic SQL 与标准 Text-to-SQL 相比有哪些优势和代价？
+- RRF 和 Cross-Encoder 是否值得作为默认检索链路？
+- Skill 嵌套是否比 Workflow 编排更合适？
+- Harness 是否会与 Workflow Engine 的职责冲突？
+- 哪些部分容易出现过度设计？
+- 如果从零开始，应该优先建设哪些核心组件？
+
+要求给出必要性、复杂度、替代方案和技术选型依据，而不是无条件支持我的所有思路。
+
+---
+
+## 十、工程实现与生产环境标准
+
+最终方案必须能够指导实际开发。
+
+需要设计合理的项目目录、模块边界、API 契约、关键数据结构、配置和测试策略。
+
+要求至少覆盖：
+
+- Python 服务端实现方案
+- FastAPI 或其他合理的 API 框架
+- Semantic Metadata 数据模型
+- RAG 检索模块
+- Semantic Query Parser / Compiler
+- Skill Registry / Skill Executor
+- MCP Server / Client
+- Agent Orchestrator
+- Harness Runtime
+- State Store
+- 日志和链路追踪
+- 权限与安全校验
+- Docker 部署方案
+- 自动化测试与架构验收
+
+技术栈可以推荐，但必须说明为什么选择，不能为了追求先进而引入不必要的基础设施。
+
+请区分 PoC、MVP 和 Production 三个阶段，分别说明需要建设的组件和验收标准。
+
+代码要求：
+
+1. 不是只包含函数调用的玩具 Demo。
+2. 必须有清晰的输入输出模型。
+3. 必须包含关键异常处理。
+4. 必须考虑状态管理和边界条件。
+5. 必须体现组件之间的真实调用关系。
+6. 不能用伪造的生产能力代替真实实现。
+7. 未实现的功能必须显式标记，不能声称已经达到企业级。
+
+---
+
+## 十一、回答方式与最终交付物
+
+请按照以下顺序展开：
+
+**第一阶段：架构理解与审查**
+
+先复述我的整体思路，并指出正确之处、概念混淆、技术缺陷及改进方向。
+
+**第二阶段：完整架构设计**
+
+给出企业级系统架构图、模块职责表、组件关系图和端到端数据流。
+
+架构图使用 Mermaid，技术组件和模块标签尽量使用英文。
+
+**第三阶段：核心组件深度设计**
+
+依次讲解：
+
+1. Natural Language Understanding / Task Planning
+2. Dual-path RAG
+3. Semantic Layer
+4. Semantic Query Compiler
+5. Skill System
+6. MCP Integration
+7. Agent Harness
+8. Workflow and Observability
+
+每个模块都说明作用、输入、输出、内部逻辑、上下游依赖及失败处理。
+
+**第四阶段：完整业务场景演示**
+
+用“金融支付成功率下降”展示一次完整的真实执行过程，包括结构化中间数据、检索结果、SQL 和分析结果示例。示例数据必须明确标注为模拟数据。
+
+**第五阶段：工程设计与落地路线**
+
+输出项目目录、技术选型、模块实现优先级、测试方法和生产环境建设路线。
+
+### 表达要求
+
+- 全程中文解释，专业技术名词保留英文。
+- 不要只罗列概念，要解释设计原因与实现机制。
+- 避免重复内容，相同知识点统一归类。
+- 使用一个贯穿全文的业务案例，不要频繁切换场景。
+- 对相似概念进行明确对比，尤其是 RAG、Semantic Layer、Skill、Tool、MCP、Workflow、Agent 和 Harness。
+- 对于存在争议或多种设计路线的地方，明确推荐方案及其适用前提。
+- 尽量采用业界已经成熟的工程实践，避免自行创造不必要的概念。
+- 不要为了满足“企业级”而机械堆砌基础设施。
+- 优先保证架构的正确性、可维护性、安全性和可扩展性。
+- 如果不能在单次回答中详细展开全部实现，先完整交付架构审查与总体设计，再按照模块逐步进入代码实施。
+
+**最终目标：把我的初步构想发展成一套真正具备企业级设计依据、清晰组件边界、可靠执行机制以及可实施工程路线的 AI 数据分析 Agent 架构。**

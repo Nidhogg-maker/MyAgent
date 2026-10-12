@@ -1,0 +1,12 @@
+feature_lab:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: "{{ env_var('FEATURE_DATABASE') }}"
+      schema: feature_work
+      threads: 1
+      settings:
+        TimeZone: UTC
+        memory_limit: 1GB
+        threads: 2

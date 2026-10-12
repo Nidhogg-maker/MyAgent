@@ -1,0 +1,13 @@
+{
+  "issuer": "own-agent-local",
+  "subjects": {"local-study-user": "admin", "us-analyst": "aggregate_analyst"},
+  "roles": {
+    "admin": {"metrics": ["*"], "dimensions": ["*"], "row_filters": {}, "minimum_group_size": 0, "publish": true},
+    "aggregate_analyst": {
+      "metrics": ["order_count@1", "booked_amount@1", "average_order_value@1", "item_count@1", "complete_item_amount@1"],
+      "dimensions": ["day", "country", "traffic_source", "category", "department"],
+      "row_filters": {"country": "United States"}, "minimum_group_size": 5, "publish": false
+    }
+  },
+  "sensitive_fields": ["first_name", "last_name", "email", "street_address", "ip_address", "postal_code", "latitude", "longitude", "user_geom", "gender", "age", "age_band", "user_id"]
+}

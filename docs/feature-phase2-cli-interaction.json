@@ -1,0 +1,416 @@
+{
+  "session_id": "feature-71f583fd50064861aeb829640e85ebd7",
+  "feature_partial": {
+    "kind": "profile",
+    "data_product": "user_product",
+    "as_of": "2026-10-11",
+    "user_id": 76706,
+    "product_id": 23546
+  },
+  "feature_task": {
+    "kind": "profile",
+    "data_product": "user_product",
+    "as_of": "2026-10-11",
+    "user_id": 76706,
+    "product_id": 23546,
+    "session_id": null
+  },
+  "feature_release_id": "2026-10-11-36b5b1832b12",
+  "status": "COMPLETE",
+  "answer": {
+    "kind": "profile",
+    "summary": "已按指定版本读取数据产品",
+    "evidence": {
+      "data_product": "user_product",
+      "as_of": "2026-10-11",
+      "release_id": "2026-10-11-36b5b1832b12",
+      "definition": {
+        "grain": [
+          "as_of_date",
+          "user_id",
+          "product_id"
+        ],
+        "columns": {
+          "user_id": "BIGINT",
+          "product_id": "BIGINT",
+          "as_of_date": "DATE",
+          "product_views_7d": "HUGEINT",
+          "product_views_30d": "HUGEINT",
+          "placed_items_30d": "HUGEINT",
+          "placed_orders_30d": "HUGEINT",
+          "booked_amount_30d": "DECIMAL(18,4)",
+          "last_view_at": "TIMESTAMP WITH TIME ZONE",
+          "last_order_at": "TIMESTAMP WITH TIME ZONE",
+          "last_interaction_at": "TIMESTAMP WITH TIME ZONE",
+          "days_since_last_interaction": "BIGINT",
+          "population_scope": "VARCHAR"
+        },
+        "upstream": [
+          "dws.dws_user_product_day"
+        ],
+        "field_value_lineage": {
+          "user_id": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "user_id"
+              }
+            ],
+            "complete": true
+          },
+          "product_id": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "product_id"
+              }
+            ],
+            "complete": true
+          },
+          "as_of_date": {
+            "sources": [],
+            "complete": false
+          },
+          "product_views_7d": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "product_view_count"
+              },
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "activity_date"
+              }
+            ],
+            "complete": true
+          },
+          "product_views_30d": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "product_view_count"
+              }
+            ],
+            "complete": true
+          },
+          "placed_items_30d": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "placed_item_count"
+              }
+            ],
+            "complete": true
+          },
+          "placed_orders_30d": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "placed_order_count"
+              }
+            ],
+            "complete": true
+          },
+          "booked_amount_30d": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "booked_amount"
+              }
+            ],
+            "complete": true
+          },
+          "last_view_at": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_view_at"
+              }
+            ],
+            "complete": true
+          },
+          "last_order_at": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_order_at"
+              }
+            ],
+            "complete": true
+          },
+          "last_interaction_at": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_view_at"
+              },
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_order_at"
+              }
+            ],
+            "complete": true
+          },
+          "days_since_last_interaction": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_view_at"
+              },
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_order_at"
+              }
+            ],
+            "complete": true
+          },
+          "population_scope": {
+            "sources": [],
+            "complete": false
+          }
+        },
+        "control_lineage": {
+          "edges": [
+            {
+              "table": "dws.dws_user_product_day",
+              "column": "activity_date",
+              "kind": "filter"
+            },
+            {
+              "table": "dws.dws_user_product_day",
+              "column": "product_id",
+              "kind": "join"
+            },
+            {
+              "table": "dws.dws_user_product_day",
+              "column": "user_id",
+              "kind": "join"
+            }
+          ],
+          "unresolved": [],
+          "complete_within_supported_scope": true,
+          "scope": "Row membership/control dependencies for supported Select/CTE; not universal SQL lineage"
+        },
+        "formula_source": "dbt compiled SQL",
+        "row_count_dependencies": [
+          "dws.dws_user_product_day"
+        ],
+        "scope": "technical dependencies; no causal or full SQL coverage claim"
+      },
+      "quality": "PASS",
+      "lineage": {
+        "grain": [
+          "as_of_date",
+          "user_id",
+          "product_id"
+        ],
+        "columns": {
+          "user_id": "BIGINT",
+          "product_id": "BIGINT",
+          "as_of_date": "DATE",
+          "product_views_7d": "HUGEINT",
+          "product_views_30d": "HUGEINT",
+          "placed_items_30d": "HUGEINT",
+          "placed_orders_30d": "HUGEINT",
+          "booked_amount_30d": "DECIMAL(18,4)",
+          "last_view_at": "TIMESTAMP WITH TIME ZONE",
+          "last_order_at": "TIMESTAMP WITH TIME ZONE",
+          "last_interaction_at": "TIMESTAMP WITH TIME ZONE",
+          "days_since_last_interaction": "BIGINT",
+          "population_scope": "VARCHAR"
+        },
+        "upstream": [
+          "dws.dws_user_product_day"
+        ],
+        "field_value_lineage": {
+          "user_id": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "user_id"
+              }
+            ],
+            "complete": true
+          },
+          "product_id": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "product_id"
+              }
+            ],
+            "complete": true
+          },
+          "as_of_date": {
+            "sources": [],
+            "complete": false
+          },
+          "product_views_7d": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "product_view_count"
+              },
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "activity_date"
+              }
+            ],
+            "complete": true
+          },
+          "product_views_30d": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "product_view_count"
+              }
+            ],
+            "complete": true
+          },
+          "placed_items_30d": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "placed_item_count"
+              }
+            ],
+            "complete": true
+          },
+          "placed_orders_30d": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "placed_order_count"
+              }
+            ],
+            "complete": true
+          },
+          "booked_amount_30d": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "booked_amount"
+              }
+            ],
+            "complete": true
+          },
+          "last_view_at": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_view_at"
+              }
+            ],
+            "complete": true
+          },
+          "last_order_at": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_order_at"
+              }
+            ],
+            "complete": true
+          },
+          "last_interaction_at": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_view_at"
+              },
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_order_at"
+              }
+            ],
+            "complete": true
+          },
+          "days_since_last_interaction": {
+            "sources": [
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_view_at"
+              },
+              {
+                "table": "dws.dws_user_product_day",
+                "column": "last_order_at"
+              }
+            ],
+            "complete": true
+          },
+          "population_scope": {
+            "sources": [],
+            "complete": false
+          }
+        },
+        "control_lineage": {
+          "edges": [
+            {
+              "table": "dws.dws_user_product_day",
+              "column": "activity_date",
+              "kind": "filter"
+            },
+            {
+              "table": "dws.dws_user_product_day",
+              "column": "product_id",
+              "kind": "join"
+            },
+            {
+              "table": "dws.dws_user_product_day",
+              "column": "user_id",
+              "kind": "join"
+            }
+          ],
+          "unresolved": [],
+          "complete_within_supported_scope": true,
+          "scope": "Row membership/control dependencies for supported Select/CTE; not universal SQL lineage"
+        },
+        "formula_source": "dbt compiled SQL",
+        "row_count_dependencies": [
+          "dws.dws_user_product_day"
+        ],
+        "scope": "technical dependencies; no causal or full SQL coverage claim"
+      },
+      "source_observed_at": "2026-10-11T10:19:14.558627+00:00",
+      "warnings": [
+        "source completeness and historical ingestion availability unverified",
+        "page view is not CTR click; placed order is not payment success",
+        "session without purchase is not a verified negative label"
+      ],
+      "found": true,
+      "rows": [
+        [
+          76706,
+          23546,
+          "2026-10-11",
+          0,
+          3,
+          1,
+          1,
+          "999.0000",
+          "2026-09-16 16:55:20+10:00",
+          "2026-09-16 20:11:38+10:00",
+          "2026-09-16 20:11:38+10:00",
+          25,
+          "observed-interaction pairs only; absence is not a negative label"
+        ]
+      ],
+      "columns": [
+        "user_id",
+        "product_id",
+        "as_of_date",
+        "product_views_7d",
+        "product_views_30d",
+        "placed_items_30d",
+        "placed_orders_30d",
+        "booked_amount_30d",
+        "last_view_at",
+        "last_order_at",
+        "last_interaction_at",
+        "days_since_last_interaction",
+        "population_scope"
+      ]
+    },
+    "markdown": "# 数据产品查询\n\n数据产品：user_product\n\n截止：UTC 2026-10-11 00:00\n\n版本：2026-10-11-36b5b1832b12\n\n{\"user_id\": 76706, \"product_id\": 23546, \"as_of_date\": \"2026-10-11\", \"product_views_7d\": 0, \"product_views_30d\": 3, \"placed_items_30d\": 1, \"placed_orders_30d\": 1, \"booked_amount_30d\": \"999.0000\", \"last_view_at\": \"2026-09-16 16:55:20+10:00\", \"last_order_at\": \"2026-09-16 20:11:38+10:00\", \"last_interaction_at\": \"2026-09-16 20:11:38+10:00\", \"days_since_last_interaction\": 25, \"population_scope\": \"observed-interaction pairs only; absence is not a negative label\"}\n\n限制：完整性与历史可用性未验证；purchase事件不代表支付成功。"
+  }
+}

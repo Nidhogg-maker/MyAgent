@@ -1,0 +1,18 @@
+name: feature_lab
+version: '0.1.0'
+config-version: 2
+profile: feature_lab
+model-paths: [models]
+test-paths: [tests]
+macro-paths: [macros]
+vars:
+  feature_as_of: '2026-10-11'
+models:
+  feature_lab:
+    +materialized: table
+    dwd:
+      +schema: dwd
+    dws:
+      +schema: dws
+    ads:
+      +schema: ads

@@ -1,0 +1,86 @@
+{
+  "answer": {
+    "kind": "query",
+    "causal_claim": false,
+    "summary": "已按指定口径执行，结果和质量/权限/时间范围见证据",
+    "metric_id": "order_count@1",
+    "evidence": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          1420
+        ]
+      ],
+      "metric_id": "order_count@1",
+      "definition": "UTC下单日内的全部状态订单数",
+      "unit": "orders",
+      "grain": "order_id",
+      "release_id": "9434d33c976c411d93459e02774e950d",
+      "plan_id": "1900b5b2f967461c997bdc4bbe1a400e",
+      "result_may_be_truncated": false,
+      "quality": {
+        "dbt_tests_passed": 11,
+        "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+      },
+      "permissions": {
+        "subject": "local-study-user",
+        "minimum_group_size": 0,
+        "row_scope": {}
+      },
+      "temporal": {
+        "mode": "snapshot-observation",
+        "observed_at": "2026-10-11T21:19:14.558627+11:00",
+        "complete_through": null,
+        "verified": false,
+        "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+      },
+      "warnings": [
+        "Synthetic source",
+        "Current dimension/status snapshot; no historical SCD2",
+        "No verified coverage watermark; no causal attribution"
+      ],
+      "provenance": "official-public-synthetic-thelook"
+    }
+  },
+  "error": null,
+  "question": "2026年9月只看美国的订单数是多少",
+  "status": "COMPLETE",
+  "trace": [
+    "intent",
+    "metadata",
+    "quality_and_plan",
+    "execute",
+    "answer"
+  ],
+  "model_call": {
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "request_id": "req_b37bfc89687c4960960ab001442d6cf5",
+    "response_id": "resp_06601528e6b65b1e016acb7775b2d087d0b8cb1d19005d9fa9",
+    "usage": {
+      "input_tokens": 1921,
+      "input_tokens_details": {
+        "cache_write_tokens": 1918,
+        "cached_tokens": 0
+      },
+      "output_tokens": 83,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 2004
+    },
+    "live": true
+  },
+  "query": {
+    "metric_id": "order_count@1",
+    "start": "2026-09-01",
+    "end": "2026-10-01",
+    "group_by": [],
+    "filters": {
+      "country": "United States"
+    },
+    "limit": 100
+  }
+}

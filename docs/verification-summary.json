@@ -1,0 +1,29 @@
+{
+  "tests": 85,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "time_seconds": 26.781,
+  "upstream_runtime_absent": {
+    "metricflow": true,
+    "datahub": true,
+    "wren": true
+  },
+  "versions": {
+    "duckdb": "1.5.6",
+    "pydantic": "2.14.0",
+    "sqlglot": "30.22.0",
+    "langgraph": "1.2.14",
+    "mcp": "1.30.0"
+  },
+  "scope": "Rules + mock-provider protocol + official synthetic TheLook execution + true MCP + local permissions + bounded diagnosis + controlled fault cases; no real LLM/enterprise IdP/source watermark",
+  "rule_cases": {
+    "passed": 32,
+    "total": 32,
+    "not_llm_accuracy": true
+  },
+  "retrieval_hit_at_3": {
+    "hits": 15,
+    "total": 15
+  }
+}

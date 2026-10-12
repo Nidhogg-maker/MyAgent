@@ -1,0 +1,180 @@
+{
+  "verified_at_utc": "2026-10-11T11:47:24.9295253Z",
+  "cases": [
+    {
+      "question": "2026年9月只看美国的订单数是多少",
+      "status": "COMPLETE",
+      "query": {
+        "metric_id": "order_count@1",
+        "start": "2026-09-01",
+        "end": "2026-10-01",
+        "group_by": [],
+        "filters": {
+          "country": "美国"
+        },
+        "limit": 100
+      },
+      "error": null,
+      "model_call": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "request_id": "req_751a602f30c84480998c53d5a6613168",
+        "response_id": "resp_08ac5ab5dc5af654016acb773ac09487d0a4ad75768bf84298",
+        "usage": {
+          "input_tokens": 1829,
+          "input_tokens_details": {
+            "cache_write_tokens": 1826,
+            "cached_tokens": 0
+          },
+          "output_tokens": 82,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1911
+        },
+        "live": true
+      },
+      "answer": {
+        "kind": "query",
+        "causal_claim": false,
+        "summary": "已按指定口径执行，结果和质量/权限/时间范围见证据",
+        "metric_id": "order_count@1",
+        "evidence": {
+          "columns": [
+            "value"
+          ],
+          "rows": [
+            [
+              0
+            ]
+          ],
+          "metric_id": "order_count@1",
+          "definition": "UTC下单日内的全部状态订单数",
+          "unit": "orders",
+          "grain": "order_id",
+          "release_id": "9434d33c976c411d93459e02774e950d",
+          "plan_id": "5081f961653c4330a7507914502b2ef0",
+          "result_may_be_truncated": false,
+          "quality": {
+            "dbt_tests_passed": 11,
+            "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+          },
+          "permissions": {
+            "subject": "local-study-user",
+            "minimum_group_size": 0,
+            "row_scope": {}
+          },
+          "temporal": {
+            "mode": "snapshot-observation",
+            "observed_at": "2026-10-11T21:19:14.558627+11:00",
+            "complete_through": null,
+            "verified": false,
+            "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+          },
+          "warnings": [
+            "Synthetic source",
+            "Current dimension/status snapshot; no historical SCD2",
+            "No verified coverage watermark; no causal attribution"
+          ],
+          "provenance": "official-public-synthetic-thelook"
+        }
+      },
+      "trace": [
+        "intent",
+        "metadata",
+        "quality_and_plan",
+        "execute",
+        "answer"
+      ]
+    },
+    {
+      "question": "2026年9月销售额是多少",
+      "status": "CLARIFY",
+      "query": null,
+      "error": "CLARIFY: 请确认“销售额”的口径：下单金额，还是已完成商品金额？查询范围为 UTC 2026年9月1日至10月1日（不含10月1日）；这两种口径都不等同于实际收款金额。",
+      "model_call": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "request_id": "req_a28f2f021ad542e88fb8030ef39ce772",
+        "response_id": "resp_010775baa45e9d4c016acb7740134c87d0bb2a0cf48d3e2800",
+        "usage": {
+          "input_tokens": 1379,
+          "input_tokens_details": {
+            "cache_write_tokens": 1376,
+            "cached_tokens": 0
+          },
+          "output_tokens": 75,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1454
+        },
+        "live": true
+      },
+      "answer": null,
+      "trace": [
+        "intent"
+      ]
+    },
+    {
+      "question": "今天订单数是多少",
+      "status": "CLARIFY",
+      "query": null,
+      "error": "CLARIFY: 今天尚未结束，模型不能绕过可比窗口约束",
+      "model_call": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "request_id": "req_60cdbf2cd397497cb029fef9beccfa56",
+        "response_id": "resp_0cb425cf481663e6016acb7744a2d887d09c4b1406f8c20491",
+        "usage": {
+          "input_tokens": 1754,
+          "input_tokens_details": {
+            "cache_write_tokens": 1751,
+            "cached_tokens": 0
+          },
+          "output_tokens": 91,
+          "output_tokens_details": {
+            "reasoning_tokens": 16
+          },
+          "total_tokens": 1845
+        },
+        "live": true
+      },
+      "answer": null,
+      "trace": [
+        "intent"
+      ]
+    },
+    {
+      "question": "2026年9月下单金额为什么比2026年8月低",
+      "status": "CLARIFY",
+      "query": null,
+      "error": "CLARIFY: 下单金额口径为全部状态订单的商品金额，不是实收或财务收入。2026年9月有30天，8月有31天，诊断需使用等时长、互不重叠的UTC窗口。是否改为比较9月1日至30日与8月1日至30日的下单金额？下降情况将先通过数据验证。",
+      "model_call": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "request_id": "req_cea550e1a6344ba7b8e5ac0bfd02b543",
+        "response_id": "resp_06de2e93948204c2016acb7748da9087d0a0ffc3bf1a956633",
+        "usage": {
+          "input_tokens": 1851,
+          "input_tokens_details": {
+            "cache_write_tokens": 1848,
+            "cached_tokens": 0
+          },
+          "output_tokens": 121,
+          "output_tokens_details": {
+            "reasoning_tokens": 19
+          },
+          "total_tokens": 1972
+        },
+        "live": true
+      },
+      "answer": null,
+      "trace": [
+        "intent"
+      ]
+    }
+  ],
+  "live_calls": true,
+  "scope": "Four live smoke cases, not broad accuracy evaluation"
+}

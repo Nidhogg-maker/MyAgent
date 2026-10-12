@@ -1,0 +1,143 @@
+{
+  "aliases": {
+    "order_count@1": [
+      "订单量",
+      "订单数",
+      "下单量",
+      "order count"
+    ],
+    "booked_amount@1": [
+      "下单金额",
+      "订单金额",
+      "booked amount"
+    ],
+    "average_order_value@1": [
+      "客单价",
+      "平均订单金额",
+      "aov"
+    ],
+    "buyer_count@1": [
+      "购买用户数",
+      "下单用户数"
+    ],
+    "item_count@1": [
+      "商品件数",
+      "订单明细数"
+    ],
+    "complete_item_amount@1": [
+      "已完成商品金额",
+      "complete item amount"
+    ],
+    "complete_order_count@1": [
+      "完成订单数",
+      "完成订单量"
+    ],
+    "complete_order_rate@1": [
+      "订单完成占比",
+      "完成订单占比",
+      "订单完成率"
+    ],
+    "cancelled_order_count@1": [
+      "取消订单数",
+      "取消订单量"
+    ],
+    "cancelled_order_rate@1": [
+      "订单取消占比",
+      "取消订单占比",
+      "订单取消率"
+    ],
+    "returned_order_count@1": [
+      "退货订单数",
+      "退货订单量"
+    ],
+    "returned_order_rate@1": [
+      "订单退货占比",
+      "退货订单占比",
+      "订单退货率"
+    ]
+  },
+  "ambiguous": {
+    "销售额": [
+      "booked_amount@1",
+      "complete_item_amount@1"
+    ],
+    "营收": [
+      "booked_amount@1",
+      "complete_item_amount@1"
+    ],
+    "收入": [
+      "booked_amount@1",
+      "complete_item_amount@1"
+    ],
+    "转化率": [],
+    "支付金额": [],
+    "GMV": []
+  },
+  "dimensions": {
+    "国家": "country",
+    "渠道": "traffic_source",
+    "流量来源": "traffic_source",
+    "品类": "category",
+    "部门": "department",
+    "品牌": "brand",
+    "性别": "gender",
+    "年龄段": "age_band",
+    "日期": "day",
+    "每天": "day",
+    "按日": "day"
+  },
+  "cases": [
+    {
+      "id": "case-aov",
+      "question": "2026年9月各国家客单价",
+      "metric_id": "average_order_value@1",
+      "note": "同窗口聚合金额除订单数，不能平均已有日均客单价"
+    },
+    {
+      "id": "case-sales-ambiguity",
+      "question": "销售额是多少",
+      "note": "先确认下单金额还是已完成商品金额，不把任一口径称实收"
+    },
+    {
+      "id": "case-fanout",
+      "question": "按品类统计订单量",
+      "metric_id": "order_count@1",
+      "note": "订单事实无品类；需要另定义品类购买订单，不能直接Join后count(*)"
+    },
+    {
+      "id": "case-today",
+      "question": "今天转化率为什么比昨天低",
+      "note": "转化率未定义，今天未结束；先澄清口径和可比窗口"
+    },
+    {
+      "id": "case-snapshot-status",
+      "metric_id": "complete_order_rate@1",
+      "question": "男性订单完成占比为什么变化",
+      "note": "先明确等时长基准。新近下单 cohort 尚未成熟，当前快照状态不能证明历史完成或支付成功；不得做因果归因。"
+    }
+  ],
+  "filter_value_aliases": {
+    "country": {
+      "美国": "United States",
+      "US": "United States",
+      "USA": "United States",
+      "中国": "China",
+      "英国": "United Kingdom",
+      "澳大利亚": "Australia",
+      "巴西": "Brasil",
+      "日本": "Japan",
+      "德国": "Germany",
+      "法国": "France",
+      "韩国": "South Korea",
+      "西班牙": "Spain"
+    },
+    "gender": {
+      "男性": "M",
+      "男": "M",
+      "male": "M",
+      "女性": "F",
+      "女": "F",
+      "female": "F"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+# Run from metadata directory. Example only; no live GMS ingestion has occurred.
+# First run dbt build and dbt docs generate against warehouse-commerce.
+source:
+  type: dbt
+  config:
+    manifest_path: ../warehouse-commerce/target/manifest.json
+    catalog_path: ../warehouse-commerce/target/catalog.json
+    run_results_paths: [../docs/thelook-dbt-run-results.json]
+    target_platform: duckdb
+    env: DEV
+sink:
+  type: datahub-rest
+  config:
+    server: ${DATAHUB_GMS_URL}
+    token: ${DATAHUB_TOKEN}

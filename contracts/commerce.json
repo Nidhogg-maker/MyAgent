@@ -1,0 +1,179 @@
+{
+  "version": "commerce-v2",
+  "timezone": "UTC",
+  "owner": {
+    "name": "local-study-owner",
+    "verified_business_owner": false
+  },
+  "facts": {
+    "orders": {
+      "table": "commerce.fct_orders",
+      "grain": "order_id",
+      "date": "order_date",
+      "dimensions": [
+        "country",
+        "gender",
+        "age_band",
+        "traffic_source",
+        "order_status"
+      ]
+    },
+    "items": {
+      "table": "commerce.fct_order_items",
+      "grain": "order_item_id",
+      "date": "order_date",
+      "dimensions": [
+        "country",
+        "gender",
+        "age_band",
+        "traffic_source",
+        "item_status",
+        "category",
+        "brand",
+        "department",
+        "distribution_center_id"
+      ]
+    }
+  },
+  "metrics": {
+    "order_count@1": {
+      "label": "订单量",
+      "fact": "orders",
+      "kind": "count",
+      "unit": "orders",
+      "definition": "UTC下单日内的全部状态订单数"
+    },
+    "booked_amount@1": {
+      "label": "下单金额",
+      "fact": "orders",
+      "kind": "sum",
+      "column": "booked_order_amount",
+      "unit": "source_amount",
+      "definition": "全部状态订单商品金额；不是实收或财务收入"
+    },
+    "average_order_value@1": {
+      "label": "客单价",
+      "fact": "orders",
+      "kind": "ratio",
+      "numerator": "booked_amount@1",
+      "denominator": "order_count@1",
+      "unit": "source_amount/order",
+      "definition": "同窗口同过滤的下单金额除订单数；零分母返回null"
+    },
+    "buyer_count@1": {
+      "label": "购买用户数",
+      "fact": "orders",
+      "kind": "distinct",
+      "column": "user_id",
+      "unit": "users",
+      "definition": "全部状态订单中的不同用户；跨分组不可直接累加"
+    },
+    "item_count@1": {
+      "label": "商品件数",
+      "fact": "items",
+      "kind": "count",
+      "unit": "items",
+      "definition": "一订单明细记为一件，源没有quantity字段"
+    },
+    "complete_item_amount@1": {
+      "label": "已完成商品金额",
+      "fact": "items",
+      "kind": "conditional_sum",
+      "column": "booked_item_amount",
+      "condition_column": "item_status",
+      "condition_value": "Complete",
+      "unit": "source_amount",
+      "definition": "下单日窗口内、本次快照Complete明细金额；不是历史当日状态"
+    },
+    "complete_order_count@1": {
+      "label": "完成订单数",
+      "fact": "orders",
+      "kind": "conditional_count",
+      "condition_column": "order_status",
+      "condition_value": "Complete",
+      "unit": "orders",
+      "definition": "UTC下单日窗口内，本次快照订单状态为Complete的订单数；非历史当日状态或支付结果",
+      "time_semantics": "created-date cohort / current snapshot status",
+      "diagnosis_family": "additive",
+      "verification_status": "local-study-defined"
+    },
+    "complete_order_rate@1": {
+      "label": "订单完成占比",
+      "fact": "orders",
+      "kind": "ratio",
+      "numerator": "complete_order_count@1",
+      "denominator": "order_count@1",
+      "unit": "ratio",
+      "allowed_dimensions": [
+        "country",
+        "gender",
+        "age_band",
+        "traffic_source"
+      ],
+      "definition": "同UTC下单日窗口及用户筛选内，本次快照Complete订单数/全部状态订单数；零分母null；不是支付成功率、历史完成率或成熟 cohort 估计",
+      "time_semantics": "created-date cohort / current snapshot status",
+      "diagnosis_family": "ratio",
+      "verification_status": "local-study-defined"
+    },
+    "cancelled_order_count@1": {
+      "label": "取消订单数",
+      "fact": "orders",
+      "kind": "conditional_count",
+      "condition_column": "order_status",
+      "condition_value": "Cancelled",
+      "unit": "orders",
+      "definition": "UTC下单日窗口内，本次快照订单状态为Cancelled的订单数；非历史当日状态或支付结果",
+      "time_semantics": "created-date cohort / current snapshot status",
+      "diagnosis_family": "additive",
+      "verification_status": "local-study-defined"
+    },
+    "cancelled_order_rate@1": {
+      "label": "订单取消占比",
+      "fact": "orders",
+      "kind": "ratio",
+      "numerator": "cancelled_order_count@1",
+      "denominator": "order_count@1",
+      "unit": "ratio",
+      "allowed_dimensions": [
+        "country",
+        "gender",
+        "age_band",
+        "traffic_source"
+      ],
+      "definition": "同UTC下单日窗口及用户筛选内，本次快照Cancelled订单数/全部状态订单数；零分母null；不是支付成功率、历史取消率或成熟 cohort 估计",
+      "time_semantics": "created-date cohort / current snapshot status",
+      "diagnosis_family": "ratio",
+      "verification_status": "local-study-defined"
+    },
+    "returned_order_count@1": {
+      "label": "退货订单数",
+      "fact": "orders",
+      "kind": "conditional_count",
+      "condition_column": "order_status",
+      "condition_value": "Returned",
+      "unit": "orders",
+      "definition": "UTC下单日窗口内，本次快照订单状态为Returned的订单数；非历史当日状态或支付结果",
+      "time_semantics": "created-date cohort / current snapshot status",
+      "diagnosis_family": "additive",
+      "verification_status": "local-study-defined"
+    },
+    "returned_order_rate@1": {
+      "label": "订单退货占比",
+      "fact": "orders",
+      "kind": "ratio",
+      "numerator": "returned_order_count@1",
+      "denominator": "order_count@1",
+      "unit": "ratio",
+      "allowed_dimensions": [
+        "country",
+        "gender",
+        "age_band",
+        "traffic_source"
+      ],
+      "definition": "同UTC下单日窗口及用户筛选内，本次快照Returned订单数/全部状态订单数；零分母null；不是支付成功率、历史退货率或成熟 cohort 估计",
+      "time_semantics": "created-date cohort / current snapshot status",
+      "diagnosis_family": "ratio",
+      "verification_status": "local-study-defined"
+    }
+  }
+}

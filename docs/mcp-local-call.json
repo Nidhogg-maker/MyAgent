@@ -1,0 +1,79 @@
+{
+  "transport": "stdio",
+  "steps": [
+    "initialize",
+    "list_tools",
+    "plan_query",
+    "execute_query"
+  ],
+  "discovered_tools": [
+    "describe_metric",
+    "get_context",
+    "get_lineage",
+    "plan_query",
+    "execute_query",
+    "compare_windows",
+    "search_business",
+    "run_diagnosis"
+  ],
+  "request": {
+    "metric_id": "order_count@1",
+    "start": "2026-09-01",
+    "end": "2026-10-01"
+  },
+  "logical_plan": {
+    "scan": "commerce.fct_orders",
+    "grain": "order_id",
+    "time_column": "order_date",
+    "window": {
+      "start": "2026-09-01",
+      "end": "2026-10-01",
+      "timezone": "UTC"
+    },
+    "filters": {},
+    "group_by": [],
+    "aggregation": "count",
+    "components": {},
+    "semantic_version": "f745c25e28c92c65b5a63510e20eee166a11baa64b0d5a0c769c42f84be10246",
+    "join_policy": "single fact; no inferred join"
+  },
+  "result": {
+    "columns": [
+      "value"
+    ],
+    "rows": [
+      [
+        6319
+      ]
+    ],
+    "metric_id": "order_count@1",
+    "definition": "UTC下单日内的全部状态订单数",
+    "unit": "orders",
+    "grain": "order_id",
+    "release_id": "b11159a997c146aab8ec27814c00835d",
+    "plan_id": "73c8df0e264e40eaad779192ae8f7ba6",
+    "result_may_be_truncated": false,
+    "quality": {
+      "dbt_tests_passed": 11,
+      "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+    },
+    "permissions": {
+      "subject": "local-study-user",
+      "minimum_group_size": 0,
+      "row_scope": {}
+    },
+    "temporal": {
+      "mode": "snapshot-observation",
+      "observed_at": "2026-10-11T10:19:14.558627+00:00",
+      "complete_through": null,
+      "verified": false,
+      "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+    },
+    "warnings": [
+      "Synthetic source",
+      "Current dimension/status snapshot; no historical SCD2",
+      "No verified coverage watermark; no causal attribution"
+    ],
+    "provenance": "official-public-synthetic-thelook"
+  }
+}

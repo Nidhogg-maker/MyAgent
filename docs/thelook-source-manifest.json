@@ -1,0 +1,68 @@
+{
+  "source": "bigquery-public-data.thelook_ecommerce",
+  "synthetic": true,
+  "started_at": "2026-10-11T10:08:04.912816+00:00",
+  "acquisition": "BigQuery tables.get + tabledata.list; no query jobs",
+  "consistency": "Sequential table reads, not a cross-table atomic snapshot; compare source metadata before/after.",
+  "license": "Public availability confirmed; dataset-specific redistribution license not independently established.",
+  "tables": {
+    "distribution_centers": {
+      "rows": 10,
+      "sha256": "82e31cd865d40b550119dffa3191d15fe7defe9b48a9eb11b6507fa837c12c6a",
+      "source_last_modified_ms": "1791690560213",
+      "downloaded_at": "2026-10-11T10:08:07.532078+00:00",
+      "bytes": 1344,
+      "source_unchanged_during_read": true
+    },
+    "products": {
+      "rows": 29120,
+      "sha256": "6fb9b3f4531b1c414b466e90d58b978c3eebb50f6fbcf7bda41d9048f4642698",
+      "source_last_modified_ms": "1791690539498",
+      "downloaded_at": "2026-10-11T10:08:21.267022+00:00",
+      "bytes": 7992135,
+      "source_unchanged_during_read": true
+    },
+    "users": {
+      "rows": 100000,
+      "sha256": "1f6dbda917d88e588418d70195cd7af2e933c418c0c1133a0c0f9a0c4396cdb2",
+      "source_last_modified_ms": "1791690554302",
+      "downloaded_at": "2026-10-11T10:09:06.156337+00:00",
+      "bytes": 43004061,
+      "source_unchanged_during_read": true
+    },
+    "orders": {
+      "rows": 125416,
+      "sha256": "4eb867a75cc70bf23be4ccd49ffcf30e519c42eb059e3373febec8db02c49614",
+      "source_last_modified_ms": "1791690539470",
+      "downloaded_at": "2026-10-11T10:09:34.637162+00:00",
+      "bytes": 28203062,
+      "source_unchanged_during_read": true
+    },
+    "order_items": {
+      "rows": 181946,
+      "sha256": "7381fbf99f99d5870afa7df939c200733011113aa04cf628cdde876f30120e5c",
+      "source_last_modified_ms": "1791690541535",
+      "downloaded_at": "2026-10-11T10:10:31.513546+00:00",
+      "bytes": 51306047,
+      "source_unchanged_during_read": true
+    },
+    "inventory_items": {
+      "rows": 491228,
+      "sha256": "a63ac83da7fabb91cbc5016893d2ecc3cd0c0203ff20da51b2d814d03b031411",
+      "source_last_modified_ms": "1791690541854",
+      "downloaded_at": "2026-10-11T10:12:32.239541+00:00",
+      "bytes": 206613594,
+      "source_unchanged_during_read": true
+    },
+    "events": {
+      "rows": 2430702,
+      "sha256": "019c8353bb427c3bfd782170efb7724caee802ef97d606543dc9fb3caad5f27e",
+      "source_last_modified_ms": "1791690546031",
+      "downloaded_at": "2026-10-11T10:19:14.557092+00:00",
+      "bytes": 866929283,
+      "source_unchanged_during_read": true
+    }
+  },
+  "completed_at": "2026-10-11T10:19:14.558627+00:00",
+  "source_versions_still_current_at_completion": true
+}

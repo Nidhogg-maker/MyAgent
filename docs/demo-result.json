@@ -1,0 +1,355 @@
+{
+  "generated_at": "2026-10-11T10:44:11.440062+00:00",
+  "scope": "Actual official-synthetic TheLook, structured IR; no LLM accuracy claim",
+  "cases": [
+    {
+      "input": {
+        "metric_id": "average_order_value@1",
+        "start": "2026-09-01",
+        "end": "2026-10-01",
+        "group_by": [
+          "country"
+        ]
+      },
+      "status": "COMPLETE",
+      "trace": [
+        "intent",
+        "metadata",
+        "quality_and_plan",
+        "execute",
+        "answer"
+      ],
+      "sql": "SELECT country AS country, CAST(SUM(booked_order_amount) AS DOUBLE) / NULLIF(COUNT(*), 0) AS value FROM commerce.fct_orders WHERE order_date >= CAST('2026-09-01' AS DATE) AND order_date < CAST('2026-10-01' AS DATE) GROUP BY country ORDER BY country LIMIT 100",
+      "result": {
+        "columns": [
+          "country",
+          "value"
+        ],
+        "rows": [
+          [
+            "Australia",
+            78.38357575757577
+          ],
+          [
+            "Belgium",
+            79.05910112359551
+          ],
+          [
+            "Brasil",
+            84.82122310305776
+          ],
+          [
+            "China",
+            90.05851918735891
+          ],
+          [
+            "Deutschland",
+            79.95
+          ],
+          [
+            "France",
+            87.34947882736157
+          ],
+          [
+            "Germany",
+            83.21777777777778
+          ],
+          [
+            "Japan",
+            81.21256756756756
+          ],
+          [
+            "Poland",
+            117.332
+          ],
+          [
+            "South Korea",
+            88.39859872611466
+          ],
+          [
+            "Spain",
+            94.4831836734694
+          ],
+          [
+            "United Kingdom",
+            89.09061818181817
+          ],
+          [
+            "United States",
+            89.60572535211269
+          ]
+        ],
+        "metric_id": "average_order_value@1",
+        "definition": "同窗口同过滤的下单金额除订单数；零分母返回null",
+        "unit": "source_amount/order",
+        "grain": "order_id",
+        "release_id": "71ee2b1828cf496b837b4d920844ce28",
+        "plan_id": "8a721313bc574e8bacea62224959ef23",
+        "result_may_be_truncated": false,
+        "quality": {
+          "dbt_tests_passed": 11,
+          "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+        },
+        "warnings": [
+          "Synthetic source",
+          "Current dimension/status snapshot; no historical SCD2",
+          "No verified coverage watermark; no causal attribution"
+        ],
+        "provenance": "official-public-synthetic-thelook"
+      },
+      "error": null
+    },
+    {
+      "input": {
+        "metric_id": "complete_item_amount@1",
+        "start": "2026-09-01",
+        "end": "2026-10-01",
+        "group_by": [
+          "category"
+        ],
+        "limit": 100
+      },
+      "status": "COMPLETE",
+      "trace": [
+        "intent",
+        "metadata",
+        "quality_and_plan",
+        "execute",
+        "answer"
+      ],
+      "sql": "SELECT category AS category, SUM(CASE WHEN item_status = 'Complete' THEN booked_item_amount ELSE 0 END) AS value FROM commerce.fct_order_items WHERE order_date >= CAST('2026-09-01' AS DATE) AND order_date < CAST('2026-10-01' AS DATE) GROUP BY category ORDER BY category LIMIT 100",
+      "result": {
+        "columns": [
+          "category",
+          "value"
+        ],
+        "rows": [
+          [
+            "Accessories",
+            "5422.0800"
+          ],
+          [
+            "Active",
+            "6563.5200"
+          ],
+          [
+            "Blazers & Jackets",
+            "4298.9600"
+          ],
+          [
+            "Clothing Sets",
+            "105.0000"
+          ],
+          [
+            "Dresses",
+            "5157.2800"
+          ],
+          [
+            "Fashion Hoodies & Sweatshirts",
+            "10337.4000"
+          ],
+          [
+            "Intimates",
+            "5935.3600"
+          ],
+          [
+            "Jeans",
+            "16176.2500"
+          ],
+          [
+            "Jumpsuits & Rompers",
+            "1108.9100"
+          ],
+          [
+            "Leggings",
+            "830.6000"
+          ],
+          [
+            "Maternity",
+            "3030.6400"
+          ],
+          [
+            "Outerwear & Coats",
+            "16272.0800"
+          ],
+          [
+            "Pants",
+            "5343.5800"
+          ],
+          [
+            "Pants & Capris",
+            "2110.1600"
+          ],
+          [
+            "Plus",
+            "2437.8000"
+          ],
+          [
+            "Shorts",
+            "6666.7800"
+          ],
+          [
+            "Skirts",
+            "1349.6600"
+          ],
+          [
+            "Sleep & Lounge",
+            "7200.8600"
+          ],
+          [
+            "Socks",
+            "1429.7300"
+          ],
+          [
+            "Socks & Hosiery",
+            "977.4700"
+          ],
+          [
+            "Suits",
+            "2392.1700"
+          ],
+          [
+            "Suits & Sport Coats",
+            "8787.0000"
+          ],
+          [
+            "Sweaters",
+            "10559.0700"
+          ],
+          [
+            "Swim",
+            "7609.2600"
+          ],
+          [
+            "Tops & Tees",
+            "6189.0400"
+          ],
+          [
+            "Underwear",
+            "2533.0800"
+          ]
+        ],
+        "metric_id": "complete_item_amount@1",
+        "definition": "下单日窗口内、本次快照Complete明细金额；不是历史当日状态",
+        "unit": "source_amount",
+        "grain": "order_item_id",
+        "release_id": "71ee2b1828cf496b837b4d920844ce28",
+        "plan_id": "cc76bd69bd7245e894b689188d48a176",
+        "result_may_be_truncated": false,
+        "quality": {
+          "dbt_tests_passed": 11,
+          "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+        },
+        "warnings": [
+          "Synthetic source",
+          "Current dimension/status snapshot; no historical SCD2",
+          "No verified coverage watermark; no causal attribution"
+        ],
+        "provenance": "official-public-synthetic-thelook"
+      },
+      "error": null
+    },
+    {
+      "input": {
+        "metric_id": "order_count@1",
+        "start": "2026-09-01",
+        "end": "2026-09-08",
+        "group_by": [
+          "category"
+        ]
+      },
+      "status": "STOPPED",
+      "trace": [
+        "intent",
+        "metadata",
+        "quality_and_plan"
+      ],
+      "sql": null,
+      "result": null,
+      "error": "Illegal dimension for fact grain; no implicit joins"
+    }
+  ],
+  "comparison": {
+    "observations": [
+      {
+        "group": [],
+        "baseline": 1113,
+        "current": 1311,
+        "delta": 198.0
+      }
+    ],
+    "evidence": [
+      {
+        "columns": [
+          "value"
+        ],
+        "rows": [
+          [
+            1113
+          ]
+        ],
+        "metric_id": "order_count@1",
+        "definition": "UTC下单日内的全部状态订单数",
+        "unit": "orders",
+        "grain": "order_id",
+        "release_id": "71ee2b1828cf496b837b4d920844ce28",
+        "plan_id": "94d326a801d64bb388c18f6c22faff1c",
+        "result_may_be_truncated": false,
+        "quality": {
+          "dbt_tests_passed": 11,
+          "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+        },
+        "warnings": [
+          "Synthetic source",
+          "Current dimension/status snapshot; no historical SCD2",
+          "No verified coverage watermark; no causal attribution"
+        ],
+        "provenance": "official-public-synthetic-thelook"
+      },
+      {
+        "columns": [
+          "value"
+        ],
+        "rows": [
+          [
+            1311
+          ]
+        ],
+        "metric_id": "order_count@1",
+        "definition": "UTC下单日内的全部状态订单数",
+        "unit": "orders",
+        "grain": "order_id",
+        "release_id": "71ee2b1828cf496b837b4d920844ce28",
+        "plan_id": "6f830a817b1c42b883bbe10a401aabd0",
+        "result_may_be_truncated": false,
+        "quality": {
+          "dbt_tests_passed": 11,
+          "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+        },
+        "warnings": [
+          "Synthetic source",
+          "Current dimension/status snapshot; no historical SCD2",
+          "No verified coverage watermark; no causal attribution"
+        ],
+        "provenance": "official-public-synthetic-thelook"
+      }
+    ],
+    "causal_claim": false,
+    "conclusion": "Only observed changes; no proven cause or coverage completeness"
+  },
+  "field_lineage": {
+    "edges": [
+      {
+        "from": "urn:local:dataset:duckdb:commerce.fct_orders:booked_order_amount",
+        "to": "urn:local:dataset:duckdb:commerce.fct_order_items:booked_item_amount"
+      },
+      {
+        "from": "urn:local:dataset:duckdb:commerce.fct_order_items:booked_item_amount",
+        "to": "urn:local:dataset:duckdb:raw.order_items:sale_price"
+      }
+    ],
+    "truncated": false,
+    "complete": false,
+    "scope": "Parsed value dependencies only; unresolved/control dependencies not attributed"
+  }
+}

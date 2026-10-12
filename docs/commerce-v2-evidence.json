@@ -1,0 +1,1449 @@
+{
+  "release_id": "b11159a997c146aab8ec27814c00835d",
+  "metrics": [
+    {
+      "metric_id": "complete_order_count@1",
+      "definition": "UTC下单日窗口内，本次快照订单状态为Complete的订单数；非历史当日状态或支付结果",
+      "value": [
+        [
+          1593
+        ]
+      ],
+      "sql": "SELECT COUNT(CASE WHEN order_status = 'Complete' THEN 1 END) AS value FROM commerce.fct_orders WHERE order_date >= CAST('2026-09-01' AS DATE) AND order_date < CAST('2026-10-01' AS DATE) LIMIT 100"
+    },
+    {
+      "metric_id": "complete_order_rate@1",
+      "definition": "同UTC下单日窗口及用户筛选内，本次快照Complete订单数/全部状态订单数；零分母null；不是支付成功率、历史完成率或成熟 cohort 估计",
+      "value": [
+        [
+          0.2520968507675265
+        ]
+      ],
+      "sql": "SELECT CAST(COUNT(CASE WHEN order_status = 'Complete' THEN 1 END) AS DOUBLE) / NULLIF(COUNT(*), 0) AS value FROM commerce.fct_orders WHERE order_date >= CAST('2026-09-01' AS DATE) AND order_date < CAST('2026-10-01' AS DATE) LIMIT 100"
+    },
+    {
+      "metric_id": "cancelled_order_count@1",
+      "definition": "UTC下单日窗口内，本次快照订单状态为Cancelled的订单数；非历史当日状态或支付结果",
+      "value": [
+        [
+          970
+        ]
+      ],
+      "sql": "SELECT COUNT(CASE WHEN order_status = 'Cancelled' THEN 1 END) AS value FROM commerce.fct_orders WHERE order_date >= CAST('2026-09-01' AS DATE) AND order_date < CAST('2026-10-01' AS DATE) LIMIT 100"
+    },
+    {
+      "metric_id": "cancelled_order_rate@1",
+      "definition": "同UTC下单日窗口及用户筛选内，本次快照Cancelled订单数/全部状态订单数；零分母null；不是支付成功率、历史取消率或成熟 cohort 估计",
+      "value": [
+        [
+          0.15350530147175187
+        ]
+      ],
+      "sql": "SELECT CAST(COUNT(CASE WHEN order_status = 'Cancelled' THEN 1 END) AS DOUBLE) / NULLIF(COUNT(*), 0) AS value FROM commerce.fct_orders WHERE order_date >= CAST('2026-09-01' AS DATE) AND order_date < CAST('2026-10-01' AS DATE) LIMIT 100"
+    },
+    {
+      "metric_id": "returned_order_count@1",
+      "definition": "UTC下单日窗口内，本次快照订单状态为Returned的订单数；非历史当日状态或支付结果",
+      "value": [
+        [
+          620
+        ]
+      ],
+      "sql": "SELECT COUNT(CASE WHEN order_status = 'Returned' THEN 1 END) AS value FROM commerce.fct_orders WHERE order_date >= CAST('2026-09-01' AS DATE) AND order_date < CAST('2026-10-01' AS DATE) LIMIT 100"
+    },
+    {
+      "metric_id": "returned_order_rate@1",
+      "definition": "同UTC下单日窗口及用户筛选内，本次快照Returned订单数/全部状态订单数；零分母null；不是支付成功率、历史退货率或成熟 cohort 估计",
+      "value": [
+        [
+          0.09811679063142903
+        ]
+      ],
+      "sql": "SELECT CAST(COUNT(CASE WHEN order_status = 'Returned' THEN 1 END) AS DOUBLE) / NULLIF(COUNT(*), 0) AS value FROM commerce.fct_orders WHERE order_date >= CAST('2026-09-01' AS DATE) AND order_date < CAST('2026-10-01' AS DATE) LIMIT 100"
+    }
+  ],
+  "diagnosis": {
+    "query": {
+      "metric_id": "complete_order_rate@1",
+      "start": "2026-09-01",
+      "end": "2026-09-08",
+      "group_by": [],
+      "filters": {
+        "gender": "M"
+      },
+      "limit": 100
+    },
+    "context": {
+      "metric": {
+        "label": "订单完成占比",
+        "fact": {
+          "table": "commerce.fct_orders",
+          "grain": "order_id",
+          "date": "order_date",
+          "dimensions": [
+            "country",
+            "gender",
+            "age_band",
+            "traffic_source"
+          ]
+        },
+        "kind": "ratio",
+        "numerator": "complete_order_count@1",
+        "denominator": "order_count@1",
+        "unit": "ratio",
+        "allowed_dimensions": [
+          "country",
+          "gender",
+          "age_band",
+          "traffic_source"
+        ],
+        "definition": "同UTC下单日窗口及用户筛选内，本次快照Complete订单数/全部状态订单数；零分母null；不是支付成功率、历史完成率或成熟 cohort 估计",
+        "time_semantics": "created-date cohort / current snapshot status",
+        "diagnosis_family": "ratio",
+        "verification_status": "local-study-defined",
+        "metric_id": "complete_order_rate@1",
+        "contract_version": "commerce-v2"
+      },
+      "metadata": {
+        "urn": "urn:local:dataset:duckdb:commerce.fct_orders",
+        "control_lineage": {
+          "edges": [
+            {
+              "table": "commerce.dim_users",
+              "column": "user_id",
+              "kind": "join"
+            },
+            {
+              "table": "commerce.fct_order_items",
+              "column": "order_id",
+              "kind": "group"
+            },
+            {
+              "table": "commerce.fct_order_items",
+              "column": "order_id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.orders",
+              "column": "order_id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.orders",
+              "column": "user_id",
+              "kind": "join"
+            }
+          ],
+          "unresolved": [],
+          "complete_within_supported_scope": true,
+          "scope": "Row membership/control dependencies for supported Select/CTE; not universal SQL lineage"
+        },
+        "field_lineage": {
+          "resolved_fields": [
+            "order_id",
+            "user_id",
+            "order_status",
+            "created_at",
+            "order_date",
+            "shipped_at",
+            "delivered_at",
+            "returned_at",
+            "declared_item_count",
+            "booked_order_amount",
+            "complete_item_amount",
+            "returned_item_amount",
+            "inventory_cost",
+            "country",
+            "gender",
+            "age_band",
+            "traffic_source"
+          ],
+          "unresolved_fields": [
+            "item_count"
+          ],
+          "scope": "value-expression dependencies; excludes join/filter control dependencies",
+          "complete": false
+        },
+        "ownership": {
+          "name": "local-study-owner",
+          "verified_business_owner": false
+        },
+        "quality": {
+          "release_id": "b11159a997c146aab8ec27814c00835d",
+          "status": "PASS",
+          "checks": [
+            "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
+            "test.thelook_lab.unique_dim_products_product_id.ef7b2a9985",
+            "test.thelook_lab.not_null_dim_users_user_id.e754bb5812",
+            "test.thelook_lab.relationships",
+            "test.thelook_lab.unique_dim_users_user_id.bcdc17b9f9",
+            "test.thelook_lab.not_null_fct_order_items_order_item_id.dbaab21f55",
+            "test.thelook_lab.unique_fct_order_items_order_item_id.0dec5f6768",
+            "test.thelook_lab.not_null_fct_orders_order_id.4e687af8d0",
+            "test.thelook_lab.reconciliation",
+            "test.thelook_lab.status_and_item_count",
+            "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
+          ],
+          "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
+          "verified_at": "2026-10-11T12:12:53.968754+00:00"
+        },
+        "schema": [
+          {
+            "name": "order_id",
+            "type": "BIGINT"
+          },
+          {
+            "name": "user_id",
+            "type": "BIGINT"
+          },
+          {
+            "name": "order_status",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "created_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "order_date",
+            "type": "DATE"
+          },
+          {
+            "name": "shipped_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "delivered_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "returned_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "declared_item_count",
+            "type": "BIGINT"
+          },
+          {
+            "name": "item_count",
+            "type": "BIGINT"
+          },
+          {
+            "name": "booked_order_amount",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "complete_item_amount",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "returned_item_amount",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "inventory_cost",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "country",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "gender",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "age_band",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "traffic_source",
+            "type": "VARCHAR"
+          }
+        ],
+        "column_lineage_complete": false
+      },
+      "lineage": {
+        "edges": [
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_orders",
+            "to": "urn:local:dataset:duckdb:raw.orders"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_orders",
+            "to": "urn:local:dataset:duckdb:commerce.fct_order_items"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_orders",
+            "to": "urn:local:dataset:duckdb:commerce.dim_users"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+            "to": "urn:local:dataset:duckdb:raw.orders"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+            "to": "urn:local:dataset:duckdb:raw.order_items"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+            "to": "urn:local:dataset:duckdb:raw.inventory_items"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+            "to": "urn:local:dataset:duckdb:commerce.dim_users"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+            "to": "urn:local:dataset:duckdb:commerce.dim_products"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.dim_users",
+            "to": "urn:local:dataset:duckdb:raw.users"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.dim_products",
+            "to": "urn:local:dataset:duckdb:raw.products"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.dim_products",
+            "to": "urn:local:dataset:duckdb:raw.distribution_centers"
+          }
+        ],
+        "truncated": false,
+        "column_lineage_complete": false
+      }
+    },
+    "result": {
+      "status": "INSUFFICIENT_EVIDENCE",
+      "causal_claim": false,
+      "skill": "commerce-diagnosis",
+      "skill_loaded": true,
+      "evidence": [
+        {
+          "query": {
+            "metric_id": "complete_order_rate@1",
+            "start": "2026-08-01",
+            "end": "2026-08-08",
+            "group_by": [],
+            "filters": {
+              "gender": "M"
+            },
+            "limit": 1000
+          },
+          "columns": [
+            "value"
+          ],
+          "rows": [
+            [
+              0.24825174825174826
+            ]
+          ],
+          "metric_id": "complete_order_rate@1",
+          "definition": "同UTC下单日窗口及用户筛选内，本次快照Complete订单数/全部状态订单数；零分母null；不是支付成功率、历史完成率或成熟 cohort 估计",
+          "unit": "ratio",
+          "grain": "order_id",
+          "release_id": "b11159a997c146aab8ec27814c00835d",
+          "plan_id": "c908a46e121e4b4a80b5449c00aea098",
+          "result_may_be_truncated": false,
+          "quality": {
+            "dbt_tests_passed": 11,
+            "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+          },
+          "permissions": {
+            "subject": "local-study-user",
+            "minimum_group_size": 0,
+            "row_scope": {}
+          },
+          "temporal": {
+            "mode": "snapshot-observation",
+            "observed_at": "2026-10-11T10:19:14.558627+00:00",
+            "complete_through": null,
+            "verified": false,
+            "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+          },
+          "warnings": [
+            "Synthetic source",
+            "Current dimension/status snapshot; no historical SCD2",
+            "No verified coverage watermark; no causal attribution"
+          ],
+          "provenance": "official-public-synthetic-thelook"
+        },
+        {
+          "query": {
+            "metric_id": "complete_order_rate@1",
+            "start": "2026-09-01",
+            "end": "2026-09-08",
+            "group_by": [],
+            "filters": {
+              "gender": "M"
+            },
+            "limit": 1000
+          },
+          "columns": [
+            "value"
+          ],
+          "rows": [
+            [
+              0.264919941775837
+            ]
+          ],
+          "metric_id": "complete_order_rate@1",
+          "definition": "同UTC下单日窗口及用户筛选内，本次快照Complete订单数/全部状态订单数；零分母null；不是支付成功率、历史完成率或成熟 cohort 估计",
+          "unit": "ratio",
+          "grain": "order_id",
+          "release_id": "b11159a997c146aab8ec27814c00835d",
+          "plan_id": "1da34a4b455049639a7facf78fcc3394",
+          "result_may_be_truncated": false,
+          "quality": {
+            "dbt_tests_passed": 11,
+            "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+          },
+          "permissions": {
+            "subject": "local-study-user",
+            "minimum_group_size": 0,
+            "row_scope": {}
+          },
+          "temporal": {
+            "mode": "snapshot-observation",
+            "observed_at": "2026-10-11T10:19:14.558627+00:00",
+            "complete_through": null,
+            "verified": false,
+            "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+          },
+          "warnings": [
+            "Synthetic source",
+            "Current dimension/status snapshot; no historical SCD2",
+            "No verified coverage watermark; no causal attribution"
+          ],
+          "provenance": "official-public-synthetic-thelook"
+        },
+        {
+          "query": {
+            "metric_id": "complete_order_count@1",
+            "start": "2026-08-01",
+            "end": "2026-08-08",
+            "group_by": [],
+            "filters": {
+              "gender": "M"
+            },
+            "limit": 1000
+          },
+          "columns": [
+            "value"
+          ],
+          "rows": [
+            [
+              142
+            ]
+          ],
+          "metric_id": "complete_order_count@1",
+          "definition": "UTC下单日窗口内，本次快照订单状态为Complete的订单数；非历史当日状态或支付结果",
+          "unit": "orders",
+          "grain": "order_id",
+          "release_id": "b11159a997c146aab8ec27814c00835d",
+          "plan_id": "ee1bc54761bc4157a0d0969c2fd4cdd1",
+          "result_may_be_truncated": false,
+          "quality": {
+            "dbt_tests_passed": 11,
+            "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+          },
+          "permissions": {
+            "subject": "local-study-user",
+            "minimum_group_size": 0,
+            "row_scope": {}
+          },
+          "temporal": {
+            "mode": "snapshot-observation",
+            "observed_at": "2026-10-11T10:19:14.558627+00:00",
+            "complete_through": null,
+            "verified": false,
+            "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+          },
+          "warnings": [
+            "Synthetic source",
+            "Current dimension/status snapshot; no historical SCD2",
+            "No verified coverage watermark; no causal attribution"
+          ],
+          "provenance": "official-public-synthetic-thelook"
+        },
+        {
+          "query": {
+            "metric_id": "complete_order_count@1",
+            "start": "2026-09-01",
+            "end": "2026-09-08",
+            "group_by": [],
+            "filters": {
+              "gender": "M"
+            },
+            "limit": 1000
+          },
+          "columns": [
+            "value"
+          ],
+          "rows": [
+            [
+              182
+            ]
+          ],
+          "metric_id": "complete_order_count@1",
+          "definition": "UTC下单日窗口内，本次快照订单状态为Complete的订单数；非历史当日状态或支付结果",
+          "unit": "orders",
+          "grain": "order_id",
+          "release_id": "b11159a997c146aab8ec27814c00835d",
+          "plan_id": "131eb277c6ed47c2bd5213d9b09f31d5",
+          "result_may_be_truncated": false,
+          "quality": {
+            "dbt_tests_passed": 11,
+            "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+          },
+          "permissions": {
+            "subject": "local-study-user",
+            "minimum_group_size": 0,
+            "row_scope": {}
+          },
+          "temporal": {
+            "mode": "snapshot-observation",
+            "observed_at": "2026-10-11T10:19:14.558627+00:00",
+            "complete_through": null,
+            "verified": false,
+            "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+          },
+          "warnings": [
+            "Synthetic source",
+            "Current dimension/status snapshot; no historical SCD2",
+            "No verified coverage watermark; no causal attribution"
+          ],
+          "provenance": "official-public-synthetic-thelook"
+        },
+        {
+          "query": {
+            "metric_id": "order_count@1",
+            "start": "2026-08-01",
+            "end": "2026-08-08",
+            "group_by": [],
+            "filters": {
+              "gender": "M"
+            },
+            "limit": 1000
+          },
+          "columns": [
+            "value"
+          ],
+          "rows": [
+            [
+              572
+            ]
+          ],
+          "metric_id": "order_count@1",
+          "definition": "UTC下单日内的全部状态订单数",
+          "unit": "orders",
+          "grain": "order_id",
+          "release_id": "b11159a997c146aab8ec27814c00835d",
+          "plan_id": "3fabf2d1f9c64a389102d17019ac776f",
+          "result_may_be_truncated": false,
+          "quality": {
+            "dbt_tests_passed": 11,
+            "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+          },
+          "permissions": {
+            "subject": "local-study-user",
+            "minimum_group_size": 0,
+            "row_scope": {}
+          },
+          "temporal": {
+            "mode": "snapshot-observation",
+            "observed_at": "2026-10-11T10:19:14.558627+00:00",
+            "complete_through": null,
+            "verified": false,
+            "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+          },
+          "warnings": [
+            "Synthetic source",
+            "Current dimension/status snapshot; no historical SCD2",
+            "No verified coverage watermark; no causal attribution"
+          ],
+          "provenance": "official-public-synthetic-thelook"
+        },
+        {
+          "query": {
+            "metric_id": "order_count@1",
+            "start": "2026-09-01",
+            "end": "2026-09-08",
+            "group_by": [],
+            "filters": {
+              "gender": "M"
+            },
+            "limit": 1000
+          },
+          "columns": [
+            "value"
+          ],
+          "rows": [
+            [
+              687
+            ]
+          ],
+          "metric_id": "order_count@1",
+          "definition": "UTC下单日内的全部状态订单数",
+          "unit": "orders",
+          "grain": "order_id",
+          "release_id": "b11159a997c146aab8ec27814c00835d",
+          "plan_id": "9c12aef429374f6194918695714872f9",
+          "result_may_be_truncated": false,
+          "quality": {
+            "dbt_tests_passed": 11,
+            "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+          },
+          "permissions": {
+            "subject": "local-study-user",
+            "minimum_group_size": 0,
+            "row_scope": {}
+          },
+          "temporal": {
+            "mode": "snapshot-observation",
+            "observed_at": "2026-10-11T10:19:14.558627+00:00",
+            "complete_through": null,
+            "verified": false,
+            "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+          },
+          "warnings": [
+            "Synthetic source",
+            "Current dimension/status snapshot; no historical SCD2",
+            "No verified coverage watermark; no causal attribution"
+          ],
+          "provenance": "official-public-synthetic-thelook"
+        }
+      ],
+      "hypotheses": [
+        {
+          "id": "user-premise",
+          "status": "SUPPORTED_OBSERVATION",
+          "evidence_indexes": [
+            0,
+            1
+          ]
+        },
+        {
+          "id": "data-completeness",
+          "status": "UNVERIFIED",
+          "evidence": {
+            "mode": "snapshot-observation",
+            "observed_at": "2026-10-11T10:19:14.558627+00:00",
+            "complete_through": null,
+            "verified": false,
+            "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+          },
+          "note": "缺完整性水位不能排除迟到/数据未到齐"
+        },
+        {
+          "id": "ratio-components",
+          "status": "VALIDATED_IDENTITY",
+          "evidence_indexes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decompositions": [
+        {
+          "kind": "ratio-algebraic",
+          "numerator_contribution": 0.06407711647886322,
+          "denominator_contribution": -0.047408922954774474,
+          "residual": 0.0,
+          "causal": false
+        }
+      ],
+      "change": {
+        "baseline": 0.24825174825174826,
+        "current": 0.264919941775837,
+        "delta": 0.016668193524088742,
+        "relative_change": 0.06714230067449832
+      },
+      "conclusion": "已验证数值与代数贡献；缺少独立业务事件/完整性反证，不能确认因果根因",
+      "unresolved": [
+        "no_independent_business_event_evidence",
+        "snapshot_status_cohort_maturity_unverified",
+        "ratio_dimension_drilldown_not_implemented",
+        "completeness_unverified"
+      ],
+      "queries_used": 6
+    },
+    "trace": [
+      "intent",
+      "metadata",
+      "diagnosis",
+      "answer"
+    ],
+    "status": "INSUFFICIENT_EVIDENCE",
+    "task_input": {
+      "kind": "diagnose",
+      "query": {
+        "metric_id": "complete_order_rate@1",
+        "start": "2026-09-01",
+        "end": "2026-09-08",
+        "filters": {
+          "gender": "M"
+        }
+      },
+      "baseline": {
+        "metric_id": "complete_order_rate@1",
+        "start": "2026-08-01",
+        "end": "2026-08-08",
+        "filters": {
+          "gender": "M"
+        }
+      },
+      "expected_direction": "unknown"
+    },
+    "task": {
+      "kind": "diagnose",
+      "query": {
+        "metric_id": "complete_order_rate@1",
+        "start": "2026-09-01",
+        "end": "2026-09-08",
+        "group_by": [],
+        "filters": {
+          "gender": "M"
+        },
+        "limit": 100
+      },
+      "baseline": {
+        "metric_id": "complete_order_rate@1",
+        "start": "2026-08-01",
+        "end": "2026-08-08",
+        "group_by": [],
+        "filters": {
+          "gender": "M"
+        },
+        "limit": 100
+      },
+      "expected_direction": "unknown",
+      "diagnosis_dimensions": [
+        "traffic_source",
+        "country"
+      ]
+    },
+    "retrieval": {},
+    "schema_link": {
+      "metric_id": "complete_order_rate@1",
+      "dataset": "commerce.fct_orders",
+      "grain": "order_id",
+      "column": null,
+      "schema": [
+        {
+          "name": "order_id",
+          "type": "BIGINT"
+        },
+        {
+          "name": "user_id",
+          "type": "BIGINT"
+        },
+        {
+          "name": "order_status",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP WITH TIME ZONE"
+        },
+        {
+          "name": "order_date",
+          "type": "DATE"
+        },
+        {
+          "name": "shipped_at",
+          "type": "TIMESTAMP WITH TIME ZONE"
+        },
+        {
+          "name": "delivered_at",
+          "type": "TIMESTAMP WITH TIME ZONE"
+        },
+        {
+          "name": "returned_at",
+          "type": "TIMESTAMP WITH TIME ZONE"
+        },
+        {
+          "name": "declared_item_count",
+          "type": "BIGINT"
+        },
+        {
+          "name": "item_count",
+          "type": "BIGINT"
+        },
+        {
+          "name": "booked_order_amount",
+          "type": "DECIMAL(38,4)"
+        },
+        {
+          "name": "complete_item_amount",
+          "type": "DECIMAL(38,4)"
+        },
+        {
+          "name": "returned_item_amount",
+          "type": "DECIMAL(38,4)"
+        },
+        {
+          "name": "inventory_cost",
+          "type": "DECIMAL(38,4)"
+        },
+        {
+          "name": "country",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "gender",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "age_band",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "traffic_source",
+          "type": "VARCHAR"
+        }
+      ],
+      "lineage": {
+        "edges": [
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_orders",
+            "to": "urn:local:dataset:duckdb:raw.orders"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_orders",
+            "to": "urn:local:dataset:duckdb:commerce.fct_order_items"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_orders",
+            "to": "urn:local:dataset:duckdb:commerce.dim_users"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+            "to": "urn:local:dataset:duckdb:raw.orders"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+            "to": "urn:local:dataset:duckdb:raw.order_items"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+            "to": "urn:local:dataset:duckdb:raw.inventory_items"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+            "to": "urn:local:dataset:duckdb:commerce.dim_users"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+            "to": "urn:local:dataset:duckdb:commerce.dim_products"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.dim_users",
+            "to": "urn:local:dataset:duckdb:raw.users"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.dim_products",
+            "to": "urn:local:dataset:duckdb:raw.products"
+          },
+          {
+            "from": "urn:local:dataset:duckdb:commerce.dim_products",
+            "to": "urn:local:dataset:duckdb:raw.distribution_centers"
+          }
+        ],
+        "truncated": false,
+        "column_lineage_complete": false
+      },
+      "source": "contracts/commerce.json",
+      "owner": {
+        "name": "local-study-owner",
+        "verified_business_owner": false
+      }
+    },
+    "skill": "commerce-diagnosis",
+    "answer": {
+      "kind": "diagnose",
+      "causal_claim": false,
+      "summary": "已验证数值与代数贡献；缺少独立业务事件/完整性反证，不能确认因果根因",
+      "metric_id": "complete_order_rate@1",
+      "evidence": {
+        "status": "INSUFFICIENT_EVIDENCE",
+        "causal_claim": false,
+        "skill": "commerce-diagnosis",
+        "skill_loaded": true,
+        "evidence": [
+          {
+            "query": {
+              "metric_id": "complete_order_rate@1",
+              "start": "2026-08-01",
+              "end": "2026-08-08",
+              "group_by": [],
+              "filters": {
+                "gender": "M"
+              },
+              "limit": 1000
+            },
+            "columns": [
+              "value"
+            ],
+            "rows": [
+              [
+                0.24825174825174826
+              ]
+            ],
+            "metric_id": "complete_order_rate@1",
+            "definition": "同UTC下单日窗口及用户筛选内，本次快照Complete订单数/全部状态订单数；零分母null；不是支付成功率、历史完成率或成熟 cohort 估计",
+            "unit": "ratio",
+            "grain": "order_id",
+            "release_id": "b11159a997c146aab8ec27814c00835d",
+            "plan_id": "c908a46e121e4b4a80b5449c00aea098",
+            "result_may_be_truncated": false,
+            "quality": {
+              "dbt_tests_passed": 11,
+              "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+            },
+            "permissions": {
+              "subject": "local-study-user",
+              "minimum_group_size": 0,
+              "row_scope": {}
+            },
+            "temporal": {
+              "mode": "snapshot-observation",
+              "observed_at": "2026-10-11T10:19:14.558627+00:00",
+              "complete_through": null,
+              "verified": false,
+              "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+            },
+            "warnings": [
+              "Synthetic source",
+              "Current dimension/status snapshot; no historical SCD2",
+              "No verified coverage watermark; no causal attribution"
+            ],
+            "provenance": "official-public-synthetic-thelook"
+          },
+          {
+            "query": {
+              "metric_id": "complete_order_rate@1",
+              "start": "2026-09-01",
+              "end": "2026-09-08",
+              "group_by": [],
+              "filters": {
+                "gender": "M"
+              },
+              "limit": 1000
+            },
+            "columns": [
+              "value"
+            ],
+            "rows": [
+              [
+                0.264919941775837
+              ]
+            ],
+            "metric_id": "complete_order_rate@1",
+            "definition": "同UTC下单日窗口及用户筛选内，本次快照Complete订单数/全部状态订单数；零分母null；不是支付成功率、历史完成率或成熟 cohort 估计",
+            "unit": "ratio",
+            "grain": "order_id",
+            "release_id": "b11159a997c146aab8ec27814c00835d",
+            "plan_id": "1da34a4b455049639a7facf78fcc3394",
+            "result_may_be_truncated": false,
+            "quality": {
+              "dbt_tests_passed": 11,
+              "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+            },
+            "permissions": {
+              "subject": "local-study-user",
+              "minimum_group_size": 0,
+              "row_scope": {}
+            },
+            "temporal": {
+              "mode": "snapshot-observation",
+              "observed_at": "2026-10-11T10:19:14.558627+00:00",
+              "complete_through": null,
+              "verified": false,
+              "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+            },
+            "warnings": [
+              "Synthetic source",
+              "Current dimension/status snapshot; no historical SCD2",
+              "No verified coverage watermark; no causal attribution"
+            ],
+            "provenance": "official-public-synthetic-thelook"
+          },
+          {
+            "query": {
+              "metric_id": "complete_order_count@1",
+              "start": "2026-08-01",
+              "end": "2026-08-08",
+              "group_by": [],
+              "filters": {
+                "gender": "M"
+              },
+              "limit": 1000
+            },
+            "columns": [
+              "value"
+            ],
+            "rows": [
+              [
+                142
+              ]
+            ],
+            "metric_id": "complete_order_count@1",
+            "definition": "UTC下单日窗口内，本次快照订单状态为Complete的订单数；非历史当日状态或支付结果",
+            "unit": "orders",
+            "grain": "order_id",
+            "release_id": "b11159a997c146aab8ec27814c00835d",
+            "plan_id": "ee1bc54761bc4157a0d0969c2fd4cdd1",
+            "result_may_be_truncated": false,
+            "quality": {
+              "dbt_tests_passed": 11,
+              "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+            },
+            "permissions": {
+              "subject": "local-study-user",
+              "minimum_group_size": 0,
+              "row_scope": {}
+            },
+            "temporal": {
+              "mode": "snapshot-observation",
+              "observed_at": "2026-10-11T10:19:14.558627+00:00",
+              "complete_through": null,
+              "verified": false,
+              "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+            },
+            "warnings": [
+              "Synthetic source",
+              "Current dimension/status snapshot; no historical SCD2",
+              "No verified coverage watermark; no causal attribution"
+            ],
+            "provenance": "official-public-synthetic-thelook"
+          },
+          {
+            "query": {
+              "metric_id": "complete_order_count@1",
+              "start": "2026-09-01",
+              "end": "2026-09-08",
+              "group_by": [],
+              "filters": {
+                "gender": "M"
+              },
+              "limit": 1000
+            },
+            "columns": [
+              "value"
+            ],
+            "rows": [
+              [
+                182
+              ]
+            ],
+            "metric_id": "complete_order_count@1",
+            "definition": "UTC下单日窗口内，本次快照订单状态为Complete的订单数；非历史当日状态或支付结果",
+            "unit": "orders",
+            "grain": "order_id",
+            "release_id": "b11159a997c146aab8ec27814c00835d",
+            "plan_id": "131eb277c6ed47c2bd5213d9b09f31d5",
+            "result_may_be_truncated": false,
+            "quality": {
+              "dbt_tests_passed": 11,
+              "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+            },
+            "permissions": {
+              "subject": "local-study-user",
+              "minimum_group_size": 0,
+              "row_scope": {}
+            },
+            "temporal": {
+              "mode": "snapshot-observation",
+              "observed_at": "2026-10-11T10:19:14.558627+00:00",
+              "complete_through": null,
+              "verified": false,
+              "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+            },
+            "warnings": [
+              "Synthetic source",
+              "Current dimension/status snapshot; no historical SCD2",
+              "No verified coverage watermark; no causal attribution"
+            ],
+            "provenance": "official-public-synthetic-thelook"
+          },
+          {
+            "query": {
+              "metric_id": "order_count@1",
+              "start": "2026-08-01",
+              "end": "2026-08-08",
+              "group_by": [],
+              "filters": {
+                "gender": "M"
+              },
+              "limit": 1000
+            },
+            "columns": [
+              "value"
+            ],
+            "rows": [
+              [
+                572
+              ]
+            ],
+            "metric_id": "order_count@1",
+            "definition": "UTC下单日内的全部状态订单数",
+            "unit": "orders",
+            "grain": "order_id",
+            "release_id": "b11159a997c146aab8ec27814c00835d",
+            "plan_id": "3fabf2d1f9c64a389102d17019ac776f",
+            "result_may_be_truncated": false,
+            "quality": {
+              "dbt_tests_passed": 11,
+              "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+            },
+            "permissions": {
+              "subject": "local-study-user",
+              "minimum_group_size": 0,
+              "row_scope": {}
+            },
+            "temporal": {
+              "mode": "snapshot-observation",
+              "observed_at": "2026-10-11T10:19:14.558627+00:00",
+              "complete_through": null,
+              "verified": false,
+              "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+            },
+            "warnings": [
+              "Synthetic source",
+              "Current dimension/status snapshot; no historical SCD2",
+              "No verified coverage watermark; no causal attribution"
+            ],
+            "provenance": "official-public-synthetic-thelook"
+          },
+          {
+            "query": {
+              "metric_id": "order_count@1",
+              "start": "2026-09-01",
+              "end": "2026-09-08",
+              "group_by": [],
+              "filters": {
+                "gender": "M"
+              },
+              "limit": 1000
+            },
+            "columns": [
+              "value"
+            ],
+            "rows": [
+              [
+                687
+              ]
+            ],
+            "metric_id": "order_count@1",
+            "definition": "UTC下单日内的全部状态订单数",
+            "unit": "orders",
+            "grain": "order_id",
+            "release_id": "b11159a997c146aab8ec27814c00835d",
+            "plan_id": "9c12aef429374f6194918695714872f9",
+            "result_may_be_truncated": false,
+            "quality": {
+              "dbt_tests_passed": 11,
+              "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+            },
+            "permissions": {
+              "subject": "local-study-user",
+              "minimum_group_size": 0,
+              "row_scope": {}
+            },
+            "temporal": {
+              "mode": "snapshot-observation",
+              "observed_at": "2026-10-11T10:19:14.558627+00:00",
+              "complete_through": null,
+              "verified": false,
+              "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+            },
+            "warnings": [
+              "Synthetic source",
+              "Current dimension/status snapshot; no historical SCD2",
+              "No verified coverage watermark; no causal attribution"
+            ],
+            "provenance": "official-public-synthetic-thelook"
+          }
+        ],
+        "hypotheses": [
+          {
+            "id": "user-premise",
+            "status": "SUPPORTED_OBSERVATION",
+            "evidence_indexes": [
+              0,
+              1
+            ]
+          },
+          {
+            "id": "data-completeness",
+            "status": "UNVERIFIED",
+            "evidence": {
+              "mode": "snapshot-observation",
+              "observed_at": "2026-10-11T10:19:14.558627+00:00",
+              "complete_through": null,
+              "verified": false,
+              "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+            },
+            "note": "缺完整性水位不能排除迟到/数据未到齐"
+          },
+          {
+            "id": "ratio-components",
+            "status": "VALIDATED_IDENTITY",
+            "evidence_indexes": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          }
+        ],
+        "decompositions": [
+          {
+            "kind": "ratio-algebraic",
+            "numerator_contribution": 0.06407711647886322,
+            "denominator_contribution": -0.047408922954774474,
+            "residual": 0.0,
+            "causal": false
+          }
+        ],
+        "change": {
+          "baseline": 0.24825174825174826,
+          "current": 0.264919941775837,
+          "delta": 0.016668193524088742,
+          "relative_change": 0.06714230067449832
+        },
+        "conclusion": "已验证数值与代数贡献；缺少独立业务事件/完整性反证，不能确认因果根因",
+        "unresolved": [
+          "no_independent_business_event_evidence",
+          "snapshot_status_cohort_maturity_unverified",
+          "ratio_dimension_drilldown_not_implemented",
+          "completeness_unverified"
+        ],
+        "queries_used": 6
+      }
+    },
+    "retrieval_context": {
+      "version": "1",
+      "metric_id": "complete_order_rate@1",
+      "semantic_version": "f745c25e28c92c65b5a63510e20eee166a11baa64b0d5a0c769c42f84be10246",
+      "release_id": "b11159a997c146aab8ec27814c00835d",
+      "knowledge_hits": [],
+      "semantic": {
+        "label": "订单完成占比",
+        "fact": {
+          "table": "commerce.fct_orders",
+          "grain": "order_id",
+          "date": "order_date",
+          "dimensions": [
+            "country",
+            "gender",
+            "age_band",
+            "traffic_source"
+          ]
+        },
+        "kind": "ratio",
+        "numerator": "complete_order_count@1",
+        "denominator": "order_count@1",
+        "unit": "ratio",
+        "allowed_dimensions": [
+          "country",
+          "gender",
+          "age_band",
+          "traffic_source"
+        ],
+        "definition": "同UTC下单日窗口及用户筛选内，本次快照Complete订单数/全部状态订单数；零分母null；不是支付成功率、历史完成率或成熟 cohort 估计",
+        "time_semantics": "created-date cohort / current snapshot status",
+        "diagnosis_family": "ratio",
+        "verification_status": "local-study-defined",
+        "metric_id": "complete_order_rate@1",
+        "contract_version": "commerce-v2"
+      },
+      "metadata": {
+        "urn": "urn:local:dataset:duckdb:commerce.fct_orders",
+        "control_lineage": {
+          "edges": [
+            {
+              "table": "commerce.dim_users",
+              "column": "user_id",
+              "kind": "join"
+            },
+            {
+              "table": "commerce.fct_order_items",
+              "column": "order_id",
+              "kind": "group"
+            },
+            {
+              "table": "commerce.fct_order_items",
+              "column": "order_id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.orders",
+              "column": "order_id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.orders",
+              "column": "user_id",
+              "kind": "join"
+            }
+          ],
+          "unresolved": [],
+          "complete_within_supported_scope": true,
+          "scope": "Row membership/control dependencies for supported Select/CTE; not universal SQL lineage"
+        },
+        "field_lineage": {
+          "resolved_fields": [
+            "order_id",
+            "user_id",
+            "order_status",
+            "created_at",
+            "order_date",
+            "shipped_at",
+            "delivered_at",
+            "returned_at",
+            "declared_item_count",
+            "booked_order_amount",
+            "complete_item_amount",
+            "returned_item_amount",
+            "inventory_cost",
+            "country",
+            "gender",
+            "age_band",
+            "traffic_source"
+          ],
+          "unresolved_fields": [
+            "item_count"
+          ],
+          "scope": "value-expression dependencies; excludes join/filter control dependencies",
+          "complete": false
+        },
+        "ownership": {
+          "name": "local-study-owner",
+          "verified_business_owner": false
+        },
+        "quality": {
+          "release_id": "b11159a997c146aab8ec27814c00835d",
+          "status": "PASS",
+          "checks": [
+            "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
+            "test.thelook_lab.unique_dim_products_product_id.ef7b2a9985",
+            "test.thelook_lab.not_null_dim_users_user_id.e754bb5812",
+            "test.thelook_lab.relationships",
+            "test.thelook_lab.unique_dim_users_user_id.bcdc17b9f9",
+            "test.thelook_lab.not_null_fct_order_items_order_item_id.dbaab21f55",
+            "test.thelook_lab.unique_fct_order_items_order_item_id.0dec5f6768",
+            "test.thelook_lab.not_null_fct_orders_order_id.4e687af8d0",
+            "test.thelook_lab.reconciliation",
+            "test.thelook_lab.status_and_item_count",
+            "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
+          ],
+          "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
+          "verified_at": "2026-10-11T12:12:53.968754+00:00"
+        },
+        "schema": [
+          {
+            "name": "order_id",
+            "type": "BIGINT"
+          },
+          {
+            "name": "user_id",
+            "type": "BIGINT"
+          },
+          {
+            "name": "order_status",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "created_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "order_date",
+            "type": "DATE"
+          },
+          {
+            "name": "shipped_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "delivered_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "returned_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "declared_item_count",
+            "type": "BIGINT"
+          },
+          {
+            "name": "item_count",
+            "type": "BIGINT"
+          },
+          {
+            "name": "booked_order_amount",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "complete_item_amount",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "returned_item_amount",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "inventory_cost",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "country",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "gender",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "age_band",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "traffic_source",
+            "type": "VARCHAR"
+          }
+        ],
+        "column_lineage_complete": false
+      },
+      "constraints": {
+        "timezone": "UTC",
+        "allowed_dimensions": [
+          "country",
+          "gender",
+          "age_band",
+          "traffic_source"
+        ],
+        "temporal": {
+          "mode": "snapshot-observation",
+          "observed_at": "2026-10-11T10:19:14.558627+00:00",
+          "complete_through": null,
+          "verified": false,
+          "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+        },
+        "authority": "contracts/commerce.json#metrics/complete_order_rate@1",
+        "formula_source": "semantic registry, never retrieved case text"
+      },
+      "conflicts": []
+    }
+  }
+}

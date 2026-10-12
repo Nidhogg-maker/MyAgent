@@ -1,0 +1,8 @@
+thelook_lab:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('THELOOK_DATABASE', 'data/thelook.duckdb') }}"
+      schema: commerce
+      threads: 1

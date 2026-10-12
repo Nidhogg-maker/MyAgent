@@ -1,0 +1,61 @@
+version: 2
+sources:
+  - name: thelook_features
+    schema: raw
+    tables:
+      - name: events
+      - name: users
+      - name: products
+      - name: orders
+      - name: order_items
+models:
+  - name: dwd_behavior_event
+    columns:
+      - name: event_id
+        data_tests: [unique, not_null]
+  - name: dwd_product_view
+    columns:
+      - name: event_id
+        data_tests: [unique, not_null]
+      - name: product_id
+        data_tests: [not_null]
+  - name: dwd_order_item
+    columns:
+      - name: order_item_id
+        data_tests: [unique, not_null]
+  - name: dws_user_behavior_day
+    columns:
+      - name: user_id
+        data_tests: [not_null]
+      - name: activity_date
+        data_tests: [not_null]
+  - name: dws_product_behavior_day
+    columns:
+      - name: product_id
+        data_tests: [not_null]
+      - name: activity_date
+        data_tests: [not_null]
+  - name: ads_user_profile_daily
+    columns:
+      - name: user_id
+        data_tests: [unique, not_null]
+  - name: ads_product_profile_daily
+    columns:
+      - name: product_id
+        data_tests: [unique, not_null]
+  - name: dws_user_product_day
+    columns:
+      - name: user_id
+        data_tests: [not_null]
+      - name: product_id
+        data_tests: [not_null]
+  - name: ads_user_product_features
+    columns:
+      - name: user_id
+        data_tests: [not_null]
+      - name: product_id
+        data_tests: [not_null]
+  - name: dws_session_behavior
+    columns:
+      - name: session_id
+        data_tests: [unique, not_null]
