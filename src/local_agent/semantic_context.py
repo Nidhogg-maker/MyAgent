@@ -1,6 +1,7 @@
 """统一权威语义解析：候选只提供ID，定义从当前Registry重新读取。"""
 from pydantic import BaseModel, ConfigDict, Field
 from .semantic import ROOT, file_hash
+from pathlib import Path
 from .service import fingerprint
 
 
@@ -8,7 +9,8 @@ def asset_version(tools):
     return fingerprint({'registry': tools.registry.version,
         'knowledge': file_hash(ROOT/'knowledge/business.json'),
         'references': {p.name: file_hash(p) for p in sorted((ROOT/'skills/warehouse-anomaly-attribution/references').glob('*.md'))},
-        'implementation': 'lexical-context-v1'})
+        'implementation': 'unified-assets-v1',
+        'builder': file_hash(Path(__file__).with_name('assets.py'))})
 
 
 class SemanticContext(BaseModel):
@@ -24,6 +26,7 @@ class SemanticContext(BaseModel):
     metadata: dict
     dimension_values: dict = Field(default_factory=dict)
     unresolved: list[str] = Field(default_factory=list)
+    index_evidence: dict = Field(default_factory=dict)
 
 
 class SemanticContextResolver:
@@ -35,9 +38,10 @@ class SemanticContextResolver:
         if file_hash(self.tools.registry.path) != self.tools.registry.version:
             raise ValueError('Registry changed; restart and republish required')
         release = self.tools.release()
+        from .structure import graph_binding
         return {'registry_version': self.tools.registry.version, 'release_id': release['release_id'],
                 'asset_version': asset_version(self.tools), 'subject': self.tools.principal,
-                'policy_hash': self.tools.access.policy_hash}
+                'policy_hash': self.tools.access.policy_hash,'structured_index':graph_binding()}
 
     def resolve(self, metric_ids, requested_dimensions=(), value_dimensions=(), expected_asset_version=None):
         ids = list(dict.fromkeys(metric_ids))
@@ -98,7 +102,10 @@ class SemanticContextResolver:
                     unresolved.append('value_discovery_not_supported:'+dimension)
                     continue
                 values[dimension] = {m['metric_id']: resolver.values(m['metric_id'], dimension) for m in leaves}
+        from .structure import GraphService
+        index_evidence = GraphService(self.tools).evidence()
         return SemanticContext(binding=binding, requested_metric_ids=ids, metrics=metrics,
+            index_evidence=index_evidence,
             components=components, common_dimensions=sorted(common), relationships=relationships,
             metadata=metadata, constraints={'timezone': registry.contract['timezone'], 'maximum_window_days': 31,
                 'row_scope': self.tools.access.role()['row_filters'],

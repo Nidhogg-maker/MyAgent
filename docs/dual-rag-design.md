@@ -1,6 +1,6 @@
 # 双通路语义检索基础设施设计与当前接入审计
 
-日期：2026-10-12。本文件是设计与代码核查，尚未新增向量模型、索引服务或执行真实模型评测。
+日期：2026-10-12。本文件保留设计原则，当前四阶段已实现并完成本机验收。真实本地Dense/Cross-Encoder与一次gpt-6.1-sol取数冒烟通过；未做模型准确率评测。最终状态见 [完整迭代验收](retrieval-full-iteration-acceptance.md)。
 
 ## 结论
 
@@ -12,12 +12,12 @@ Flat RAG + Structured RAG + 统一 Metric Registry 的方向合理。但两路�
 
 |入口|实际调用|检索对执行的影响|
 |---|---|---|
-|ask/chat rules|TaskInterpreter.parse 调用 KnowledgeRetriever.search，随后进入 _rules|选择主要依赖最长别名；排序候选主要成为证据，未知语言仍澄清|
-|ask/chat llm|parse 检索后 resolve_context；_model 输入 authoritative_contexts、retrieved_evidence|知识与权威结构确实进入模型任务理解；执行仍由固定 Workflow 管理|
-|agent|工具适配开放 search_business、describe_metric、get_context；每轮模型可选择|search_business 是可选动作；不选就不执行该检索；未强制统一双路上下文|
-|multi-plan|模型提出候选，静态校验参数、权限、窗口和编译器|计划合法性校验不是业务语义检索，也不证明自然语言指标选择一定正确|
+|ask/chat rules|TaskInterpreter.parse -> QueryContextBroker -> RetrievalService/StructuredResolver，再进入_rules|检索是证据；规则选择仍依赖有限语言/最长别名，未知语言澄清|
+|ask/chat llm|同一Broker生成query_context，另保留legacy authoritative_contexts|真实候选与权威结构进入理解；任务IR执行由既有Workflow管理|
+|agent|首次决策自动Broker，随后自主search/resolve/query_relations/执行工具|可见候选、Registry和结构投影进入首次决策；模型保留选择工具的权利|
+|multi-plan|候选方案经过参数、权限、窗口、StructuredResolver和编译预检|执行仍保留同目标与grain约束，不能用检索路径开放任意Join|
 
-源码依据：retrieval.py 的 search/metric_candidates/paths；retrieval_context.py 的 resolve_context；tasks.py 的 parse/_model；agent_tools.py 的 call；agent_loop.py 的 start。当前 search 使用内存构建的 BM25 风格评分、别名加权与案例/领域参考；没有 Dense、RRF 或 Cross-Encoder。paths 是分类标注，不是两个独立检索后端。
+源码依据：retrieval_service.py、assets.py、structure.py、dense_retrieval.py、reranking.py，以及tasks/agent_tools/agent_loop。当前Flat召回支持BM25风格、Dense、RRF和按需Cross-Encoder；Structured关系由同一Registry派生SQLite索引，定义/约束仍权威重读。paths仅为legacy分类标注，不应当作两种后端实现证据。
 
 ## 建议架构
 
@@ -76,7 +76,7 @@ Exact/BM25/Dense并列候选按稳定asset_id去重。RRF融合排名，不将BM
 
 SQLite已足够完成本地接口验证；后续按并发、更新和授权需求迁移关系数据库。关系数据库可保存和查询关联，是否专门引入图数据库取决于真实多跳查询复杂度与收益，不因为名为Structured RAG就必须迁移。
 
-## 统一接口（建议，不是当前已实现API）
+## 统一接口概念与当前实现
 
 ```text
 retrieve_candidates(question, trusted_scope, registry_version)
@@ -86,6 +86,8 @@ resolve_semantics(metric_ids, requested_dimensions, window, filters, population)
 validate_request(Query | MultiFactQuery, semantic_context_binding)
   -> validated request or CLARIFY/STOPPED
 ```
+
+上述为概念接口名。实际代码入口是RetrievalService.retrieve、SemanticContextResolver.resolve/resolve_request、GraphService.query与service.plan/execute；不宣称概念名称可直接调用。细节见各阶段指南。
 
 SemanticContext建议包含：候选与来源、解析后的权威定义、业务实体与值、合法维度、时间、聚合/关系约束、Registry和索引版本、可信权限范围、检索策略、未解决歧义。它不是把全部知识拼成一个大Prompt。
 

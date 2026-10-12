@@ -64,7 +64,7 @@ def test_failed_build_keeps_old_active(index):
     class Bad(FakeEmbedding):
         def encode(self, texts, kind): return [[0.,0.] for _ in texts]
     with pytest.raises(ValueError, match='normalized'):
-        publish_index(tools, lexical, Bad(), directory)
+        publish_index(tools, lexical, Bad(), directory,incremental=False)
     assert (directory/'active.json').read_bytes() == before
 
 

@@ -1,5 +1,6 @@
 """模型可选择的有限工具；业务执行仍由受控 Skill 完成。"""
 from pydantic import BaseModel, ConfigDict, Field
+from typing import Literal
 from .semantic import Query
 from .tasks import Task
 from .skills import Pair, SkillExecutor
@@ -14,6 +15,15 @@ class SearchInput(BaseModel):
     model_config = ConfigDict(extra='forbid')
     question: str = Field(min_length=1, max_length=2000)
     limit: int = Field(default=6, ge=1, le=10)
+    partition: str | None = Field(default=None,max_length=80)
+
+
+class RelationInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    node_id: str = Field(min_length=1,max_length=200)
+    direction: Literal['dependencies','impact'] = 'dependencies'
+    max_depth: int = Field(default=3,ge=1,le=6)
+    max_nodes: int = Field(default=80,ge=1,le=200)
 
 
 class MetricInput(BaseModel):
@@ -35,7 +45,7 @@ class AgentTools:
               'get_context': MetricInput, 'run_query': Query,
               'run_comparison': Pair, 'run_diagnosis': Task, 'run_multi_fact': MultiFactQuery,
               'propose_plans': Proposals, 'select_plan': PlanSelection, 'run_plan_step': StepRequest,
-              'resolve_semantics': ResolveInput}
+              'resolve_semantics': ResolveInput,'query_relations':RelationInput}
     descriptions = {
         'search_business': '检索业务知识、指标候选和分析参考；不能覆盖权威公式。',
         'describe_metric': '读取指标权威定义、grain 和合法维度。',
@@ -47,7 +57,8 @@ class AgentTools:
         'propose_plans': '提出2到3个同目标、不同步骤的候选方案，校验后返回服务端plan_id；最多3轮重规划。',
         'select_plan': '选择当前候选计划；禁止偷偷切换目标或已选方案。',
         'run_plan_step': '仅执行所选计划的下一步；观察结果后可重新提出候选计划。',
-        'resolve_semantics': '按需从当前注册中心解析多个指标、组件、共同维度与关系；只对明确请求的维度加载枚举。'}
+        'resolve_semantics': '按需从当前注册中心解析多个指标、组件、共同维度与关系；只对明确请求的维度加载枚举。',
+        'query_relations':'查询授权语义节点的依赖或影响范围；node_id如metric:average_order_value@1、field:commerce.fct_orders:booked_order_amount。路径可达不能授权Join。'}
 
     def __init__(self, tools):
         self.tools = tools
@@ -75,7 +86,10 @@ class AgentTools:
             return {'propose_plans': self.planner.propose, 'select_plan': self.planner.select,
                     'run_plan_step': self.planner.execute_step}[name](data)
         if name == 'search_business':
-            return self.retrieval.retrieve(data.question, data.limit)
+            return self.retrieval.retrieve(data.question, data.limit,data.partition)
+        if name == 'query_relations':
+            from .structure import GraphService
+            return GraphService(self.tools).query(**data.model_dump())
         if name == 'resolve_semantics':
             return self.resolver.resolve(**data.model_dump())
         if name == 'describe_metric':

@@ -1,0 +1,21 @@
+{
+  "initial_full_regression": {"passed": 228, "failed": 0, "seconds": 277.51},
+  "final_full_regression": {"passed": 229, "failed": 0, "seconds": 262.02},
+  "current_collected_tests": 229,
+  "new_phase4_tests": 15,
+  "related_regression": {"passed": 77, "seconds": 62.00},
+  "protocol_and_phase4_targeted_after_fix": {"passed": 16, "seconds": 4.84},
+  "overlapping_runs_not_added": true,
+  "local_iteration_acceptance": "PASS",
+  "live_llm": {"model": "gpt-6.1-sol", "model_preflight_http": 200, "status": "PASS", "inference_calls": 2, "queries_executed": 1, "raw_expected": 88.22046842854883, "actual": 88.22046842854883},
+  "first_live_attempt_preserved": {"status": "FAIL_BEFORE_QUERY", "reason": "tool action cross-field contract", "queries": 0, "fixed_without_relaxing_validation": true},
+  "models": {"dense": "real multilingual-e5-small", "reranker": "real mmarco-mMiniLMv2-L12-H384-v1"},
+  "unified_snapshot": {"format": 3, "assets": 21, "nodes": 61, "edges": 140, "vector_dimension": 384},
+  "real_incremental_encoding_counts": {"unchanged": 0, "one_case_update": 1, "one_case_delete": 0, "restore": 1},
+  "multi_plan_real_data": {"status": "COMPLETE", "groups_independently_checked": 58, "truncated": false, "decision_model": "scripted"},
+  "python_compile": "PASS",
+  "powershell_parser_errors": 0,
+  "cli_relations": "PASS",
+  "git_diff_check": "PASS",
+  "accuracy_and_production_scale_evaluation": "NOT_PERFORMED"
+}

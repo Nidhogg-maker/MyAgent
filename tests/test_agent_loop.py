@@ -109,6 +109,8 @@ def test_responses_protocol(monkeypatch):
         sent = json.loads(request.content)
         assert sent['store'] is False
         assert sent['text']['format']['strict'] is True
+        assert 'message MUST be the empty string' in sent['instructions']
+        assert 'evidence_ids MUST be []' in sent['instructions']
         body = {'action': 'tool', 'tool': 'search_business',
                 'arguments_json': '{"question":"订单"}', 'message': '', 'evidence_ids': []}
         return httpx.Response(200, json={'status': 'completed', 'output': [

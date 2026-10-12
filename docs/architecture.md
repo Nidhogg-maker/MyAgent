@@ -138,3 +138,5 @@ SQLite 记录任务、状态、事件、查询回执与熔断。恢复重验身�
 首次决策通过QueryContextBroker装配RetrievalService候选与SemanticContextResolver权威结构；所有服务计划新增语义绑定，原MCP search也接统一服务。默认按需加载枚举，缓存词法索引。第二阶段增加独立CPU模型Dense召回和RRF融合、原子索引发布、检索模式与快照会话绑定。详见 [第一阶段说明](retrieval-phase1-guide.md) 和 [第二阶段说明](retrieval-phase2-guide.md)。
 
 第三阶段进一步接入有界条件重排：RRF候选池 -> 精确/歧义跳过或本地Cross-Encoder -> 权威解析 -> Agent。service.plan使用语义聚合IR模板缓存，参数每次重新绑定；service.execute始终独立重编译，不通过缓存改变口径、扩大Join或复用旧答案。真实启动脚本默认开启auto；完整调用链见 [第三阶段说明](retrieval-phase3-guide.md)。
+
+第四阶段由AssetBuilder同时派生Flat文档与Structured语义关系；manifest format=3将文档、向量、SQLite图与墓碑一起发布，复用未变化向量、差量更新节点/边。query_relations为第12个Agent进程内工具，支持受控依赖/影响查询；原MCP仍13个stdio工具。结构索引绑定加入计划/会话，语义路径可达仍不授权Join。实现见 [第四阶段指南](retrieval-phase4-guide.md)，真实LLM与完整229项回归验收见 [最终报告](retrieval-full-iteration-acceptance.md)。

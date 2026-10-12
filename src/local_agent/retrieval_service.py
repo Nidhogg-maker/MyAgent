@@ -25,21 +25,29 @@ class RetrievalService:
         self.tools = tools
         self.lexical = KnowledgeRetriever(tools)
 
-    def retrieve(self, question, limit=6):
+    def retrieve(self, question, limit=6, partition=None):
         if not 1 <= limit <= 10:
             raise ValueError('Retrieval budget exceeded')
         self.tools.access.role()
         if file_hash(self.tools.registry.path) != self.tools.registry.version:
             raise ValueError('Registry changed; restart and republish required')
+        known = set(self.tools.registry.contract['metrics']) | set(self.tools.registry.contract.get('multi_fact',{}).get('ratios',{}))
+        explicit = set(re.findall(r'(?<![a-z0-9_])([a-z][a-z0-9_]*@[0-9]+)(?![a-z0-9_])',question.casefold()))
+        if explicit-known:
+            raise ValueError('CLARIFY: deleted or unknown metric ID; do not substitute another metric')
         before = asset_version(self.tools)
         binding = retrieval_binding()
         re_binding = reranker_binding()
         mode, directory = configuration()
-        hits = self.lexical.search(question, 10 if mode != 'lexical' or re_binding['mode'] != 'off' else limit)
+        hits = self.lexical.search(question, 10 if mode != 'lexical' or re_binding['mode'] != 'off' else limit,partition)
+        if any(alias.casefold() in question.casefold() for identifier,aliases in self.lexical.business['aliases'].items()
+               if identifier not in known for alias in aliases):
+            raise ValueError('CLARIFY: alias references a deleted metric; update business assets')
+        authorized_docs = [d for d in self.lexical._index[0] if partition is None or d['partition']==partition]
         dense_trace = {'status': 'disabled'}
         if mode != 'lexical':
             try:
-                dense, dense_trace = DenseIndex(directory).search(question, self.tools, self.lexical._index[0], 10)
+                dense, dense_trace = DenseIndex(directory).search(question, self.tools, authorized_docs, 10)
                 hits = rrf(hits, dense, 10)
             except (OSError, ValueError, RuntimeError, KeyError, subprocess.TimeoutExpired) as error:
                 if mode == 'hybrid-required':
@@ -55,6 +63,8 @@ class RetrievalService:
         for identifier, spec in self.tools.registry.contract.get('multi_fact', {}).get('ratios', {}).items():
             if all(self.tools._metric_allowed(spec[k]) for k in ('numerator', 'denominator')) and any(a.casefold() in text for a in spec.get('aliases', [identifier])):
                 exact.add(identifier)
+        if partition is not None and exact-{d.get('metric_id') for d in authorized_docs if d['kind']=='metric'}:
+            raise ValueError('CLARIFY: explicit metric is outside requested partition')
         ambiguities = [{'term': term, 'options': [m for m in ids if self.tools._metric_allowed(m)]}
                        for term, ids in self.lexical.business['ambiguous'].items() if term.casefold() in text]
         hits, rerank_trace = rerank(question,hits,exact,ambiguities)
@@ -81,6 +91,7 @@ class RetrievalService:
                 'dense': dense_trace, 'retrieval_binding': binding,
                 'reranker': rerank_trace,
                 'scope': 'authorized metric assets, cases and references',
+                'partition': partition,
                 'index_builds': self.lexical.index_builds,
                 'requires_structured_resolution': True, 'scores_are_probabilities': False}).model_dump()
 

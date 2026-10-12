@@ -1,0 +1,21 @@
+{
+  "status": "FAIL_BEFORE_QUERY",
+  "model": "gpt-6.1-sol",
+  "preflight": 200,
+  "reason": "cross-field tool action contract rejected",
+  "error": "1 validation error for Decision\n  Value error, Tool decision requires only tool and arguments [type=value_error, input_value={'action': 'tool', 'tool'...by': [], 'filters': {}}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error",
+  "queries_used": 0,
+  "local_checks": {
+    "dense": true,
+    "reranker": true,
+    "structured_projection": true,
+    "agent_graph_tool": true,
+    "query_raw_reconciliation": true,
+    "ambiguity_clarify": true,
+    "partition_before_ranking": true,
+    "warm_score_cache": true,
+    "incremental_update_delete_restore": true,
+    "old_session_stopped": true
+  },
+  "scope": "first live smoke preserved; output instructions corrected afterward"
+}

@@ -23,13 +23,13 @@ class KnowledgeRetriever:
         """优先匹配最长别名，避免'平均订单金额'同时被识别成'订单金额'。"""
         text = question.casefold()
         matches = [(match.start(), match.end(), metric) for metric, aliases in self.business['aliases'].items()
-                   if self.tools._metric_allowed(metric) for alias in aliases
+                   if metric in self.tools.registry.contract['metrics'] and self.tools._metric_allowed(metric) for alias in aliases
                    for match in re.finditer(re.escape(alias.casefold()), text)]
         return sorted({metric for start,end,metric in matches if not any(
             other_start <= start and end <= other_end and other_end-other_start > end-start
             for other_start,other_end,_ in matches)})
 
-    def search(self, question, limit=6):
+    def search(self, question, limit=6, partition=None):
         """先做授权过滤再评分；返回权威来源定位，不把检索文档当执行指令。"""
         if not 1 <= limit <= 10:
             raise ValueError('Retrieval budget exceeded')
@@ -44,10 +44,14 @@ class KnowledgeRetriever:
             self._index_key = key
             self.index_builds += 1
         docs, corpus, lengths, avg, frequency = self._index
+        if partition is not None and partition not in {d['partition'] for d in docs}:
+            raise ValueError('Unknown or unauthorized asset partition')
         query_tokens = Counter(tokens(question))
         hits = []
         direct = self.metric_candidates(question)
         for doc, counts, length in zip(docs, corpus, lengths):
+            if partition is not None and doc['partition']!=partition:
+                continue
             score = 0.0
             for term in query_tokens:
                 tf = counts[term]
@@ -62,31 +66,10 @@ class KnowledgeRetriever:
 
     def _build_index(self, references):
         """只在资产或权限绑定变化时重建词法索引；始终先过滤再索引。"""
-        docs = []
-        for metric_id, metric in self.tools.registry.contract['metrics'].items():
-            if not self.tools._metric_allowed(metric_id):
-                continue
-            described = self.tools.describe(metric_id)
-            summary = ' '.join([metric['label'],metric['definition'],described['fact']['table'],
-                described['fact']['grain'],metric.get('column',''),*self.business['aliases'].get(metric_id, [])])
-            docs.append({'id':metric_id, 'kind':'metric', 'metric_id':metric_id,
-                # 向量正文不包含主体不同的可见维度；维度由在线 StructuredResolver 授权。
-                'embedding_text': summary,
-                'text':' '.join([metric['label'],metric['definition'],described['fact']['table'],described['fact']['grain'],metric.get('column',''),*described['fact']['dimensions'],*self.business['aliases'].get(metric_id, [])]),
-                'source':'contracts/commerce.json#metrics/' + metric_id, 'allowed_dimensions':described['fact']['dimensions']})
-        for case in self.business['cases']:
-            if case.get('metric_id') and not self.tools._metric_allowed(case['metric_id']):
-                continue
-            docs.append({'id':case['id'],'kind':'case','text':case['question']+' '+case['note'], 'source':'knowledge/business.json#cases/' + case['id']})
-        for identifier, metric in self.tools.registry.contract.get('multi_fact', {}).get('ratios', {}).items():
-            if all(self.tools._metric_allowed(metric[k]) for k in ('numerator', 'denominator')):
-                docs.append({'id':identifier,'kind':'metric','metric_id':identifier,
-                    'text':' '.join([identifier,metric['definition'],metric['unit'],*metric.get('aliases',[])]),
-                    'source':'contracts/commerce.json#multi_fact/ratios/'+identifier})
-        # 领域参考属于知识路径，公式与约束仍从结构化合同读取。
-        for path in references:
-            docs.append({'id':'reference-'+path.stem,'kind':'reference','text':path.read_text(encoding='utf-8'),
-                         'source':str(path.relative_to(ROOT)),'source_sha256':file_hash(path)})
+        from .assets import AssetBuilder
+        projection = AssetBuilder(self.tools, self.business, ROOT).build(references)
+        docs = projection['documents']
+        self.projection_graph = projection['graph']
         corpus = [Counter(tokens(doc['text'])) for doc in docs]
         lengths = [sum(doc.values()) for doc in corpus]
         avg = sum(lengths) / max(len(lengths), 1)

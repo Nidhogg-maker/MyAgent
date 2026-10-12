@@ -36,6 +36,12 @@ def main(argv=None):
     diagnosis.add_argument('--task',type=Path,required=True)
     search = commands.add_parser('search')
     search.add_argument('question')
+    search.add_argument('--partition')
+    relations = commands.add_parser('relations',help='查询注册语义依赖或影响范围；不是Join授权')
+    relations.add_argument('node_id')
+    relations.add_argument('--direction',choices=['dependencies','impact'],default='dependencies')
+    relations.add_argument('--depth',type=int,default=3)
+    relations.add_argument('--max-nodes',type=int,default=80)
     resolve = commands.add_parser('resolve-semantics', help='解析权威指标、组件、共同维度与按需枚举')
     resolve.add_argument('--metric', action='append', required=True)
     resolve.add_argument('--dimension', action='append', default=[])
@@ -109,7 +115,10 @@ def main(argv=None):
             result = tools.lineage(args.table,args.column)
         elif args.command == 'search':
             from .retrieval_service import get_retrieval_service
-            result = get_retrieval_service(tools).retrieve(args.question)
+            result = get_retrieval_service(tools).retrieve(args.question,partition=args.partition)
+        elif args.command=='relations':
+            from .structure import GraphService
+            result = GraphService(tools).query(args.node_id,args.direction,args.depth,args.max_nodes)
         elif args.command == 'resolve-semantics':
             from .semantic_context import SemanticContextResolver
             result = SemanticContextResolver(tools).resolve(args.metric, args.dimension, args.values)

@@ -203,3 +203,20 @@ Agent 运行依赖 DuckDB、SQLGlot、Pydantic、LangGraph、HTTPX、MCP SDK；d
 高频语义 IR 模板缓存保存聚合 AST，绑定语义、权限、模板/编译实现版本；每次重新绑定日期/筛选值/LIMIT，执行前从 Registry 独立重编译。跨事实仍先聚合后 Join；没有跨会话数据结果缓存。查询向量与重排打分各有32条同进程缓存，减少重复问题的模型加载；新问题仍使用隔离CPU子进程。
 
 调用关系、设置与边界见 [第三阶段指南](docs/retrieval-phase3-guide.md)，验证结果见 [完成记录](docs/retrieval-phase3-completion.md) 和 [真实模型闭环回执](docs/retrieval-phase3-live-demo.json)。
+
+## 双通路检索第四阶段与完整验收
+
+同一AssetBuilder派生Flat文档与Structured关系。默认增量发布复用未变化向量，删除资产保存墓碑，SQLite关系按差异更新；文档、向量、结构图与墓碑随完整快照原子切换。当前21资产、61节点、140关系，使用SQLite，无专用图数据库或ANN。
+
+新增进程内Agent工具 `query_relations`（依赖/影响），CLI `relations` 与 `search --partition`。字段影响不授权Join；元数据物理血缘仍通过原MetadataCatalog提供。结构快照绑定进入计划和会话，旧版本不能继续使用。
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build-retrieval-index.py
+.\.venv\Scripts\python.exe -m local_agent.cli relations metric:average_order_value@1 --depth 4
+.\.venv\Scripts\python.exe -m local_agent.cli relations field:commerce.fct_orders:booked_order_amount --direction impact
+.\scripts\accept-retrieval-iteration.ps1 -LiveLLM
+```
+
+完整迭代验收：最终229项工程测试通过；真实E5/Cross-Encoder与gpt-6.1-sol取数通过，客单价raw独立对账一致；更新/删除/恢复、旧会话失效通过；多计划58分组独立回算通过。真实LLM仅做一个happy-path冒烟，不代表模型准确率。
+
+[第四阶段实现与操作](docs/retrieval-phase4-guide.md) · [四阶段完整验收报告](docs/retrieval-full-iteration-acceptance.md) · [集成执行证据](docs/retrieval-iteration-acceptance.json)。新部署请新建会话；模型、索引、运行状态和密钥配置留在本机。
