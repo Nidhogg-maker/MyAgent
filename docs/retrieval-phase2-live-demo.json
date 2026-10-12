@@ -1,0 +1,1007 @@
+{
+  "mode": "real local neural embeddings; scripted decision model; real TheLook",
+  "question": "2026年9月平均每张订单的金额是多少",
+  "discovery": {
+    "status": "CANDIDATES",
+    "hits": [
+      {
+        "id": "case-aov",
+        "kind": "case",
+        "text": "2026年9月各国家客单价 同窗口聚合金额除订单数，不能平均已有日均客单价",
+        "source": "knowledge/business.json#cases/case-aov",
+        "score": 0.03278688524590164,
+        "asset_id": "case:case-aov:dff271eb4a0ce885",
+        "ranks": {
+          "lexical": 1,
+          "dense": 1
+        },
+        "branch_scores": {
+          "lexical": 15.3337,
+          "dense": 0.9357026608565198
+        },
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+      },
+      {
+        "id": "case-sales-ambiguity",
+        "kind": "case",
+        "text": "销售额是多少 先确认下单金额还是已完成商品金额，不把任一口径称实收",
+        "source": "knowledge/business.json#cases/case-sales-ambiguity",
+        "score": 0.03225806451612903,
+        "asset_id": "case:case-sales-ambiguity:7c6f8006ffd2f62e",
+        "ranks": {
+          "lexical": 2,
+          "dense": 2
+        },
+        "branch_scores": {
+          "lexical": 12.922,
+          "dense": 0.8774025791728042
+        },
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+      },
+      {
+        "id": "order_count@1",
+        "kind": "metric",
+        "metric_id": "order_count@1",
+        "embedding_text": "订单量 UTC下单日内的全部状态订单数 commerce.fct_orders order_id  订单量 订单数 下单量 order count",
+        "text": "订单量 UTC下单日内的全部状态订单数 commerce.fct_orders order_id  country gender age_band traffic_source order_status 订单量 订单数 下单量 order count",
+        "source": "contracts/commerce.json#metrics/order_count@1",
+        "allowed_dimensions": [
+          "country",
+          "gender",
+          "age_band",
+          "traffic_source",
+          "order_status"
+        ],
+        "score": 0.030536130536130537,
+        "asset_id": "metric:order_count@1:4cbaead0cbe2adbe",
+        "ranks": {
+          "lexical": 6,
+          "dense": 5
+        },
+        "branch_scores": {
+          "lexical": 0.4343,
+          "dense": 0.8709944084729173
+        },
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+      },
+      {
+        "id": "average_order_value@1",
+        "kind": "metric",
+        "metric_id": "average_order_value@1",
+        "embedding_text": "客单价 同窗口同过滤的下单金额除订单数；零分母返回null commerce.fct_orders order_id  客单价 平均订单金额 aov",
+        "text": "客单价 同窗口同过滤的下单金额除订单数；零分母返回null commerce.fct_orders order_id  country gender age_band traffic_source order_status 客单价 平均订单金额 aov",
+        "source": "contracts/commerce.json#metrics/average_order_value@1",
+        "allowed_dimensions": [
+          "country",
+          "gender",
+          "age_band",
+          "traffic_source",
+          "order_status"
+        ],
+        "score": 0.030158730158730156,
+        "asset_id": "metric:average_order_value@1:096253613bdcb8dd",
+        "ranks": {
+          "lexical": 3,
+          "dense": 10
+        },
+        "branch_scores": {
+          "lexical": 4.4927,
+          "dense": 0.8674634349417818
+        },
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+      },
+      {
+        "id": "cancelled_order_rate@1",
+        "kind": "metric",
+        "metric_id": "cancelled_order_rate@1",
+        "embedding_text": "订单取消占比 同UTC下单日窗口及用户筛选内，本次快照Cancelled订单数/全部状态订单数；零分母null；不是支付成功率、历史取消率或成熟 cohort 估计 commerce.fct_orders order_id  订单取消占比 取消订单占比 订单取消率",
+        "text": "订单取消占比 同UTC下单日窗口及用户筛选内，本次快照Cancelled订单数/全部状态订单数；零分母null；不是支付成功率、历史取消率或成熟 cohort 估计 commerce.fct_orders order_id  country gender age_band traffic_source 订单取消占比 取消订单占比 订单取消率",
+        "source": "contracts/commerce.json#metrics/cancelled_order_rate@1",
+        "allowed_dimensions": [
+          "country",
+          "gender",
+          "age_band",
+          "traffic_source"
+        ],
+        "score": 0.029211087420042643,
+        "asset_id": "metric:cancelled_order_rate@1:eb3513db4c1b2880",
+        "ranks": {
+          "lexical": 10,
+          "dense": 7
+        },
+        "branch_scores": {
+          "lexical": 0.4265,
+          "dense": 0.869883092365171
+        },
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+      },
+      {
+        "id": "reference-metric-rules",
+        "kind": "reference",
+        "text": "# 指标口径与 grain\n\n唯一计算定义在 contracts/commerce.json，本文件只解释决策约束，不重复维护SQL或公式副本。\n\n- orders事实粒度是 order_id；items事实粒度是 order_item_id。订单指标不能直接按品类查询，当前编译器不会猜Join。\n- 所有窗口依据UTC下单日期，start包含、end不包含。比较须采用明确等时长基准，不能静默把31天月换成30天。\n- 订单量统计全部状态；下单金额不是实收；Complete/Cancelled/Returned仅指当前快照状态。新近 cohort 完成不足可能只是观察时间较短。\n- 订单完成/取消/退货占比必须在同窗口、同用户筛选下使用完整分母。禁止按 order_status 过滤或分组这些占比。\n- ratio先聚合分子分母再除；不能平均日均比例。不同用户数跨组不可直接求和。零分母返回null，不补0。\n- 国家、性别等业务称谓先由维度值解析器链接到实际值。无法匹配的值必须澄清，不能用零结果冒充业务下降。\n- 本地Owner是学习项目占位，水位未验证，数据是合成数据；报告保留这些观察条件。\n",
+        "source": "skills\\warehouse-anomaly-attribution\\references\\metric-rules.md",
+        "source_sha256": "885408d8bc667522e1333b376562ef9d953e5cfd20f79f7f113a23260b7632cc",
+        "asset_id": "reference:reference-metric-rules:c827531913b7f48f",
+        "score": 0.015873015873015872,
+        "ranks": {
+          "dense": 3
+        },
+        "branch_scores": {
+          "dense": 0.875490253731432
+        },
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+      }
+    ],
+    "candidates": [
+      {
+        "metric_id": "order_count@1",
+        "match": "hybrid",
+        "rank": 1,
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+      },
+      {
+        "metric_id": "average_order_value@1",
+        "match": "hybrid",
+        "rank": 2,
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+      },
+      {
+        "metric_id": "cancelled_order_rate@1",
+        "match": "hybrid",
+        "rank": 3,
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+      }
+    ],
+    "ambiguities": [],
+    "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+    "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+    "trace": {
+      "method": "exact + BM25-style lexical + Dense + RRF(k=60)",
+      "dense": {
+        "status": "ready",
+        "snapshot_id": "136b74b6c11a3bcb9f96c8025bbbdf001b1d4b1828fb70eaa5f960e705ed58ef",
+        "embedding": {
+          "model": "intfloat/multilingual-e5-small",
+          "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+          "local_path": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\embedding-model",
+          "files": {
+            "config.json": "69137736cab8b8903a07fe8afaafdda25aac55415a12a55d1bffa9f581abf959",
+            "model.safetensors": "1a55775f53449dac10a2bcbc312469fac40b96d53198c407081a831f81c98477",
+            "modules.json": "c6e29747481e8b5dd2b58401966aeac910de39092f90cda9a704b1545f902b04",
+            "sentencepiece.bpe.model": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+            "sentence_bert_config.json": "948201d8329907aae938fa62f9ceeed53f5694dacc2b87b9f3b78b37ee986529",
+            "special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
+            "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+            "tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b",
+            "1_Pooling/config.json": "987f7a67a38fa564c849bb5d277c52ab9088a84368fc0be31a354125aebb12a0"
+          },
+          "query_prefix": "query: ",
+          "passage_prefix": "passage: ",
+          "max_tokens": 512,
+          "normalized": true,
+          "runtime": "sentence-transformers CPU",
+          "packages": {
+            "sentence-transformers": "5.1.2",
+            "torch": "2.14.1+cpu",
+            "transformers": "4.57.6",
+            "numpy": "2.5.4"
+          }
+        },
+        "visible_assets": 21,
+        "dimension": 384
+      },
+      "retrieval_binding": {
+        "mode": "hybrid-required",
+        "directory": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\retrieval-index",
+        "active_hash": "ec4c6360dfd9824d18a65d17ef00d1b6788556c6787370219cf7d060b80c61b4",
+        "algorithm": "rrf-k60-v1"
+      },
+      "reranker": "disabled",
+      "scope": "authorized metric assets, cases and references",
+      "index_builds": 1,
+      "requires_structured_resolution": true,
+      "scores_are_probabilities": false
+    }
+  },
+  "answer": {
+    "session_id": "8c1aa359dda0444b804e0225bcab032e",
+    "question": "2026年9月平均每张订单的金额是多少",
+    "decisions": [
+      {
+        "action": "tool",
+        "tool": "run_query",
+        "arguments": {
+          "metric_id": "average_order_value@1",
+          "start": "2026-09-01",
+          "end": "2026-10-01"
+        },
+        "message": "",
+        "evidence_ids": []
+      },
+      {
+        "action": "finish",
+        "tool": null,
+        "arguments": {},
+        "message": "以权威定义计算平均下单金额。",
+        "evidence_ids": [
+          "e1"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "e1",
+        "tool": "run_query",
+        "arguments": {
+          "metric_id": "average_order_value@1",
+          "start": "2026-09-01",
+          "end": "2026-10-01"
+        },
+        "status": "OK",
+        "result": {
+          "columns": [
+            "value"
+          ],
+          "rows": [
+            [
+              88.22046842854883
+            ]
+          ],
+          "metric_id": "average_order_value@1",
+          "definition": "同窗口同过滤的下单金额除订单数；零分母返回null",
+          "unit": "source_amount/order",
+          "grain": "order_id",
+          "release_id": "d6e0661a6b0846f1bee2b57163ad4bf4",
+          "plan_id": "c01df11222c14f80845cf0d21ca29fb5",
+          "result_may_be_truncated": false,
+          "logical_plan": {
+            "scan": "commerce.fct_orders",
+            "grain": "order_id",
+            "time_column": "order_date",
+            "window": {
+              "start": "2026-09-01",
+              "end": "2026-10-01",
+              "timezone": "UTC"
+            },
+            "filters": {},
+            "group_by": [],
+            "aggregation": "ratio",
+            "components": {
+              "numerator": "booked_amount@1",
+              "denominator": "order_count@1"
+            },
+            "semantic_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "join_policy": "single fact; no inferred join"
+          },
+          "semantic_resolution": {
+            "binding": {
+              "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+              "release_id": "d6e0661a6b0846f1bee2b57163ad4bf4",
+              "asset_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+              "subject": "local-study-user",
+              "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1"
+            },
+            "metric_ids": [
+              "average_order_value@1"
+            ],
+            "common_dimensions": [
+              "age_band",
+              "country",
+              "day",
+              "gender",
+              "order_status",
+              "traffic_source"
+            ],
+            "relationships": []
+          },
+          "quality": {
+            "dbt_tests_passed": 11,
+            "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+          },
+          "permissions": {
+            "subject": "local-study-user",
+            "minimum_group_size": 0,
+            "row_scope": {}
+          },
+          "temporal": {
+            "mode": "snapshot-observation",
+            "observed_at": "2026-10-11T10:19:14.558627+00:00",
+            "complete_through": null,
+            "verified": false,
+            "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+          },
+          "warnings": [
+            "Synthetic source",
+            "Current dimension/status snapshot; no historical SCD2",
+            "No verified coverage watermark; no causal attribution"
+          ],
+          "provenance": "official-public-synthetic-thelook"
+        }
+      }
+    ],
+    "model_calls": [
+      {
+        "live": false
+      },
+      {
+        "live": false
+      }
+    ],
+    "query_context": {
+      "version": "phase2",
+      "discovery": {
+        "status": "CANDIDATES",
+        "hits": [
+          {
+            "id": "case-aov",
+            "kind": "case",
+            "text": "2026年9月各国家客单价 同窗口聚合金额除订单数，不能平均已有日均客单价",
+            "source": "knowledge/business.json#cases/case-aov",
+            "score": 0.03278688524590164,
+            "asset_id": "case:case-aov:dff271eb4a0ce885",
+            "ranks": {
+              "lexical": 1,
+              "dense": 1
+            },
+            "branch_scores": {
+              "lexical": 15.3337,
+              "dense": 0.9357026608565198
+            },
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "id": "case-sales-ambiguity",
+            "kind": "case",
+            "text": "销售额是多少 先确认下单金额还是已完成商品金额，不把任一口径称实收",
+            "source": "knowledge/business.json#cases/case-sales-ambiguity",
+            "score": 0.03225806451612903,
+            "asset_id": "case:case-sales-ambiguity:7c6f8006ffd2f62e",
+            "ranks": {
+              "lexical": 2,
+              "dense": 2
+            },
+            "branch_scores": {
+              "lexical": 12.922,
+              "dense": 0.8774025791728042
+            },
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "id": "order_count@1",
+            "kind": "metric",
+            "metric_id": "order_count@1",
+            "embedding_text": "订单量 UTC下单日内的全部状态订单数 commerce.fct_orders order_id  订单量 订单数 下单量 order count",
+            "text": "订单量 UTC下单日内的全部状态订单数 commerce.fct_orders order_id  country gender age_band traffic_source order_status 订单量 订单数 下单量 order count",
+            "source": "contracts/commerce.json#metrics/order_count@1",
+            "allowed_dimensions": [
+              "country",
+              "gender",
+              "age_band",
+              "traffic_source",
+              "order_status"
+            ],
+            "score": 0.030536130536130537,
+            "asset_id": "metric:order_count@1:4cbaead0cbe2adbe",
+            "ranks": {
+              "lexical": 6,
+              "dense": 5
+            },
+            "branch_scores": {
+              "lexical": 0.4343,
+              "dense": 0.8709944084729173
+            },
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "id": "average_order_value@1",
+            "kind": "metric",
+            "metric_id": "average_order_value@1",
+            "embedding_text": "客单价 同窗口同过滤的下单金额除订单数；零分母返回null commerce.fct_orders order_id  客单价 平均订单金额 aov",
+            "text": "客单价 同窗口同过滤的下单金额除订单数；零分母返回null commerce.fct_orders order_id  country gender age_band traffic_source order_status 客单价 平均订单金额 aov",
+            "source": "contracts/commerce.json#metrics/average_order_value@1",
+            "allowed_dimensions": [
+              "country",
+              "gender",
+              "age_band",
+              "traffic_source",
+              "order_status"
+            ],
+            "score": 0.030158730158730156,
+            "asset_id": "metric:average_order_value@1:096253613bdcb8dd",
+            "ranks": {
+              "lexical": 3,
+              "dense": 10
+            },
+            "branch_scores": {
+              "lexical": 4.4927,
+              "dense": 0.8674634349417818
+            },
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "id": "cancelled_order_rate@1",
+            "kind": "metric",
+            "metric_id": "cancelled_order_rate@1",
+            "embedding_text": "订单取消占比 同UTC下单日窗口及用户筛选内，本次快照Cancelled订单数/全部状态订单数；零分母null；不是支付成功率、历史取消率或成熟 cohort 估计 commerce.fct_orders order_id  订单取消占比 取消订单占比 订单取消率",
+            "text": "订单取消占比 同UTC下单日窗口及用户筛选内，本次快照Cancelled订单数/全部状态订单数；零分母null；不是支付成功率、历史取消率或成熟 cohort 估计 commerce.fct_orders order_id  country gender age_band traffic_source 订单取消占比 取消订单占比 订单取消率",
+            "source": "contracts/commerce.json#metrics/cancelled_order_rate@1",
+            "allowed_dimensions": [
+              "country",
+              "gender",
+              "age_band",
+              "traffic_source"
+            ],
+            "score": 0.029211087420042643,
+            "asset_id": "metric:cancelled_order_rate@1:eb3513db4c1b2880",
+            "ranks": {
+              "lexical": 10,
+              "dense": 7
+            },
+            "branch_scores": {
+              "lexical": 0.4265,
+              "dense": 0.869883092365171
+            },
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "id": "reference-metric-rules",
+            "kind": "reference",
+            "text": "# 指标口径与 grain\n\n唯一计算定义在 contracts/commerce.json，本文件只解释决策约束，不重复维护SQL或公式副本。\n\n- orders事实粒度是 order_id；items事实粒度是 order_item_id。订单指标不能直接按品类查询，当前编译器不会猜Join。\n- 所有窗口依据UTC下单日期，start包含、end不包含。比较须采用明确等时长基准，不能静默把31天月换成30天。\n- 订单量统计全部状态；下单金额不是实收；Complete/Cancelled/Returned仅指当前快照状态。新近 cohort 完成不足可能只是观察时间较短。\n- 订单完成/取消/退货占比必须在同窗口、同用户筛选下使用完整分母。禁止按 order_status 过滤或分组这些占比。\n- ratio先聚合分子分母再除；不能平均日均比例。不同用户数跨组不可直接求和。零分母返回null，不补0。\n- 国家、性别等业务称谓先由维度值解析器链接到实际值。无法匹配的值必须澄清，不能用零结果冒充业务下降。\n- 本地Owner是学习项目占位，水位未验证，数据是合成数据；报告保留这些观察条件。\n",
+            "source": "skills\\warehouse-anomaly-attribution\\references\\metric-rules.md",
+            "source_sha256": "885408d8bc667522e1333b376562ef9d953e5cfd20f79f7f113a23260b7632cc",
+            "asset_id": "reference:reference-metric-rules:c827531913b7f48f",
+            "score": 0.015873015873015872,
+            "ranks": {
+              "dense": 3
+            },
+            "branch_scores": {
+              "dense": 0.875490253731432
+            },
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          }
+        ],
+        "candidates": [
+          {
+            "metric_id": "order_count@1",
+            "match": "hybrid",
+            "rank": 1,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "metric_id": "average_order_value@1",
+            "match": "hybrid",
+            "rank": 2,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "metric_id": "cancelled_order_rate@1",
+            "match": "hybrid",
+            "rank": 3,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          }
+        ],
+        "ambiguities": [],
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+        "trace": {
+          "method": "exact + BM25-style lexical + Dense + RRF(k=60)",
+          "dense": {
+            "status": "ready",
+            "snapshot_id": "136b74b6c11a3bcb9f96c8025bbbdf001b1d4b1828fb70eaa5f960e705ed58ef",
+            "embedding": {
+              "model": "intfloat/multilingual-e5-small",
+              "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+              "local_path": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\embedding-model",
+              "files": {
+                "config.json": "69137736cab8b8903a07fe8afaafdda25aac55415a12a55d1bffa9f581abf959",
+                "model.safetensors": "1a55775f53449dac10a2bcbc312469fac40b96d53198c407081a831f81c98477",
+                "modules.json": "c6e29747481e8b5dd2b58401966aeac910de39092f90cda9a704b1545f902b04",
+                "sentencepiece.bpe.model": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+                "sentence_bert_config.json": "948201d8329907aae938fa62f9ceeed53f5694dacc2b87b9f3b78b37ee986529",
+                "special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
+                "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+                "tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b",
+                "1_Pooling/config.json": "987f7a67a38fa564c849bb5d277c52ab9088a84368fc0be31a354125aebb12a0"
+              },
+              "query_prefix": "query: ",
+              "passage_prefix": "passage: ",
+              "max_tokens": 512,
+              "normalized": true,
+              "runtime": "sentence-transformers CPU",
+              "packages": {
+                "sentence-transformers": "5.1.2",
+                "torch": "2.14.1+cpu",
+                "transformers": "4.57.6",
+                "numpy": "2.5.4"
+              }
+            },
+            "visible_assets": 21,
+            "dimension": 384
+          },
+          "retrieval_binding": {
+            "mode": "hybrid-required",
+            "directory": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\retrieval-index",
+            "active_hash": "ec4c6360dfd9824d18a65d17ef00d1b6788556c6787370219cf7d060b80c61b4",
+            "algorithm": "rrf-k60-v1"
+          },
+          "reranker": "disabled",
+          "scope": "authorized metric assets, cases and references",
+          "index_builds": 1,
+          "requires_structured_resolution": true,
+          "scores_are_probabilities": false
+        }
+      },
+      "semantic_context": {
+        "version": "phase1",
+        "binding": {
+          "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+          "release_id": "d6e0661a6b0846f1bee2b57163ad4bf4",
+          "asset_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+          "subject": "local-study-user",
+          "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1"
+        },
+        "requested_metric_ids": [
+          "order_count@1",
+          "average_order_value@1"
+        ],
+        "metrics": {
+          "order_count@1": {
+            "label": "订单量",
+            "fact": {
+              "table": "commerce.fct_orders",
+              "grain": "order_id",
+              "date": "order_date",
+              "dimensions": [
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source",
+                "order_status"
+              ]
+            },
+            "kind": "count",
+            "unit": "orders",
+            "definition": "UTC下单日内的全部状态订单数",
+            "metric_id": "order_count@1",
+            "contract_version": "commerce-v3-multi-fact",
+            "authority": "contracts/commerce.json#metrics/order_count@1"
+          },
+          "average_order_value@1": {
+            "label": "客单价",
+            "fact": {
+              "table": "commerce.fct_orders",
+              "grain": "order_id",
+              "date": "order_date",
+              "dimensions": [
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source",
+                "order_status"
+              ]
+            },
+            "kind": "ratio",
+            "numerator": "booked_amount@1",
+            "denominator": "order_count@1",
+            "unit": "source_amount/order",
+            "definition": "同窗口同过滤的下单金额除订单数；零分母返回null",
+            "metric_id": "average_order_value@1",
+            "contract_version": "commerce-v3-multi-fact",
+            "authority": "contracts/commerce.json#metrics/average_order_value@1"
+          },
+          "booked_amount@1": {
+            "label": "下单金额",
+            "fact": {
+              "table": "commerce.fct_orders",
+              "grain": "order_id",
+              "date": "order_date",
+              "dimensions": [
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source",
+                "order_status"
+              ]
+            },
+            "kind": "sum",
+            "column": "booked_order_amount",
+            "unit": "source_amount",
+            "definition": "全部状态订单商品金额；不是实收或财务收入",
+            "metric_id": "booked_amount@1",
+            "contract_version": "commerce-v3-multi-fact",
+            "authority": "contracts/commerce.json#metrics/booked_amount@1"
+          }
+        },
+        "components": {
+          "order_count@1": [],
+          "average_order_value@1": [
+            "booked_amount@1",
+            "order_count@1"
+          ],
+          "booked_amount@1": []
+        },
+        "common_dimensions": [
+          "age_band",
+          "country",
+          "day",
+          "gender",
+          "order_status",
+          "traffic_source"
+        ],
+        "relationships": [],
+        "constraints": {
+          "timezone": "UTC",
+          "maximum_window_days": 31,
+          "row_scope": {},
+          "minimum_group_size": 0,
+          "formula_source": "current registry; never search text",
+          "implicit_join_allowed": false
+        },
+        "metadata": {
+          "commerce.fct_orders": {
+            "urn": "urn:local:dataset:duckdb:commerce.fct_orders",
+            "control_lineage": {
+              "edges": [
+                {
+                  "table": "commerce.dim_users",
+                  "column": "user_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "commerce.fct_order_items",
+                  "column": "order_id",
+                  "kind": "group"
+                },
+                {
+                  "table": "commerce.fct_order_items",
+                  "column": "order_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.orders",
+                  "column": "order_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.orders",
+                  "column": "user_id",
+                  "kind": "join"
+                }
+              ],
+              "unresolved": [],
+              "complete_within_supported_scope": true,
+              "scope": "Row membership/control dependencies for supported Select/CTE; not universal SQL lineage"
+            },
+            "field_lineage": {
+              "resolved_fields": [
+                "order_id",
+                "user_id",
+                "order_status",
+                "created_at",
+                "order_date",
+                "shipped_at",
+                "delivered_at",
+                "returned_at",
+                "declared_item_count",
+                "booked_order_amount",
+                "complete_item_amount",
+                "returned_item_amount",
+                "inventory_cost",
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source"
+              ],
+              "unresolved_fields": [
+                "item_count"
+              ],
+              "scope": "value-expression dependencies; excludes join/filter control dependencies",
+              "complete": false
+            },
+            "ownership": {
+              "name": "local-study-owner",
+              "verified_business_owner": false
+            },
+            "quality": {
+              "release_id": "d6e0661a6b0846f1bee2b57163ad4bf4",
+              "status": "PASS",
+              "checks": [
+                "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
+                "test.thelook_lab.unique_dim_products_product_id.ef7b2a9985",
+                "test.thelook_lab.not_null_dim_users_user_id.e754bb5812",
+                "test.thelook_lab.relationships",
+                "test.thelook_lab.unique_dim_users_user_id.bcdc17b9f9",
+                "test.thelook_lab.not_null_fct_order_items_order_item_id.dbaab21f55",
+                "test.thelook_lab.unique_fct_order_items_order_item_id.0dec5f6768",
+                "test.thelook_lab.not_null_fct_orders_order_id.4e687af8d0",
+                "test.thelook_lab.reconciliation",
+                "test.thelook_lab.status_and_item_count",
+                "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
+              ],
+              "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
+              "verified_at": "2026-10-12T05:12:16.904273+00:00"
+            },
+            "schema": [
+              {
+                "name": "order_id",
+                "type": "BIGINT"
+              },
+              {
+                "name": "user_id",
+                "type": "BIGINT"
+              },
+              {
+                "name": "order_status",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "created_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "order_date",
+                "type": "DATE"
+              },
+              {
+                "name": "shipped_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "delivered_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "returned_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "declared_item_count",
+                "type": "BIGINT"
+              },
+              {
+                "name": "item_count",
+                "type": "BIGINT"
+              },
+              {
+                "name": "booked_order_amount",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "complete_item_amount",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "returned_item_amount",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "inventory_cost",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "country",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "gender",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "age_band",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "traffic_source",
+                "type": "VARCHAR"
+              }
+            ],
+            "column_lineage_complete": false
+          }
+        },
+        "dimension_values": {},
+        "unresolved": []
+      },
+      "unresolved": [],
+      "routing": "hybrid_then_structured",
+      "role": "grounded candidates for decisions; not an execution plan",
+      "values_loaded": false
+    },
+    "planning": {
+      "revision": 0,
+      "selected_plan_id": null,
+      "candidates": [],
+      "superseded": []
+    },
+    "status": "COMPLETE",
+    "answer": {
+      "summary": "以权威定义计算平均下单金额。",
+      "summary_verified": false,
+      "causal_claim": false,
+      "evidence": [
+        {
+          "id": "e1",
+          "tool": "run_query",
+          "arguments": {
+            "metric_id": "average_order_value@1",
+            "start": "2026-09-01",
+            "end": "2026-10-01"
+          },
+          "status": "OK",
+          "result": {
+            "columns": [
+              "value"
+            ],
+            "rows": [
+              [
+                88.22046842854883
+              ]
+            ],
+            "metric_id": "average_order_value@1",
+            "definition": "同窗口同过滤的下单金额除订单数；零分母返回null",
+            "unit": "source_amount/order",
+            "grain": "order_id",
+            "release_id": "d6e0661a6b0846f1bee2b57163ad4bf4",
+            "plan_id": "c01df11222c14f80845cf0d21ca29fb5",
+            "result_may_be_truncated": false,
+            "logical_plan": {
+              "scan": "commerce.fct_orders",
+              "grain": "order_id",
+              "time_column": "order_date",
+              "window": {
+                "start": "2026-09-01",
+                "end": "2026-10-01",
+                "timezone": "UTC"
+              },
+              "filters": {},
+              "group_by": [],
+              "aggregation": "ratio",
+              "components": {
+                "numerator": "booked_amount@1",
+                "denominator": "order_count@1"
+              },
+              "semantic_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+              "join_policy": "single fact; no inferred join"
+            },
+            "semantic_resolution": {
+              "binding": {
+                "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+                "release_id": "d6e0661a6b0846f1bee2b57163ad4bf4",
+                "asset_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+                "subject": "local-study-user",
+                "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1"
+              },
+              "metric_ids": [
+                "average_order_value@1"
+              ],
+              "common_dimensions": [
+                "age_band",
+                "country",
+                "day",
+                "gender",
+                "order_status",
+                "traffic_source"
+              ],
+              "relationships": []
+            },
+            "quality": {
+              "dbt_tests_passed": 11,
+              "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+            },
+            "permissions": {
+              "subject": "local-study-user",
+              "minimum_group_size": 0,
+              "row_scope": {}
+            },
+            "temporal": {
+              "mode": "snapshot-observation",
+              "observed_at": "2026-10-11T10:19:14.558627+00:00",
+              "complete_through": null,
+              "verified": false,
+              "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+            },
+            "warnings": [
+              "Synthetic source",
+              "Current dimension/status snapshot; no historical SCD2",
+              "No verified coverage watermark; no causal attribution"
+            ],
+            "provenance": "official-public-synthetic-thelook"
+          }
+        }
+      ]
+    },
+    "runtime": {
+      "queries_used": 1,
+      "elapsed_seconds": 27.125
+    }
+  },
+  "reconciliation": {
+    "actual": 88.22046842854883,
+    "expected": 88.22046842854883,
+    "pass": true
+  },
+  "ambiguity_status": "CLARIFY",
+  "observations": {
+    "nodes_completed": 0,
+    "skills_started": 1,
+    "tool_attempts": 1,
+    "retries": 0,
+    "failed_attempts": 0,
+    "circuits_opened": 0,
+    "queries_reused": 0,
+    "model_token_usage": {},
+    "model_calls": [
+      {
+        "live": false
+      },
+      {
+        "live": false
+      }
+    ],
+    "retrieval_bootstraps": 1,
+    "retrieval_context": {
+      "method": "exact + BM25-style lexical + Dense + RRF(k=60)",
+      "dense": {
+        "status": "ready",
+        "snapshot_id": "136b74b6c11a3bcb9f96c8025bbbdf001b1d4b1828fb70eaa5f960e705ed58ef",
+        "embedding": {
+          "model": "intfloat/multilingual-e5-small",
+          "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+          "local_path": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\embedding-model",
+          "files": {
+            "config.json": "69137736cab8b8903a07fe8afaafdda25aac55415a12a55d1bffa9f581abf959",
+            "model.safetensors": "1a55775f53449dac10a2bcbc312469fac40b96d53198c407081a831f81c98477",
+            "modules.json": "c6e29747481e8b5dd2b58401966aeac910de39092f90cda9a704b1545f902b04",
+            "sentencepiece.bpe.model": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+            "sentence_bert_config.json": "948201d8329907aae938fa62f9ceeed53f5694dacc2b87b9f3b78b37ee986529",
+            "special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
+            "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+            "tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b",
+            "1_Pooling/config.json": "987f7a67a38fa564c849bb5d277c52ab9088a84368fc0be31a354125aebb12a0"
+          },
+          "query_prefix": "query: ",
+          "passage_prefix": "passage: ",
+          "max_tokens": 512,
+          "normalized": true,
+          "runtime": "sentence-transformers CPU",
+          "packages": {
+            "sentence-transformers": "5.1.2",
+            "torch": "2.14.1+cpu",
+            "transformers": "4.57.6",
+            "numpy": "2.5.4"
+          }
+        },
+        "visible_assets": 21,
+        "dimension": 384
+      },
+      "retrieval_binding": {
+        "mode": "hybrid-required",
+        "directory": "C:\\Users\\Nidhog\\OneDrive\\Desktop\\MyAgent\\data\\retrieval-index",
+        "active_hash": "ec4c6360dfd9824d18a65d17ef00d1b6788556c6787370219cf7d060b80c61b4",
+        "algorithm": "rrf-k60-v1"
+      },
+      "reranker": "disabled",
+      "scope": "authorized metric assets, cases and references",
+      "index_builds": 1,
+      "requires_structured_resolution": true,
+      "scores_are_probabilities": false
+    }
+  }
+}

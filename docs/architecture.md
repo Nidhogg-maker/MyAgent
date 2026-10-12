@@ -135,4 +135,4 @@ SQLite 记录任务、状态、事件、查询回执与熔断。恢复重验身�
 
 ## 检索接口统一更新
 
-首次决策通过QueryContextBroker装配RetrievalService候选与SemanticContextResolver权威结构；所有服务计划新增语义绑定，原MCP search也接统一服务。默认按需加载枚举，缓存词法索引，尚未安装Dense/RRF/重排。详见 [第一阶段说明](retrieval-phase1-guide.md)。
+首次决策通过QueryContextBroker装配RetrievalService候选与SemanticContextResolver权威结构；所有服务计划新增语义绑定，原MCP search也接统一服务。默认按需加载枚举，缓存词法索引。第二阶段已增加独立CPU模型Dense召回和RRF融合、原子索引发布、检索模式与快照会话绑定；重排尚未接入。详见 [第一阶段说明](retrieval-phase1-guide.md) 和 [第二阶段说明](retrieval-phase2-guide.md)。

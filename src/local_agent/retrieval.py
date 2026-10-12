@@ -67,7 +67,11 @@ class KnowledgeRetriever:
             if not self.tools._metric_allowed(metric_id):
                 continue
             described = self.tools.describe(metric_id)
+            summary = ' '.join([metric['label'],metric['definition'],described['fact']['table'],
+                described['fact']['grain'],metric.get('column',''),*self.business['aliases'].get(metric_id, [])])
             docs.append({'id':metric_id, 'kind':'metric', 'metric_id':metric_id,
+                # 向量正文不包含主体不同的可见维度；维度由在线 StructuredResolver 授权。
+                'embedding_text': summary,
                 'text':' '.join([metric['label'],metric['definition'],described['fact']['table'],described['fact']['grain'],metric.get('column',''),*described['fact']['dimensions'],*self.business['aliases'].get(metric_id, [])]),
                 'source':'contracts/commerce.json#metrics/' + metric_id, 'allowed_dimensions':described['fact']['dimensions']})
         for case in self.business['cases']:

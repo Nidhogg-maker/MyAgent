@@ -1,0 +1,15 @@
+{
+  "phase2_new_tests": 14,
+  "phase1_and_phase2_targeted": {"passed": 28, "seconds": 6.04},
+  "earlier_full_run": {"passed": 195, "failed": 0},
+  "final_full_run": {"passed": 197, "failed": 1, "seconds": 279.50},
+  "failed_test": "tests/test_runtime_skills.py::test_full_ratio_workflow_quality_and_dimension_contributions",
+  "failure_evidence": {"error": "Skill deadline exceeded", "skill_seconds": 61.422, "configured_limit_seconds": 60, "queries_completed": 14},
+  "isolated_rerun": {"passed": 1, "failed": 0, "seconds_including_fixture": 62.35, "timeout_configuration_changed": false},
+  "real_embedding_demo": {"status": "COMPLETE", "dense_status": "ready", "assets": 21, "dimensions": 384, "queries": 1, "actual": 88.22046842854883, "independent_raw_expected": 88.22046842854883, "live_llm": false},
+  "python_compile": "PASS",
+  "powershell_parser": "PASS",
+  "dependency_pip_check": "PASS",
+  "git_diff_check": "PASS",
+  "model_accuracy_evaluation": "NOT_PERFORMED"
+}

@@ -176,7 +176,7 @@ Agent 运行依赖 DuckDB、SQLGlot、Pydantic、LangGraph、HTTPX、MCP SDK；d
 
 已统一RetrievalService、SemanticContextResolver与QueryContextBroker。自主Agent首次决策自动获得轻量候选与权威语义，可继续自主search_business/resolve_semantics；Task模型、CLI search和原MCP search复用相同服务。每次查询计划重新解析Registry，记录语义/资产/release/权限绑定。
 
-词法索引复用同进程缓存；默认不扫描全部维度枚举。尚无Dense、RRF或Cross-Encoder，规则模式仍为有限语言解析。真实TheLook演示经检索选择客单价并通过raw独立回算，歧义请求零查询停止。
+词法索引复用同进程缓存；默认不扫描全部维度枚举。第一阶段只使用词法召回；第二阶段已增加可选本地Dense与RRF，仍无Cross-Encoder，规则模式仍为有限语言解析。真实TheLook演示经检索选择客单价并通过raw独立回算，歧义请求零查询停止。
 
 ```powershell
 .\.venv\Scripts\python.exe -m local_agent.cli search "2026年9月平均每张订单的金额是多少"
@@ -185,3 +185,13 @@ Agent 运行依赖 DuckDB、SQLGlot、Pydantic、LangGraph、HTTPX、MCP SDK；d
 ```
 
 说明见 [第一阶段使用与调用链](docs/retrieval-phase1-guide.md) 和 [真实数据回执](docs/retrieval-phase1-live-demo.json)。
+
+## 双通路检索第二阶段
+
+已接入独立 CPU 环境的 multilingual-e5-small，离线生成版本化语义资产向量索引，线上先授权再召回，BM25-style/Dense 按稳定资产 ID 经 RRF 融合。融合候选进入第一次 Agent 决策与统一 StructuredResolver；Registry 仍是指标口径唯一来源。
+
+普通 CLI 默认保持词法模式，可用 `OWN_AGENT_RETRIEVAL_MODE=hybrid` 启用。真实 Agent 启动脚本现默认 hybrid，也可传 `-RetrievalMode lexical`。`hybrid-required` 用于验证真实 Dense，模型/索引故障停止；普通 hybrid 明确记录词法降级。发布新索引会使旧会话绑定失效。
+
+安装、调用链、版本与边界见 [第二阶段指南](docs/retrieval-phase2-guide.md)。模型和向量文件只在本机 `data/`，GitHub 保存代码、依赖锁和演示证据；新 clone 需重新准备。当前是少量资产精确扫描，未宣称生产 ANN 吞吐或模型准确率。
+
+验收与后续工作见 [第二阶段完成记录](docs/retrieval-phase2-completion.md)，实际检索名次、Agent结果与raw对账见 [真实向量闭环回执](docs/retrieval-phase2-live-demo.json)。

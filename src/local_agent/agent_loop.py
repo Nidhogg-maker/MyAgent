@@ -148,6 +148,7 @@ class AgentLoop(HarnessRuntime):
             check()
             state['query_context'] = query_context
             proxy.emit('retrieval-bootstrap', {'routing': query_context['routing'],
+                  'retrieval_trace': query_context['discovery']['trace'],
                 'index_version': query_context['discovery']['index_version'],
                 'candidates': query_context['discovery']['candidates'],
                 'unresolved': query_context['unresolved'], 'value_enumeration': False})
