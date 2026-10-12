@@ -1,0 +1,15 @@
+{
+  "source_commit": "63b02c5620d29ac14b0630c4639f6c9d84c0fb69",
+  "core_contract_knowledge_unchanged": true,
+  "dataset_cases": 60,
+  "agent_cases": 12,
+  "score_fixtures_passed": true,
+  "artifact_links_passed": true,
+  "artifacts_sha256": {
+    "agent-results.json": "e0a327e389f941b6cd5e5e39716d72ca9e5af7069c94277262cab627d6f2a4ed",
+    "golden-draft.jsonl": "d4d70f05facda3ec36c667b40d915a33101cf0504b44a5ddffdb548171c68106",
+    "offline-results.json": "c9376d8285aca99a0bc7123e2e4b74fc81c9b5b3e5602fc888c226d42e82dfe1",
+    "REPORT.md": "d14b157d9c9a62e22eb226cf6d65e00c80d7d0600b297d9ae4265506d608675b",
+    "summary.json": "c0a5a54dd4b8efc79e50f0676ef9ad2c5c6a35e9451a9f43c52e1d97f4bfb789"
+  }
+}

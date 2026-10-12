@@ -1,0 +1,51 @@
+{
+  "ranking": {
+    "A0": {
+      "n": 55,
+      "hit5": 27,
+      "top1": 27,
+      "metric_top1_in_pool6": 27,
+      "mrr": 0.4909090909090909,
+      "recall5": 0.4909090909090909
+    },
+    "A1": {
+      "n": 55,
+      "hit5": 50,
+      "top1": 21,
+      "metric_top1_in_pool6": 42,
+      "mrr": 0.6096969696969696,
+      "recall5": 0.9090909090909091
+    },
+    "A2": {
+      "n": 55,
+      "hit5": 42,
+      "top1": 1,
+      "metric_top1_in_pool6": 25,
+      "mrr": 0.3037301587301587,
+      "recall5": 0.7636363636363637
+    },
+    "A3": {
+      "n": 55,
+      "hit5": 50,
+      "top1": 1,
+      "metric_top1_in_pool6": 40,
+      "mrr": 0.408030303030303,
+      "recall5": 0.9090909090909091
+    },
+    "A4": {
+      "n": 55,
+      "hit5": 51,
+      "top1": 2,
+      "metric_top1_in_pool6": 43,
+      "mrr": 0.40441558441558445,
+      "recall5": 0.9272727272727272
+    }
+  },
+  "rules_pass": 28,
+  "rules_total": 60,
+  "execution_pass": 13,
+  "execution_total": 13,
+  "agent_pass": 11,
+  "agent_total": 12,
+  "dataset_sha256": "d4d70f05facda3ec36c667b40d915a33101cf0504b44a5ddffdb548171c68106"
+}

@@ -18,6 +18,7 @@
 |多事实独立对账|multi-plan-demo.py|
 |画像/实际stdio MCP演示|feature-query-demo.py、mcp-local-demo.py|
 |当前源码导航生成|generate-code-map.py|
+|初版60题检索/规则/数据与12题真实Agent评测|correctness-benchmark.py、report-correctness-benchmark.py|
 
 embedding-worker/reranker-worker是内部隔离推理进程；不作为用户提问入口。demo/extensions/runtime/retrieval-phase*-demo/evaluate等为特定路径或历史阶段演示，查看对应文档后使用；部分会覆盖阶段回执。
 

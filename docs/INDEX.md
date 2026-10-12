@@ -8,6 +8,7 @@
 |找到当前类、方法与行号|[源码地图](code-map.md)|
 |系统学习与30道进阶问答|[整体学习手册](PROJECT-STUDY-GUIDE.md)|
 |了解真实验收与未完成边界|[整体验收报告](PROJECT-ACCEPTANCE.md)|
+|查看召回、规则与真实Agent正确性初测|[正确性测试报告](correctness-benchmark/REPORT.md)|
 |安装与本机重建|[环境与依赖](setup-and-dependencies.md)|
 |看用户输入与输出|[交互示例](user-agent-examples.md)|
 |理解数据与粒度|[数据模型](data-model.md)|
