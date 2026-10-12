@@ -9,7 +9,7 @@ tmp_path = WindowsPath('C:/Users/Nidhog/AppData/Local/Temp/pytest-of-Nidhog/pyte
 &gt;       assert result['status']=='INSUFFICIENT_EVIDENCE',result
 E       AssertionError: {'session_id': '8cd9f1060a2842838c53c7b8a41949d0', 'task_input': {'kind': 'diagnose', 'query': {'metric_id': 'complete_order_rate@1', 'start': '2026-09-01', 'end': '2026-09-08', 'filters': {'gender': 'M'}}, 'baseline': {'metric_id': 'complete_order_rate@1', 'start': '2026-08-01', 'end': '2026-08-08', 'filters': {'gender': 'M'}}, 'expected_direction': 'unknown'}, 'query': {'metric_id': 'complete_order_rate@1', 'start': '2026-09-01', 'end': '2026-09-08', 'group_by': [], ...}, 'task': {'kind': 'diagnose', 'query': {'metric_id': 'complete_order_rate@1', 'start': '2026-09-01', 'end': '2026-09-08', 'group_by': [], ...}, 'baseline': {'metric_id': 'complete_order_rate@1', 'start': '2026-08-01', 'end': '2026-08-08', 'group_by': [], ...}, 'expected_direction': 'unknown', ...}, ...}
 E       assert 'STOPPED' == 'INSUFFICIENT_EVIDENCE'
-E         
+E
 E         - INSUFFICIENT_EVIDENCE
 E         + STOPPED
 

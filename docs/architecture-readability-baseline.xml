@@ -2,6 +2,6 @@
     assert result['status']=='INSUFFICIENT_EVIDENCE',result
 E   AssertionError: {'session_id': '04bc9d7d4fce4b48acec161a265af658', 'task_input': {'kind': 'diagnose', 'query': {'metric_id': 'complete..._rate@1', 'start': '2026-08-01', 'end': '2026-08-08', 'group_by': [], ...}, 'expected_direction': 'unknown', ...}, ...}
 E   assert 'STOPPED' == 'INSUFFICIENT_EVIDENCE'
-E     
+E
 E     - INSUFFICIENT_EVIDENCE
 E     + STOPPED</failure></testcase></testsuite></testsuites>
