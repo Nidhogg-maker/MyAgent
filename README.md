@@ -14,7 +14,7 @@
 - 7 项注册查询/分析 Skill，另有独立数据加工 Skill；本地 stdio MCP 暴露 13 个工具。
 - 指标路径支持有限瞬时错误重试与持久熔断；保存任务事件、查询回执、版本与质量证据。
 
-这里的“双路检索”是词法候选发现与结构化上下文解析；没有 embedding 或向量重排。当前以有界 Workflow 为主，不是完全开放的 ReAct 自主规划器。
+这里的“双路检索”是词法候选发现与结构化上下文解析；没有 embedding 或向量重排。默认 ask/chat 使用有界 Workflow；新增 agent 自主工具选择与 --multi-plan 候选方案模式，详见下文。仍不是任意 SQL 或自由任务 DAG。
 
 ## 整体架构
 
@@ -152,3 +152,21 @@ Agent 运行依赖 DuckDB、SQLGlot、Pydantic、LangGraph、HTTPX、MCP SDK；d
 - [Word 版面试问答](docs/MyAgent-Agent与数仓面试进阶问答.docx)
 
 `docs/` 的阶段报告、JSON 回执、测试 XML 和 Word 是不同时间点的记录，可能包含当时工具数量与绝对本机路径；当前功能入口以本 README、架构文档和源码为准。Word 文件不随代码自动更新。
+
+
+## 进阶：自主候选计划与多事实语义查询
+
+沿用自主 AgentLoop，新增 `propose_plans -> select_plan -> run_plan_step`。模型提出并选择候选方案，观察实际回执后继续或重提；服务端验证参数、用户条件、权限、版本与预算。
+
+语义层支持订单/order_item 两种事实粒度先聚合到合法共同维度，再按显式并集/交集关联。新注册 `items_per_order@1`，不开放任意明细 Join、品类分摊或支付归因。多事实查询仍使用确定性 AST 与只读 Worker。
+
+```powershell
+# 合同升级后先重新发布，旧会话需新建
+.\.venv\Scripts\python.exe -m local_agent.cli publish
+.\.venv\Scripts\python.exe -m local_agent.cli multi-query --request config\multi-fact-query.example.json
+.\.venv\Scripts\python.exe scripts\multi-plan-demo.py
+# 真实自主模式需要当前进程OPENAI_API_KEY/OPENAI_MODEL
+.\.venv\Scripts\python.exe -m local_agent.cli agent "UTC闭开[2026-09-01,2026-10-01)按国家查询订单量、商品件数和每单件数，保留分组并集" --multi-plan --max-steps 8
+```
+
+本地演示使用模拟模型决策与真实数据，58个分组raw独立回算通过，不代表真实模型规划准确率。新工具属于Agent进程内适配，原MCP仍13工具、原注册Skill仍7项。详见 [Multi Plan与Join说明](docs/multi-plan-and-join-guide.md) 和 [真实数据演示回执](docs/multi-plan-live-demo.json)。

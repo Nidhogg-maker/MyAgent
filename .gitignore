@@ -15,6 +15,7 @@ __pycache__/
 *.key
 docs/.docx-build/
 docs/github-publish-tests.xml
+docs/multi-plan-regression.xml
 data/
 warehouse-commerce/target/
 warehouse-commerce/logs/

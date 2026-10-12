@@ -113,7 +113,8 @@ class RuntimeTools:
         if fingerprint({k:v for k,v in plan.items() if k!='approval_hash'})!=approval_hash:
             raise ValueError('Runtime plan tampered')
         # 重新规划验证原始请求及完整权限，不仅依赖调用方提供的hash。
-        validated=self.inner.plan(Query.model_validate(plan['requested_query']))
+        from .multi_fact import parse_query
+        validated=self.inner.plan(parse_query(plan['requested_query']))
         if validated['sql']!=plan['sql'] or validated['query']!=plan['query']:
             raise ValueError('Runtime plan no longer valid')
         key=fingerprint({'query':validated['query'],'binding':self.store.get(self.identifier)['binding']})

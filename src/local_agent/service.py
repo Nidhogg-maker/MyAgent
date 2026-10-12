@@ -145,10 +145,12 @@ class AgentTools:
         """工具只接受 Query；生成计划保存在服务内，调用方不能替换 SQL。"""
         release = self.release()
         requested = query
-        query, role = self.access.enforce(query)
+        query, role = self.enforce_request(query)
         check_window(query, release.get('temporal', {}))
         compiled = self.compiler.compile(query, role['minimum_group_size'])
         metadata = self.catalog.context(compiled['table'])
+        for table in compiled.get('tables', []):
+            self.catalog.context(table)
         plan = {**compiled, 'plan_id': uuid.uuid4().hex, 'query': query.model_dump(mode='json'),
                 'principal': self.principal, 'registry_sha256': self.registry.version,
                 'requested_query': requested.model_dump(mode='json'), 'policy_hash': self.access.policy_hash,
@@ -159,6 +161,38 @@ class AgentTools:
         if len(self.plans) > 100:
             self.plans.pop(next(iter(self.plans)))
         return plan
+
+    def enforce_request(self, query):
+        """多事实每个分支独立授权，并施加同一强制行过滤，不借 Join 扩权。"""
+        from .multi_fact import MultiFactQuery
+        if not isinstance(query, MultiFactQuery):
+            return self.access.enforce(query)
+        self.compiler.compile(query)  # 枚举查询前先确认共同维度，不能读取未注册列。
+        for metric in query.metric_ids:
+            role = self.access.metric(metric)
+            if '*' not in role['dimensions'] and not (set(query.group_by) | set(query.filters)) <= set(role['dimensions']):
+                raise AccessDenied('Dimension/column access denied')
+        from .dimensions import DimensionResolver
+        resolver = DimensionResolver(self)
+        normalized = {}
+        for field, value in query.filters.items():
+            found = set()
+            for metric in query.metric_ids:
+                try:
+                    found.add(resolver.resolve(metric, field, value))
+                except ValueError as error:
+                    if not str(error).startswith('CLARIFY:'):
+                        raise
+            # 并集允许某事实没有该组，但所有事实都未知的值不能变成伪零。
+            if len(found) != 1:
+                raise ValueError('CLARIFY: 多事实筛选值未知或无法一致链接：' + field)
+            normalized[field] = found.pop()
+        query = query.model_copy(update={'filters': normalized})
+        effective = [self.access.enforce(query.branch(m)) for m in query.metric_ids]
+        filters = effective[0][0].filters
+        if any(item.filters != filters for item, _ in effective):
+            raise AccessDenied('Multi-fact branches have incompatible authorized row scopes')
+        return query.model_copy(update={'filters': filters}), effective[0][1]
 
     def execute(self, plan_id, approval_hash, timeout_seconds=30, cancel_check=None):
         """重新编译与服务端计划对比；hash 用于完整性，不是远程认证签名。"""
@@ -171,7 +205,8 @@ class AgentTools:
         release = self.release()
         if plan['release_id'] != release['release_id'] or plan['principal'] != self.principal:
             raise ValueError('Plan identity/release mismatch')
-        effective, role = self.access.enforce(Query.model_validate(plan['requested_query']))
+        from .multi_fact import parse_query
+        effective, role = self.enforce_request(parse_query(plan['requested_query']))
         if plan['policy_hash'] != self.access.policy_hash or effective.model_dump(mode='json') != plan['query']:
             raise AccessDenied('Plan policy/row scope changed')
         check_window(effective, release.get('temporal', {}))
@@ -213,7 +248,8 @@ class AgentTools:
             raise ValueError('Query worker failed: ' + result['error'])
         envelope = {**result, 'metric_id': plan['metric'], 'definition': plan['definition'], 'unit': plan['unit'],
                     'grain': plan['grain'], 'release_id': release['release_id'], 'plan_id': plan_id,
-                    'result_may_be_truncated': bool(Query.model_validate(plan['query']).group_by) and len(result['rows']) == plan['query']['limit'],
+                    'result_may_be_truncated': bool(parse_query(plan['query']).group_by) and len(result['rows']) == plan['query']['limit'],
+                    'logical_plan': plan['logical_plan'],
                     'quality': {'dbt_tests_passed': release['dbt_tests_passed'], 'scope': release['quality_scope']},
                     'permissions': {'subject': self.principal, 'minimum_group_size': role['minimum_group_size'], 'row_scope': role['row_filters']},
                     'temporal': release.get('temporal', {}),

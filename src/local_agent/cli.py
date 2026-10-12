@@ -38,8 +38,15 @@ def main(argv=None):
     commands.add_parser('capture-history')
     query = commands.add_parser('query')
     query.add_argument('--request', type=Path, required=True)
+    multi_query = commands.add_parser('multi-query', help='执行显式多事实语义请求')
+    multi_query.add_argument('--request', type=Path, required=True)
     ask = commands.add_parser('ask')
     ask.add_argument('question')
+    agent = commands.add_parser('agent', help='有界自主工具选择与 Workflow 执行')
+    agent.add_argument('question')
+    agent.add_argument('--max-steps', type=int, default=6)
+    agent.add_argument('--max-searches', type=int, default=3)
+    agent.add_argument('--multi-plan', action='store_true', help='候选计划、选择和逐步执行模式')
     profile = commands.add_parser('profile')
     profile.add_argument('--product',choices=['user_profile','product_profile','user_product','session'],required=True)
     profile.add_argument('--as-of',required=True)
@@ -59,7 +66,23 @@ def main(argv=None):
             if args.command=='chat':
                 from .chat import chat_loop
                 return chat_loop(runtime,args.session)
+            if not args.session_id.startswith('feature-'):
+                from .runtime import SessionStore
+                saved = SessionStore(tools.home/'sessions.sqlite').get(args.session_id)
+                if saved['binding'].get('mode') == 'agent':
+                    from .agent_loop import AgentLoop
+                    runtime = AgentLoop(tools)
             result=runtime.show(args.session_id) if args.command=='session' else runtime.cancel(args.session_id) if args.command=='cancel' else runtime.followup(args.session_id,args.text) if args.command=='reply' else runtime.resume(args.session_id)
+        elif args.command=='agent':
+            from .agent_loop import AgentLoop
+            result = AgentLoop(tools).start(args.question, max_steps=args.max_steps,
+                                           max_searches=args.max_searches, multi_plan=args.multi_plan)
+        elif args.command == 'multi-query':
+            from .multi_fact import MultiFactQuery
+            query = MultiFactQuery.model_validate(json.loads(args.request.read_text(encoding='utf-8')))
+            plan = tools.plan(query)
+            result = {'status': 'COMPLETE', 'plan': plan,
+                      'result': tools.execute(plan['plan_id'], plan['approval_hash'])}
         elif args.command=='health':
             from .resilience import CircuitBreaker
             result={'circuits':CircuitBreaker(tools.home/'resilience.sqlite').snapshot(),'scope':'local observation only'}

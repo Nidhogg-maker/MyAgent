@@ -88,6 +88,9 @@ class SQLCompiler:
 
     def compile(self, query: Query, minimum_group_size=0):
         """表/字段来自受信合同；过滤值构建为 SQL 字面量，不能改变 SQL 结构。"""
+        from .multi_fact import MultiFactQuery, MultiFactCompiler
+        if isinstance(query, MultiFactQuery):
+            return MultiFactCompiler(self.registry).compile(query, minimum_group_size)
         metric = self.registry.describe(query.metric_id)
         fact = metric['fact']
         allowed = set(fact['dimensions'])

@@ -126,3 +126,8 @@ SQLite 记录任务、状态、事件、查询回执与熔断。恢复重验身�
 - 未实现生产增量、迟到修正与补数；没有推荐训练和系统模型准确率验收。
 
 更多工程边界和面试答案见 [进阶问答](MyAgent-Agent与数仓面试进阶问答.md)。
+
+
+## 可选进阶模式更新
+
+原ask/chat调用链保留。agent入口已增加模型自主工具选择，--multi-plan模式由模型提出候选、选择并逐步执行；semantic.SQLCompiler现在按类型分发单事实Query与MultiFactQuery。多事实请求先聚合后关联，仅支持注册共同维度和时间基础，不等于任意Join。完整调用链和限制见 [进阶说明](multi-plan-and-join-guide.md)。

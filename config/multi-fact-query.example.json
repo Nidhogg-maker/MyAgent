@@ -1,0 +1,11 @@
+{
+  "kind": "multi_fact",
+  "metric_ids": ["order_count@1", "item_count@1"],
+  "ratio_ids": ["items_per_order@1"],
+  "start": "2026-09-01",
+  "end": "2026-10-01",
+  "group_by": ["country", "traffic_source"],
+  "filters": {},
+  "population": "union",
+  "limit": 100
+}

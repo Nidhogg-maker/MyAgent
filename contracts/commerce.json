@@ -1,5 +1,5 @@
 {
-  "version": "commerce-v2",
+  "version": "commerce-v3-multi-fact",
   "timezone": "UTC",
   "owner": {
     "name": "local-study-owner",
@@ -174,6 +174,48 @@
       "time_semantics": "created-date cohort / current snapshot status",
       "diagnosis_family": "ratio",
       "verification_status": "local-study-defined"
+    }
+  },
+  "multi_fact": {
+    "version": "1",
+    "time_basis": {
+      "orders": "order_created_at_utc_day",
+      "items": "order_created_at_utc_day"
+    },
+    "conformed_dimensions": {
+      "day": {
+        "orders": "day",
+        "items": "day"
+      },
+      "country": {
+        "orders": "country",
+        "items": "country"
+      },
+      "gender": {
+        "orders": "gender",
+        "items": "gender"
+      },
+      "age_band": {
+        "orders": "age_band",
+        "items": "age_band"
+      },
+      "traffic_source": {
+        "orders": "traffic_source",
+        "items": "traffic_source"
+      }
+    },
+    "ratios": {
+      "items_per_order@1": {
+        "numerator": "item_count@1",
+        "denominator": "order_count@1",
+        "unit": "items/order",
+        "definition": "同UTC下单日窗口、共同维度和过滤下的订单商品件数/订单数；不是跨品类分摊或支付转化率",
+        "aliases": [
+          "每单商品件数",
+          "每单件数",
+          "items_per_order@1"
+        ]
+      }
     }
   }
 }

@@ -1,0 +1,2140 @@
+{
+  "mode": "scripted model decisions; real local data; no live model request",
+  "semantic_version": "commerce-v3-multi-fact",
+  "result": {
+    "session_id": "9ac6f63c99a446fb9171342a295318f2",
+    "question": "UTC闭开[2026-09-01,2026-10-01)按国家和渠道查询订单量、商品件数与每单商品件数，保留分组并集",
+    "decisions": [
+      {
+        "action": "tool",
+        "tool": "propose_plans",
+        "arguments": {
+          "candidates": [
+            {
+              "label": "直接语义关联",
+              "approach": "已知目标与合法共同维度，直接执行受控多事实查询",
+              "steps": [
+                {
+                  "tool": "run_multi_fact",
+                  "arguments": {
+                    "kind": "multi_fact",
+                    "metric_ids": [
+                      "order_count@1",
+                      "item_count@1"
+                    ],
+                    "ratio_ids": [
+                      "items_per_order@1"
+                    ],
+                    "start": "2026-09-01",
+                    "end": "2026-10-01",
+                    "group_by": [
+                      "country",
+                      "traffic_source"
+                    ],
+                    "filters": {},
+                    "population": "union",
+                    "limit": 100
+                  }
+                }
+              ]
+            },
+            {
+              "label": "先核对事实上下文",
+              "approach": "先查看订单事实来源与质量，再执行相同口径查询",
+              "steps": [
+                {
+                  "tool": "get_context",
+                  "arguments": {
+                    "metric_id": "order_count@1"
+                  }
+                },
+                {
+                  "tool": "run_multi_fact",
+                  "arguments": {
+                    "kind": "multi_fact",
+                    "metric_ids": [
+                      "order_count@1",
+                      "item_count@1"
+                    ],
+                    "ratio_ids": [
+                      "items_per_order@1"
+                    ],
+                    "start": "2026-09-01",
+                    "end": "2026-10-01",
+                    "group_by": [
+                      "country",
+                      "traffic_source"
+                    ],
+                    "filters": {},
+                    "population": "union",
+                    "limit": 100
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "message": "",
+        "evidence_ids": []
+      },
+      {
+        "action": "tool",
+        "tool": "select_plan",
+        "arguments": {
+          "plan_id": "p-1e6790880a32"
+        },
+        "message": "",
+        "evidence_ids": []
+      },
+      {
+        "action": "tool",
+        "tool": "run_plan_step",
+        "arguments": {
+          "plan_id": "p-1e6790880a32",
+          "step_index": 0
+        },
+        "message": "",
+        "evidence_ids": []
+      },
+      {
+        "action": "tool",
+        "tool": "run_plan_step",
+        "arguments": {
+          "plan_id": "p-1e6790880a32",
+          "step_index": 1
+        },
+        "message": "",
+        "evidence_ids": []
+      },
+      {
+        "action": "finish",
+        "tool": null,
+        "arguments": {},
+        "message": "已分别聚合订单与商品事实后关联；返回观察数值，不确认因果。",
+        "evidence_ids": [
+          "e4"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "e1",
+        "tool": "propose_plans",
+        "arguments": {
+          "candidates": [
+            {
+              "label": "直接语义关联",
+              "approach": "已知目标与合法共同维度，直接执行受控多事实查询",
+              "steps": [
+                {
+                  "tool": "run_multi_fact",
+                  "arguments": {
+                    "kind": "multi_fact",
+                    "metric_ids": [
+                      "order_count@1",
+                      "item_count@1"
+                    ],
+                    "ratio_ids": [
+                      "items_per_order@1"
+                    ],
+                    "start": "2026-09-01",
+                    "end": "2026-10-01",
+                    "group_by": [
+                      "country",
+                      "traffic_source"
+                    ],
+                    "filters": {},
+                    "population": "union",
+                    "limit": 100
+                  }
+                }
+              ]
+            },
+            {
+              "label": "先核对事实上下文",
+              "approach": "先查看订单事实来源与质量，再执行相同口径查询",
+              "steps": [
+                {
+                  "tool": "get_context",
+                  "arguments": {
+                    "metric_id": "order_count@1"
+                  }
+                },
+                {
+                  "tool": "run_multi_fact",
+                  "arguments": {
+                    "kind": "multi_fact",
+                    "metric_ids": [
+                      "order_count@1",
+                      "item_count@1"
+                    ],
+                    "ratio_ids": [
+                      "items_per_order@1"
+                    ],
+                    "start": "2026-09-01",
+                    "end": "2026-10-01",
+                    "group_by": [
+                      "country",
+                      "traffic_source"
+                    ],
+                    "filters": {},
+                    "population": "union",
+                    "limit": 100
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "status": "OK",
+        "result": {
+          "revision": 1,
+          "selected_plan_id": null,
+          "candidates": [
+            {
+              "plan_id": "p-996304c26d03",
+              "revision": 1,
+              "label": "直接语义关联",
+              "approach": "已知目标与合法共同维度，直接执行受控多事实查询",
+              "steps": [
+                {
+                  "tool": "run_multi_fact",
+                  "arguments": {
+                    "kind": "multi_fact",
+                    "metric_ids": [
+                      "order_count@1",
+                      "item_count@1"
+                    ],
+                    "ratio_ids": [
+                      "items_per_order@1"
+                    ],
+                    "start": "2026-09-01",
+                    "end": "2026-10-01",
+                    "group_by": [
+                      "country",
+                      "traffic_source"
+                    ],
+                    "filters": {},
+                    "population": "union",
+                    "limit": 100
+                  }
+                }
+              ],
+              "next_step": 0,
+              "status": "VALIDATED",
+              "query_attempt_upper_bound": 1,
+              "cost_scope": "logical calls before transient retries; not latency/financial estimate"
+            },
+            {
+              "plan_id": "p-1e6790880a32",
+              "revision": 1,
+              "label": "先核对事实上下文",
+              "approach": "先查看订单事实来源与质量，再执行相同口径查询",
+              "steps": [
+                {
+                  "tool": "get_context",
+                  "arguments": {
+                    "metric_id": "order_count@1"
+                  }
+                },
+                {
+                  "tool": "run_multi_fact",
+                  "arguments": {
+                    "kind": "multi_fact",
+                    "metric_ids": [
+                      "order_count@1",
+                      "item_count@1"
+                    ],
+                    "ratio_ids": [
+                      "items_per_order@1"
+                    ],
+                    "start": "2026-09-01",
+                    "end": "2026-10-01",
+                    "group_by": [
+                      "country",
+                      "traffic_source"
+                    ],
+                    "filters": {},
+                    "population": "union",
+                    "limit": 100
+                  }
+                }
+              ],
+              "next_step": 0,
+              "status": "VALIDATED",
+              "query_attempt_upper_bound": 1,
+              "cost_scope": "logical calls before transient retries; not latency/financial estimate"
+            }
+          ],
+          "superseded": []
+        }
+      },
+      {
+        "id": "e2",
+        "tool": "select_plan",
+        "arguments": {
+          "plan_id": "p-1e6790880a32"
+        },
+        "status": "OK",
+        "result": {
+          "plan_id": "p-1e6790880a32",
+          "revision": 1,
+          "label": "先核对事实上下文",
+          "approach": "先查看订单事实来源与质量，再执行相同口径查询",
+          "steps": [
+            {
+              "tool": "get_context",
+              "arguments": {
+                "metric_id": "order_count@1"
+              }
+            },
+            {
+              "tool": "run_multi_fact",
+              "arguments": {
+                "kind": "multi_fact",
+                "metric_ids": [
+                  "order_count@1",
+                  "item_count@1"
+                ],
+                "ratio_ids": [
+                  "items_per_order@1"
+                ],
+                "start": "2026-09-01",
+                "end": "2026-10-01",
+                "group_by": [
+                  "country",
+                  "traffic_source"
+                ],
+                "filters": {},
+                "population": "union",
+                "limit": 100
+              }
+            }
+          ],
+          "next_step": 0,
+          "status": "SELECTED",
+          "query_attempt_upper_bound": 1,
+          "cost_scope": "logical calls before transient retries; not latency/financial estimate"
+        }
+      },
+      {
+        "id": "e3",
+        "tool": "run_plan_step",
+        "arguments": {
+          "plan_id": "p-1e6790880a32",
+          "step_index": 0
+        },
+        "status": "OK",
+        "result": {
+          "plan_id": "p-1e6790880a32",
+          "step_index": 0,
+          "tool": "get_context",
+          "result": {
+            "metric": {
+              "label": "订单量",
+              "fact": {
+                "table": "commerce.fct_orders",
+                "grain": "order_id",
+                "date": "order_date",
+                "dimensions": [
+                  "country",
+                  "gender",
+                  "age_band",
+                  "traffic_source",
+                  "order_status"
+                ]
+              },
+              "kind": "count",
+              "unit": "orders",
+              "definition": "UTC下单日内的全部状态订单数",
+              "metric_id": "order_count@1",
+              "contract_version": "commerce-v3-multi-fact"
+            },
+            "metadata": {
+              "urn": "urn:local:dataset:duckdb:commerce.fct_orders",
+              "control_lineage": {
+                "edges": [
+                  {
+                    "table": "commerce.dim_users",
+                    "column": "user_id",
+                    "kind": "join"
+                  },
+                  {
+                    "table": "commerce.fct_order_items",
+                    "column": "order_id",
+                    "kind": "group"
+                  },
+                  {
+                    "table": "commerce.fct_order_items",
+                    "column": "order_id",
+                    "kind": "join"
+                  },
+                  {
+                    "table": "raw.orders",
+                    "column": "order_id",
+                    "kind": "join"
+                  },
+                  {
+                    "table": "raw.orders",
+                    "column": "user_id",
+                    "kind": "join"
+                  }
+                ],
+                "unresolved": [],
+                "complete_within_supported_scope": true,
+                "scope": "Row membership/control dependencies for supported Select/CTE; not universal SQL lineage"
+              },
+              "field_lineage": {
+                "resolved_fields": [
+                  "order_id",
+                  "user_id",
+                  "order_status",
+                  "created_at",
+                  "order_date",
+                  "shipped_at",
+                  "delivered_at",
+                  "returned_at",
+                  "declared_item_count",
+                  "booked_order_amount",
+                  "complete_item_amount",
+                  "returned_item_amount",
+                  "inventory_cost",
+                  "country",
+                  "gender",
+                  "age_band",
+                  "traffic_source"
+                ],
+                "unresolved_fields": [
+                  "item_count"
+                ],
+                "scope": "value-expression dependencies; excludes join/filter control dependencies",
+                "complete": false
+              },
+              "ownership": {
+                "name": "local-study-owner",
+                "verified_business_owner": false
+              },
+              "quality": {
+                "release_id": "911e51aa56ae4e10bfc40c5a6ccad524",
+                "status": "PASS",
+                "checks": [
+                  "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
+                  "test.thelook_lab.unique_dim_products_product_id.ef7b2a9985",
+                  "test.thelook_lab.not_null_dim_users_user_id.e754bb5812",
+                  "test.thelook_lab.relationships",
+                  "test.thelook_lab.unique_dim_users_user_id.bcdc17b9f9",
+                  "test.thelook_lab.not_null_fct_order_items_order_item_id.dbaab21f55",
+                  "test.thelook_lab.unique_fct_order_items_order_item_id.0dec5f6768",
+                  "test.thelook_lab.not_null_fct_orders_order_id.4e687af8d0",
+                  "test.thelook_lab.reconciliation",
+                  "test.thelook_lab.status_and_item_count",
+                  "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
+                ],
+                "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
+                "verified_at": "2026-10-12T05:04:26.506173+00:00"
+              },
+              "schema": [
+                {
+                  "name": "order_id",
+                  "type": "BIGINT"
+                },
+                {
+                  "name": "user_id",
+                  "type": "BIGINT"
+                },
+                {
+                  "name": "order_status",
+                  "type": "VARCHAR"
+                },
+                {
+                  "name": "created_at",
+                  "type": "TIMESTAMP WITH TIME ZONE"
+                },
+                {
+                  "name": "order_date",
+                  "type": "DATE"
+                },
+                {
+                  "name": "shipped_at",
+                  "type": "TIMESTAMP WITH TIME ZONE"
+                },
+                {
+                  "name": "delivered_at",
+                  "type": "TIMESTAMP WITH TIME ZONE"
+                },
+                {
+                  "name": "returned_at",
+                  "type": "TIMESTAMP WITH TIME ZONE"
+                },
+                {
+                  "name": "declared_item_count",
+                  "type": "BIGINT"
+                },
+                {
+                  "name": "item_count",
+                  "type": "BIGINT"
+                },
+                {
+                  "name": "booked_order_amount",
+                  "type": "DECIMAL(38,4)"
+                },
+                {
+                  "name": "complete_item_amount",
+                  "type": "DECIMAL(38,4)"
+                },
+                {
+                  "name": "returned_item_amount",
+                  "type": "DECIMAL(38,4)"
+                },
+                {
+                  "name": "inventory_cost",
+                  "type": "DECIMAL(38,4)"
+                },
+                {
+                  "name": "country",
+                  "type": "VARCHAR"
+                },
+                {
+                  "name": "gender",
+                  "type": "VARCHAR"
+                },
+                {
+                  "name": "age_band",
+                  "type": "VARCHAR"
+                },
+                {
+                  "name": "traffic_source",
+                  "type": "VARCHAR"
+                }
+              ],
+              "column_lineage_complete": false
+            },
+            "lineage": {
+              "edges": [
+                {
+                  "from": "urn:local:dataset:duckdb:commerce.fct_orders",
+                  "to": "urn:local:dataset:duckdb:raw.orders"
+                },
+                {
+                  "from": "urn:local:dataset:duckdb:commerce.fct_orders",
+                  "to": "urn:local:dataset:duckdb:commerce.fct_order_items"
+                },
+                {
+                  "from": "urn:local:dataset:duckdb:commerce.fct_orders",
+                  "to": "urn:local:dataset:duckdb:commerce.dim_users"
+                },
+                {
+                  "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+                  "to": "urn:local:dataset:duckdb:raw.orders"
+                },
+                {
+                  "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+                  "to": "urn:local:dataset:duckdb:raw.order_items"
+                },
+                {
+                  "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+                  "to": "urn:local:dataset:duckdb:raw.inventory_items"
+                },
+                {
+                  "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+                  "to": "urn:local:dataset:duckdb:commerce.dim_users"
+                },
+                {
+                  "from": "urn:local:dataset:duckdb:commerce.fct_order_items",
+                  "to": "urn:local:dataset:duckdb:commerce.dim_products"
+                },
+                {
+                  "from": "urn:local:dataset:duckdb:commerce.dim_users",
+                  "to": "urn:local:dataset:duckdb:raw.users"
+                },
+                {
+                  "from": "urn:local:dataset:duckdb:commerce.dim_products",
+                  "to": "urn:local:dataset:duckdb:raw.products"
+                },
+                {
+                  "from": "urn:local:dataset:duckdb:commerce.dim_products",
+                  "to": "urn:local:dataset:duckdb:raw.distribution_centers"
+                }
+              ],
+              "truncated": false,
+              "column_lineage_complete": false
+            }
+          },
+          "plan_status": "RUNNING"
+        }
+      },
+      {
+        "id": "e4",
+        "tool": "run_plan_step",
+        "arguments": {
+          "plan_id": "p-1e6790880a32",
+          "step_index": 1
+        },
+        "status": "OK",
+        "result": {
+          "plan_id": "p-1e6790880a32",
+          "step_index": 1,
+          "tool": "run_multi_fact",
+          "result": {
+            "columns": [
+              "country",
+              "traffic_source",
+              "order_count@1",
+              "item_count@1",
+              "items_per_order@1"
+            ],
+            "rows": [
+              [
+                "Australia",
+                "Display",
+                5,
+                6,
+                1.2
+              ],
+              [
+                "Australia",
+                "Email",
+                7,
+                10,
+                1.4285714285714286
+              ],
+              [
+                "Australia",
+                "Facebook",
+                9,
+                11,
+                1.2222222222222223
+              ],
+              [
+                "Australia",
+                "Organic",
+                29,
+                35,
+                1.206896551724138
+              ],
+              [
+                "Australia",
+                "Search",
+                115,
+                166,
+                1.4434782608695653
+              ],
+              [
+                "Belgium",
+                "Display",
+                2,
+                3,
+                1.5
+              ],
+              [
+                "Belgium",
+                "Email",
+                4,
+                4,
+                1.0
+              ],
+              [
+                "Belgium",
+                "Facebook",
+                6,
+                9,
+                1.5
+              ],
+              [
+                "Belgium",
+                "Organic",
+                17,
+                28,
+                1.6470588235294117
+              ],
+              [
+                "Belgium",
+                "Search",
+                60,
+                82,
+                1.3666666666666667
+              ],
+              [
+                "Brasil",
+                "Display",
+                38,
+                53,
+                1.394736842105263
+              ],
+              [
+                "Brasil",
+                "Email",
+                40,
+                69,
+                1.725
+              ],
+              [
+                "Brasil",
+                "Facebook",
+                44,
+                59,
+                1.3409090909090908
+              ],
+              [
+                "Brasil",
+                "Organic",
+                124,
+                178,
+                1.435483870967742
+              ],
+              [
+                "Brasil",
+                "Search",
+                637,
+                922,
+                1.4474097331240188
+              ],
+              [
+                "China",
+                "Display",
+                81,
+                115,
+                1.4197530864197532
+              ],
+              [
+                "China",
+                "Email",
+                118,
+                179,
+                1.5169491525423728
+              ],
+              [
+                "China",
+                "Facebook",
+                162,
+                240,
+                1.4814814814814814
+              ],
+              [
+                "China",
+                "Organic",
+                351,
+                531,
+                1.5128205128205128
+              ],
+              [
+                "China",
+                "Search",
+                1503,
+                2250,
+                1.4970059880239521
+              ],
+              [
+                "Deutschland",
+                "Search",
+                1,
+                1,
+                1.0
+              ],
+              [
+                "France",
+                "Display",
+                9,
+                12,
+                1.3333333333333333
+              ],
+              [
+                "France",
+                "Email",
+                17,
+                26,
+                1.5294117647058822
+              ],
+              [
+                "France",
+                "Facebook",
+                15,
+                20,
+                1.3333333333333333
+              ],
+              [
+                "France",
+                "Organic",
+                59,
+                83,
+                1.4067796610169492
+              ],
+              [
+                "France",
+                "Search",
+                207,
+                286,
+                1.3816425120772946
+              ],
+              [
+                "Germany",
+                "Display",
+                11,
+                13,
+                1.1818181818181819
+              ],
+              [
+                "Germany",
+                "Email",
+                8,
+                11,
+                1.375
+              ],
+              [
+                "Germany",
+                "Facebook",
+                19,
+                30,
+                1.5789473684210527
+              ],
+              [
+                "Germany",
+                "Organic",
+                43,
+                57,
+                1.3255813953488371
+              ],
+              [
+                "Germany",
+                "Search",
+                171,
+                250,
+                1.4619883040935673
+              ],
+              [
+                "Japan",
+                "Display",
+                10,
+                14,
+                1.4
+              ],
+              [
+                "Japan",
+                "Email",
+                4,
+                7,
+                1.75
+              ],
+              [
+                "Japan",
+                "Facebook",
+                11,
+                19,
+                1.7272727272727273
+              ],
+              [
+                "Japan",
+                "Organic",
+                19,
+                25,
+                1.3157894736842106
+              ],
+              [
+                "Japan",
+                "Search",
+                104,
+                130,
+                1.25
+              ],
+              [
+                "Poland",
+                "Email",
+                1,
+                1,
+                1.0
+              ],
+              [
+                "Poland",
+                "Search",
+                4,
+                7,
+                1.75
+              ],
+              [
+                "South Korea",
+                "Display",
+                12,
+                13,
+                1.0833333333333333
+              ],
+              [
+                "South Korea",
+                "Email",
+                15,
+                21,
+                1.4
+              ],
+              [
+                "South Korea",
+                "Facebook",
+                18,
+                28,
+                1.5555555555555556
+              ],
+              [
+                "South Korea",
+                "Organic",
+                45,
+                69,
+                1.5333333333333334
+              ],
+              [
+                "South Korea",
+                "Search",
+                224,
+                326,
+                1.4553571428571428
+              ],
+              [
+                "Spain",
+                "Display",
+                6,
+                9,
+                1.5
+              ],
+              [
+                "Spain",
+                "Email",
+                11,
+                13,
+                1.1818181818181819
+              ],
+              [
+                "Spain",
+                "Facebook",
+                18,
+                25,
+                1.3888888888888888
+              ],
+              [
+                "Spain",
+                "Organic",
+                43,
+                60,
+                1.3953488372093024
+              ],
+              [
+                "Spain",
+                "Search",
+                167,
+                247,
+                1.4790419161676647
+              ],
+              [
+                "United Kingdom",
+                "Display",
+                11,
+                21,
+                1.9090909090909092
+              ],
+              [
+                "United Kingdom",
+                "Email",
+                12,
+                16,
+                1.3333333333333333
+              ],
+              [
+                "United Kingdom",
+                "Facebook",
+                26,
+                31,
+                1.1923076923076923
+              ],
+              [
+                "United Kingdom",
+                "Organic",
+                47,
+                59,
+                1.2553191489361701
+              ],
+              [
+                "United Kingdom",
+                "Search",
+                179,
+                267,
+                1.4916201117318435
+              ],
+              [
+                "United States",
+                "Display",
+                55,
+                90,
+                1.6363636363636365
+              ],
+              [
+                "United States",
+                "Email",
+                66,
+                95,
+                1.4393939393939394
+              ],
+              [
+                "United States",
+                "Facebook",
+                78,
+                116,
+                1.4871794871794872
+              ],
+              [
+                "United States",
+                "Organic",
+                219,
+                328,
+                1.4977168949771689
+              ],
+              [
+                "United States",
+                "Search",
+                1002,
+                1462,
+                1.4590818363273452
+              ]
+            ],
+            "metric_id": [
+              "order_count@1",
+              "item_count@1",
+              "items_per_order@1"
+            ],
+            "definition": {
+              "metrics": {
+                "order_count@1": "UTC下单日内的全部状态订单数",
+                "item_count@1": "一订单明细记为一件，源没有quantity字段"
+              },
+              "ratios": {
+                "items_per_order@1": {
+                  "numerator": "item_count@1",
+                  "denominator": "order_count@1",
+                  "unit": "items/order",
+                  "definition": "同UTC下单日窗口、共同维度和过滤下的订单商品件数/订单数；不是跨品类分摊或支付转化率",
+                  "aliases": [
+                    "每单商品件数",
+                    "每单件数",
+                    "items_per_order@1"
+                  ]
+                }
+              }
+            },
+            "unit": {
+              "order_count@1": "orders",
+              "item_count@1": "items",
+              "items_per_order@1": "items/order"
+            },
+            "grain": [
+              "country",
+              "traffic_source"
+            ],
+            "release_id": "911e51aa56ae4e10bfc40c5a6ccad524",
+            "plan_id": "7004bb5e2083406e870270e3577371e2",
+            "result_may_be_truncated": false,
+            "logical_plan": {
+              "branches": [
+                {
+                  "metric_id": "order_count@1",
+                  "source_grain": "order_id",
+                  "target_grain": [
+                    "country",
+                    "traffic_source"
+                  ],
+                  "scan": "commerce.fct_orders",
+                  "aggregation": "count"
+                },
+                {
+                  "metric_id": "item_count@1",
+                  "source_grain": "order_item_id",
+                  "target_grain": [
+                    "country",
+                    "traffic_source"
+                  ],
+                  "scan": "commerce.fct_order_items",
+                  "aggregation": "count"
+                }
+              ],
+              "target_grain": [
+                "country",
+                "traffic_source"
+              ],
+              "join_policy": "aggregate each fact before joining conformed keys",
+              "population": "union",
+              "null_semantics": "missing branch stays null; not zero",
+              "timezone": "UTC",
+              "time_basis": "order_created_at_utc_day",
+              "semantic_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea"
+            },
+            "quality": {
+              "dbt_tests_passed": 11,
+              "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+            },
+            "permissions": {
+              "subject": "local-study-user",
+              "minimum_group_size": 0,
+              "row_scope": {}
+            },
+            "temporal": {
+              "mode": "snapshot-observation",
+              "observed_at": "2026-10-11T10:19:14.558627+00:00",
+              "complete_through": null,
+              "verified": false,
+              "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+            },
+            "warnings": [
+              "Synthetic source",
+              "Current dimension/status snapshot; no historical SCD2",
+              "No verified coverage watermark; no causal attribution"
+            ],
+            "provenance": "official-public-synthetic-thelook"
+          },
+          "plan_status": "COMPLETE"
+        }
+      }
+    ],
+    "model_calls": [
+      {
+        "live": false,
+        "provider": "scripted-demo"
+      },
+      {
+        "live": false,
+        "provider": "scripted-demo"
+      },
+      {
+        "live": false,
+        "provider": "scripted-demo"
+      },
+      {
+        "live": false,
+        "provider": "scripted-demo"
+      },
+      {
+        "live": false,
+        "provider": "scripted-demo"
+      }
+    ],
+    "planning": {
+      "revision": 1,
+      "selected_plan_id": "p-1e6790880a32",
+      "candidates": [
+        {
+          "plan_id": "p-996304c26d03",
+          "revision": 1,
+          "label": "直接语义关联",
+          "approach": "已知目标与合法共同维度，直接执行受控多事实查询",
+          "steps": [
+            {
+              "tool": "run_multi_fact",
+              "arguments": {
+                "kind": "multi_fact",
+                "metric_ids": [
+                  "order_count@1",
+                  "item_count@1"
+                ],
+                "ratio_ids": [
+                  "items_per_order@1"
+                ],
+                "start": "2026-09-01",
+                "end": "2026-10-01",
+                "group_by": [
+                  "country",
+                  "traffic_source"
+                ],
+                "filters": {},
+                "population": "union",
+                "limit": 100
+              }
+            }
+          ],
+          "next_step": 0,
+          "status": "VALIDATED",
+          "query_attempt_upper_bound": 1,
+          "cost_scope": "logical calls before transient retries; not latency/financial estimate"
+        },
+        {
+          "plan_id": "p-1e6790880a32",
+          "revision": 1,
+          "label": "先核对事实上下文",
+          "approach": "先查看订单事实来源与质量，再执行相同口径查询",
+          "steps": [
+            {
+              "tool": "get_context",
+              "arguments": {
+                "metric_id": "order_count@1"
+              }
+            },
+            {
+              "tool": "run_multi_fact",
+              "arguments": {
+                "kind": "multi_fact",
+                "metric_ids": [
+                  "order_count@1",
+                  "item_count@1"
+                ],
+                "ratio_ids": [
+                  "items_per_order@1"
+                ],
+                "start": "2026-09-01",
+                "end": "2026-10-01",
+                "group_by": [
+                  "country",
+                  "traffic_source"
+                ],
+                "filters": {},
+                "population": "union",
+                "limit": 100
+              }
+            }
+          ],
+          "next_step": 2,
+          "status": "COMPLETE",
+          "query_attempt_upper_bound": 1,
+          "cost_scope": "logical calls before transient retries; not latency/financial estimate"
+        }
+      ],
+      "superseded": []
+    },
+    "status": "COMPLETE",
+    "answer": {
+      "summary": "已分别聚合订单与商品事实后关联；返回观察数值，不确认因果。",
+      "summary_verified": false,
+      "causal_claim": false,
+      "evidence": [
+        {
+          "id": "e4",
+          "tool": "run_plan_step",
+          "arguments": {
+            "plan_id": "p-1e6790880a32",
+            "step_index": 1
+          },
+          "status": "OK",
+          "result": {
+            "plan_id": "p-1e6790880a32",
+            "step_index": 1,
+            "tool": "run_multi_fact",
+            "result": {
+              "columns": [
+                "country",
+                "traffic_source",
+                "order_count@1",
+                "item_count@1",
+                "items_per_order@1"
+              ],
+              "rows": [
+                [
+                  "Australia",
+                  "Display",
+                  5,
+                  6,
+                  1.2
+                ],
+                [
+                  "Australia",
+                  "Email",
+                  7,
+                  10,
+                  1.4285714285714286
+                ],
+                [
+                  "Australia",
+                  "Facebook",
+                  9,
+                  11,
+                  1.2222222222222223
+                ],
+                [
+                  "Australia",
+                  "Organic",
+                  29,
+                  35,
+                  1.206896551724138
+                ],
+                [
+                  "Australia",
+                  "Search",
+                  115,
+                  166,
+                  1.4434782608695653
+                ],
+                [
+                  "Belgium",
+                  "Display",
+                  2,
+                  3,
+                  1.5
+                ],
+                [
+                  "Belgium",
+                  "Email",
+                  4,
+                  4,
+                  1.0
+                ],
+                [
+                  "Belgium",
+                  "Facebook",
+                  6,
+                  9,
+                  1.5
+                ],
+                [
+                  "Belgium",
+                  "Organic",
+                  17,
+                  28,
+                  1.6470588235294117
+                ],
+                [
+                  "Belgium",
+                  "Search",
+                  60,
+                  82,
+                  1.3666666666666667
+                ],
+                [
+                  "Brasil",
+                  "Display",
+                  38,
+                  53,
+                  1.394736842105263
+                ],
+                [
+                  "Brasil",
+                  "Email",
+                  40,
+                  69,
+                  1.725
+                ],
+                [
+                  "Brasil",
+                  "Facebook",
+                  44,
+                  59,
+                  1.3409090909090908
+                ],
+                [
+                  "Brasil",
+                  "Organic",
+                  124,
+                  178,
+                  1.435483870967742
+                ],
+                [
+                  "Brasil",
+                  "Search",
+                  637,
+                  922,
+                  1.4474097331240188
+                ],
+                [
+                  "China",
+                  "Display",
+                  81,
+                  115,
+                  1.4197530864197532
+                ],
+                [
+                  "China",
+                  "Email",
+                  118,
+                  179,
+                  1.5169491525423728
+                ],
+                [
+                  "China",
+                  "Facebook",
+                  162,
+                  240,
+                  1.4814814814814814
+                ],
+                [
+                  "China",
+                  "Organic",
+                  351,
+                  531,
+                  1.5128205128205128
+                ],
+                [
+                  "China",
+                  "Search",
+                  1503,
+                  2250,
+                  1.4970059880239521
+                ],
+                [
+                  "Deutschland",
+                  "Search",
+                  1,
+                  1,
+                  1.0
+                ],
+                [
+                  "France",
+                  "Display",
+                  9,
+                  12,
+                  1.3333333333333333
+                ],
+                [
+                  "France",
+                  "Email",
+                  17,
+                  26,
+                  1.5294117647058822
+                ],
+                [
+                  "France",
+                  "Facebook",
+                  15,
+                  20,
+                  1.3333333333333333
+                ],
+                [
+                  "France",
+                  "Organic",
+                  59,
+                  83,
+                  1.4067796610169492
+                ],
+                [
+                  "France",
+                  "Search",
+                  207,
+                  286,
+                  1.3816425120772946
+                ],
+                [
+                  "Germany",
+                  "Display",
+                  11,
+                  13,
+                  1.1818181818181819
+                ],
+                [
+                  "Germany",
+                  "Email",
+                  8,
+                  11,
+                  1.375
+                ],
+                [
+                  "Germany",
+                  "Facebook",
+                  19,
+                  30,
+                  1.5789473684210527
+                ],
+                [
+                  "Germany",
+                  "Organic",
+                  43,
+                  57,
+                  1.3255813953488371
+                ],
+                [
+                  "Germany",
+                  "Search",
+                  171,
+                  250,
+                  1.4619883040935673
+                ],
+                [
+                  "Japan",
+                  "Display",
+                  10,
+                  14,
+                  1.4
+                ],
+                [
+                  "Japan",
+                  "Email",
+                  4,
+                  7,
+                  1.75
+                ],
+                [
+                  "Japan",
+                  "Facebook",
+                  11,
+                  19,
+                  1.7272727272727273
+                ],
+                [
+                  "Japan",
+                  "Organic",
+                  19,
+                  25,
+                  1.3157894736842106
+                ],
+                [
+                  "Japan",
+                  "Search",
+                  104,
+                  130,
+                  1.25
+                ],
+                [
+                  "Poland",
+                  "Email",
+                  1,
+                  1,
+                  1.0
+                ],
+                [
+                  "Poland",
+                  "Search",
+                  4,
+                  7,
+                  1.75
+                ],
+                [
+                  "South Korea",
+                  "Display",
+                  12,
+                  13,
+                  1.0833333333333333
+                ],
+                [
+                  "South Korea",
+                  "Email",
+                  15,
+                  21,
+                  1.4
+                ],
+                [
+                  "South Korea",
+                  "Facebook",
+                  18,
+                  28,
+                  1.5555555555555556
+                ],
+                [
+                  "South Korea",
+                  "Organic",
+                  45,
+                  69,
+                  1.5333333333333334
+                ],
+                [
+                  "South Korea",
+                  "Search",
+                  224,
+                  326,
+                  1.4553571428571428
+                ],
+                [
+                  "Spain",
+                  "Display",
+                  6,
+                  9,
+                  1.5
+                ],
+                [
+                  "Spain",
+                  "Email",
+                  11,
+                  13,
+                  1.1818181818181819
+                ],
+                [
+                  "Spain",
+                  "Facebook",
+                  18,
+                  25,
+                  1.3888888888888888
+                ],
+                [
+                  "Spain",
+                  "Organic",
+                  43,
+                  60,
+                  1.3953488372093024
+                ],
+                [
+                  "Spain",
+                  "Search",
+                  167,
+                  247,
+                  1.4790419161676647
+                ],
+                [
+                  "United Kingdom",
+                  "Display",
+                  11,
+                  21,
+                  1.9090909090909092
+                ],
+                [
+                  "United Kingdom",
+                  "Email",
+                  12,
+                  16,
+                  1.3333333333333333
+                ],
+                [
+                  "United Kingdom",
+                  "Facebook",
+                  26,
+                  31,
+                  1.1923076923076923
+                ],
+                [
+                  "United Kingdom",
+                  "Organic",
+                  47,
+                  59,
+                  1.2553191489361701
+                ],
+                [
+                  "United Kingdom",
+                  "Search",
+                  179,
+                  267,
+                  1.4916201117318435
+                ],
+                [
+                  "United States",
+                  "Display",
+                  55,
+                  90,
+                  1.6363636363636365
+                ],
+                [
+                  "United States",
+                  "Email",
+                  66,
+                  95,
+                  1.4393939393939394
+                ],
+                [
+                  "United States",
+                  "Facebook",
+                  78,
+                  116,
+                  1.4871794871794872
+                ],
+                [
+                  "United States",
+                  "Organic",
+                  219,
+                  328,
+                  1.4977168949771689
+                ],
+                [
+                  "United States",
+                  "Search",
+                  1002,
+                  1462,
+                  1.4590818363273452
+                ]
+              ],
+              "metric_id": [
+                "order_count@1",
+                "item_count@1",
+                "items_per_order@1"
+              ],
+              "definition": {
+                "metrics": {
+                  "order_count@1": "UTC下单日内的全部状态订单数",
+                  "item_count@1": "一订单明细记为一件，源没有quantity字段"
+                },
+                "ratios": {
+                  "items_per_order@1": {
+                    "numerator": "item_count@1",
+                    "denominator": "order_count@1",
+                    "unit": "items/order",
+                    "definition": "同UTC下单日窗口、共同维度和过滤下的订单商品件数/订单数；不是跨品类分摊或支付转化率",
+                    "aliases": [
+                      "每单商品件数",
+                      "每单件数",
+                      "items_per_order@1"
+                    ]
+                  }
+                }
+              },
+              "unit": {
+                "order_count@1": "orders",
+                "item_count@1": "items",
+                "items_per_order@1": "items/order"
+              },
+              "grain": [
+                "country",
+                "traffic_source"
+              ],
+              "release_id": "911e51aa56ae4e10bfc40c5a6ccad524",
+              "plan_id": "7004bb5e2083406e870270e3577371e2",
+              "result_may_be_truncated": false,
+              "logical_plan": {
+                "branches": [
+                  {
+                    "metric_id": "order_count@1",
+                    "source_grain": "order_id",
+                    "target_grain": [
+                      "country",
+                      "traffic_source"
+                    ],
+                    "scan": "commerce.fct_orders",
+                    "aggregation": "count"
+                  },
+                  {
+                    "metric_id": "item_count@1",
+                    "source_grain": "order_item_id",
+                    "target_grain": [
+                      "country",
+                      "traffic_source"
+                    ],
+                    "scan": "commerce.fct_order_items",
+                    "aggregation": "count"
+                  }
+                ],
+                "target_grain": [
+                  "country",
+                  "traffic_source"
+                ],
+                "join_policy": "aggregate each fact before joining conformed keys",
+                "population": "union",
+                "null_semantics": "missing branch stays null; not zero",
+                "timezone": "UTC",
+                "time_basis": "order_created_at_utc_day",
+                "semantic_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea"
+              },
+              "quality": {
+                "dbt_tests_passed": 11,
+                "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+              },
+              "permissions": {
+                "subject": "local-study-user",
+                "minimum_group_size": 0,
+                "row_scope": {}
+              },
+              "temporal": {
+                "mode": "snapshot-observation",
+                "observed_at": "2026-10-11T10:19:14.558627+00:00",
+                "complete_through": null,
+                "verified": false,
+                "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+              },
+              "warnings": [
+                "Synthetic source",
+                "Current dimension/status snapshot; no historical SCD2",
+                "No verified coverage watermark; no causal attribution"
+              ],
+              "provenance": "official-public-synthetic-thelook"
+            },
+            "plan_status": "COMPLETE"
+          }
+        }
+      ]
+    },
+    "runtime": {
+      "queries_used": 1,
+      "elapsed_seconds": 11.125
+    }
+  },
+  "independent_raw_checks": [
+    {
+      "country": "Australia",
+      "traffic_source": "Display",
+      "orders": 5,
+      "items": 6,
+      "pass": true
+    },
+    {
+      "country": "Australia",
+      "traffic_source": "Email",
+      "orders": 7,
+      "items": 10,
+      "pass": true
+    },
+    {
+      "country": "Australia",
+      "traffic_source": "Facebook",
+      "orders": 9,
+      "items": 11,
+      "pass": true
+    },
+    {
+      "country": "Australia",
+      "traffic_source": "Organic",
+      "orders": 29,
+      "items": 35,
+      "pass": true
+    },
+    {
+      "country": "Australia",
+      "traffic_source": "Search",
+      "orders": 115,
+      "items": 166,
+      "pass": true
+    },
+    {
+      "country": "Belgium",
+      "traffic_source": "Display",
+      "orders": 2,
+      "items": 3,
+      "pass": true
+    },
+    {
+      "country": "Belgium",
+      "traffic_source": "Email",
+      "orders": 4,
+      "items": 4,
+      "pass": true
+    },
+    {
+      "country": "Belgium",
+      "traffic_source": "Facebook",
+      "orders": 6,
+      "items": 9,
+      "pass": true
+    },
+    {
+      "country": "Belgium",
+      "traffic_source": "Organic",
+      "orders": 17,
+      "items": 28,
+      "pass": true
+    },
+    {
+      "country": "Belgium",
+      "traffic_source": "Search",
+      "orders": 60,
+      "items": 82,
+      "pass": true
+    },
+    {
+      "country": "Brasil",
+      "traffic_source": "Display",
+      "orders": 38,
+      "items": 53,
+      "pass": true
+    },
+    {
+      "country": "Brasil",
+      "traffic_source": "Email",
+      "orders": 40,
+      "items": 69,
+      "pass": true
+    },
+    {
+      "country": "Brasil",
+      "traffic_source": "Facebook",
+      "orders": 44,
+      "items": 59,
+      "pass": true
+    },
+    {
+      "country": "Brasil",
+      "traffic_source": "Organic",
+      "orders": 124,
+      "items": 178,
+      "pass": true
+    },
+    {
+      "country": "Brasil",
+      "traffic_source": "Search",
+      "orders": 637,
+      "items": 922,
+      "pass": true
+    },
+    {
+      "country": "China",
+      "traffic_source": "Display",
+      "orders": 81,
+      "items": 115,
+      "pass": true
+    },
+    {
+      "country": "China",
+      "traffic_source": "Email",
+      "orders": 118,
+      "items": 179,
+      "pass": true
+    },
+    {
+      "country": "China",
+      "traffic_source": "Facebook",
+      "orders": 162,
+      "items": 240,
+      "pass": true
+    },
+    {
+      "country": "China",
+      "traffic_source": "Organic",
+      "orders": 351,
+      "items": 531,
+      "pass": true
+    },
+    {
+      "country": "China",
+      "traffic_source": "Search",
+      "orders": 1503,
+      "items": 2250,
+      "pass": true
+    },
+    {
+      "country": "Deutschland",
+      "traffic_source": "Search",
+      "orders": 1,
+      "items": 1,
+      "pass": true
+    },
+    {
+      "country": "France",
+      "traffic_source": "Display",
+      "orders": 9,
+      "items": 12,
+      "pass": true
+    },
+    {
+      "country": "France",
+      "traffic_source": "Email",
+      "orders": 17,
+      "items": 26,
+      "pass": true
+    },
+    {
+      "country": "France",
+      "traffic_source": "Facebook",
+      "orders": 15,
+      "items": 20,
+      "pass": true
+    },
+    {
+      "country": "France",
+      "traffic_source": "Organic",
+      "orders": 59,
+      "items": 83,
+      "pass": true
+    },
+    {
+      "country": "France",
+      "traffic_source": "Search",
+      "orders": 207,
+      "items": 286,
+      "pass": true
+    },
+    {
+      "country": "Germany",
+      "traffic_source": "Display",
+      "orders": 11,
+      "items": 13,
+      "pass": true
+    },
+    {
+      "country": "Germany",
+      "traffic_source": "Email",
+      "orders": 8,
+      "items": 11,
+      "pass": true
+    },
+    {
+      "country": "Germany",
+      "traffic_source": "Facebook",
+      "orders": 19,
+      "items": 30,
+      "pass": true
+    },
+    {
+      "country": "Germany",
+      "traffic_source": "Organic",
+      "orders": 43,
+      "items": 57,
+      "pass": true
+    },
+    {
+      "country": "Germany",
+      "traffic_source": "Search",
+      "orders": 171,
+      "items": 250,
+      "pass": true
+    },
+    {
+      "country": "Japan",
+      "traffic_source": "Display",
+      "orders": 10,
+      "items": 14,
+      "pass": true
+    },
+    {
+      "country": "Japan",
+      "traffic_source": "Email",
+      "orders": 4,
+      "items": 7,
+      "pass": true
+    },
+    {
+      "country": "Japan",
+      "traffic_source": "Facebook",
+      "orders": 11,
+      "items": 19,
+      "pass": true
+    },
+    {
+      "country": "Japan",
+      "traffic_source": "Organic",
+      "orders": 19,
+      "items": 25,
+      "pass": true
+    },
+    {
+      "country": "Japan",
+      "traffic_source": "Search",
+      "orders": 104,
+      "items": 130,
+      "pass": true
+    },
+    {
+      "country": "Poland",
+      "traffic_source": "Email",
+      "orders": 1,
+      "items": 1,
+      "pass": true
+    },
+    {
+      "country": "Poland",
+      "traffic_source": "Search",
+      "orders": 4,
+      "items": 7,
+      "pass": true
+    },
+    {
+      "country": "South Korea",
+      "traffic_source": "Display",
+      "orders": 12,
+      "items": 13,
+      "pass": true
+    },
+    {
+      "country": "South Korea",
+      "traffic_source": "Email",
+      "orders": 15,
+      "items": 21,
+      "pass": true
+    },
+    {
+      "country": "South Korea",
+      "traffic_source": "Facebook",
+      "orders": 18,
+      "items": 28,
+      "pass": true
+    },
+    {
+      "country": "South Korea",
+      "traffic_source": "Organic",
+      "orders": 45,
+      "items": 69,
+      "pass": true
+    },
+    {
+      "country": "South Korea",
+      "traffic_source": "Search",
+      "orders": 224,
+      "items": 326,
+      "pass": true
+    },
+    {
+      "country": "Spain",
+      "traffic_source": "Display",
+      "orders": 6,
+      "items": 9,
+      "pass": true
+    },
+    {
+      "country": "Spain",
+      "traffic_source": "Email",
+      "orders": 11,
+      "items": 13,
+      "pass": true
+    },
+    {
+      "country": "Spain",
+      "traffic_source": "Facebook",
+      "orders": 18,
+      "items": 25,
+      "pass": true
+    },
+    {
+      "country": "Spain",
+      "traffic_source": "Organic",
+      "orders": 43,
+      "items": 60,
+      "pass": true
+    },
+    {
+      "country": "Spain",
+      "traffic_source": "Search",
+      "orders": 167,
+      "items": 247,
+      "pass": true
+    },
+    {
+      "country": "United Kingdom",
+      "traffic_source": "Display",
+      "orders": 11,
+      "items": 21,
+      "pass": true
+    },
+    {
+      "country": "United Kingdom",
+      "traffic_source": "Email",
+      "orders": 12,
+      "items": 16,
+      "pass": true
+    },
+    {
+      "country": "United Kingdom",
+      "traffic_source": "Facebook",
+      "orders": 26,
+      "items": 31,
+      "pass": true
+    },
+    {
+      "country": "United Kingdom",
+      "traffic_source": "Organic",
+      "orders": 47,
+      "items": 59,
+      "pass": true
+    },
+    {
+      "country": "United Kingdom",
+      "traffic_source": "Search",
+      "orders": 179,
+      "items": 267,
+      "pass": true
+    },
+    {
+      "country": "United States",
+      "traffic_source": "Display",
+      "orders": 55,
+      "items": 90,
+      "pass": true
+    },
+    {
+      "country": "United States",
+      "traffic_source": "Email",
+      "orders": 66,
+      "items": 95,
+      "pass": true
+    },
+    {
+      "country": "United States",
+      "traffic_source": "Facebook",
+      "orders": 78,
+      "items": 116,
+      "pass": true
+    },
+    {
+      "country": "United States",
+      "traffic_source": "Organic",
+      "orders": 219,
+      "items": 328,
+      "pass": true
+    },
+    {
+      "country": "United States",
+      "traffic_source": "Search",
+      "orders": 1002,
+      "items": 1462,
+      "pass": true
+    }
+  ],
+  "checks_scope": "all returned groups; not an untruncated population claim"
+}
