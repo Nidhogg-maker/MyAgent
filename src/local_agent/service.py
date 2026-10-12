@@ -147,9 +147,16 @@ class AgentTools:
         requested = query
         query, role = self.enforce_request(query)
         check_window(query, release.get('temporal', {}))
-        compiled = self.compiler.compile(query, role['minimum_group_size'])
         from .semantic_context import SemanticContextResolver
         semantic_context = SemanticContextResolver(self).resolve_request(query)
+        from .query_templates import QueryTemplateCache
+        import sqlite3
+        try:
+            compiled, template_trace = QueryTemplateCache(self.home).compile(self.compiler,query,
+                role['minimum_group_size'],semantic_context['binding'])
+        except (sqlite3.Error,OSError):
+            compiled = self.compiler.compile(query,role['minimum_group_size'])
+            template_trace = {'status':'fallback','reason':'local_template_store_unavailable','results_cached':False}
         metadata = self.catalog.context(compiled['table'])
         for table in compiled.get('tables', []):
             self.catalog.context(table)
@@ -162,6 +169,7 @@ class AgentTools:
             'metric_ids': semantic_context['requested_metric_ids'],
             'common_dimensions': semantic_context['common_dimensions'],
             'relationships': semantic_context['relationships']}
+        plan['template_cache'] = template_trace
         plan['approval_hash'] = fingerprint(plan)
         self.plans[plan['plan_id']] = json.loads(json.dumps(plan))
         if len(self.plans) > 100:
@@ -260,6 +268,7 @@ class AgentTools:
                     'result_may_be_truncated': bool(parse_query(plan['query']).group_by) and len(result['rows']) == plan['query']['limit'],
                     'logical_plan': plan['logical_plan'],
                     'semantic_resolution': plan['semantic_resolution'],
+                    'template_cache': plan.get('template_cache',{}),
                     'quality': {'dbt_tests_passed': release['dbt_tests_passed'], 'scope': release['quality_scope']},
                     'permissions': {'subject': self.principal, 'minimum_group_size': role['minimum_group_size'], 'row_scope': role['row_filters']},
                     'temporal': release.get('temporal', {}),

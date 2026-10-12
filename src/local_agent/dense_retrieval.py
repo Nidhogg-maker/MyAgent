@@ -5,9 +5,12 @@ import os
 from pathlib import Path
 import subprocess
 import uuid
+from collections import OrderedDict
 from typing import Protocol
 from .semantic import ROOT, file_hash
 from .semantic_context import asset_version
+
+_QUERY_VECTORS = OrderedDict()
 
 
 def digest(value):
@@ -31,6 +34,17 @@ class LocalEmbeddingProvider:
         self.identity = identity
 
     def encode(self, texts, kind):
+        cache_key = digest({'identity':self.identity,'texts':texts,'kind':kind,
+            'worker':file_hash(ROOT/'scripts/embedding-worker.py')})
+        if kind == 'query' and cache_key in _QUERY_VECTORS:
+            # 缓存不依赖事实数据；命中前确认实际模型仍与身份一致。
+            root = Path(self.identity['local_path']).resolve()
+            for name, expected in self.identity['files'].items():
+                path = (root/name).resolve()
+                if not path.is_relative_to(root) or file_hash(path) != expected:
+                    raise ValueError('Embedding model checksum mismatch')
+            _QUERY_VECTORS.move_to_end(cache_key)
+            return [list(v) for v in _QUERY_VECTORS[cache_key]]
         executable = Path(os.environ.get('OWN_AGENT_EMBEDDING_PYTHON',
                           str(ROOT/'.retrieval-venv/Scripts/python.exe')))
         payload = {'identity': self.identity, 'texts': texts, 'kind': kind}
@@ -40,7 +54,15 @@ class LocalEmbeddingProvider:
         if result.returncode:
             # 不把模型下载/进程完整 stderr 放入用户上下文。
             raise RuntimeError('embedding_worker_failed')
-        return json.loads(result.stdout)['vectors']
+        vectors = json.loads(result.stdout)['vectors']
+        if kind == 'query':
+            normalized(vectors)
+            if len(vectors) != len(texts):
+                raise ValueError('Query vector count mismatch')
+            _QUERY_VECTORS[cache_key] = tuple(tuple(v) for v in vectors)
+            while len(_QUERY_VECTORS) > 32:
+                _QUERY_VECTORS.popitem(last=False)
+        return vectors
 
 
 def normalized(vectors, dimension=None):

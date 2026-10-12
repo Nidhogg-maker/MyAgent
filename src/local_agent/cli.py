@@ -19,6 +19,7 @@ def main(argv=None):
     commands.add_parser('metrics')
     commands.add_parser('skills')
     commands.add_parser('health')
+    commands.add_parser('template-cache', help='查看本地主体语义IR缓存；不显示数据结果')
     chat = commands.add_parser('chat')
     chat.add_argument('--session')
     for action in ('session','resume','cancel'):
@@ -87,6 +88,10 @@ def main(argv=None):
             plan = tools.plan(query)
             result = {'status': 'COMPLETE', 'plan': plan,
                       'result': tools.execute(plan['plan_id'], plan['approval_hash'])}
+        elif args.command=='template-cache':
+            from .query_templates import QueryTemplateCache
+            tools.access.role()
+            result = QueryTemplateCache(tools.home).stats()
         elif args.command=='health':
             from .resilience import CircuitBreaker
             result={'circuits':CircuitBreaker(tools.home/'resilience.sqlite').snapshot(),'scope':'local observation only'}

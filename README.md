@@ -195,3 +195,11 @@ Agent 运行依赖 DuckDB、SQLGlot、Pydantic、LangGraph、HTTPX、MCP SDK；d
 安装、调用链、版本与边界见 [第二阶段指南](docs/retrieval-phase2-guide.md)。模型和向量文件只在本机 `data/`，GitHub 保存代码、依赖锁和演示证据；新 clone 需重新准备。当前是少量资产精确扫描，未宣称生产 ANN 吞吐或模型准确率。
 
 验收与后续工作见 [第二阶段完成记录](docs/retrieval-phase2-completion.md)，实际检索名次、Agent结果与raw对账见 [真实向量闭环回执](docs/retrieval-phase2-live-demo.json)。
+
+## 双通路检索第三阶段
+
+已接入本地多语言 Cross-Encoder：精确指标/明确歧义跳过，候选竞争或长尾才对最多10份授权资产重排。真实 Agent 启动脚本默认 `hybrid + auto`；模型故障保留原排序并记录降级，`required` 模式用于强制验收。普通 CLI 可设置 `OWN_AGENT_RERANK_MODE=auto`，首用准备命令为 `.\.retrieval-venv\Scripts\python.exe scripts\prepare-reranker.py`。
+
+高频语义 IR 模板缓存保存聚合 AST，绑定语义、权限、模板/编译实现版本；每次重新绑定日期/筛选值/LIMIT，执行前从 Registry 独立重编译。跨事实仍先聚合后 Join；没有跨会话数据结果缓存。查询向量与重排打分各有32条同进程缓存，减少重复问题的模型加载；新问题仍使用隔离CPU子进程。
+
+调用关系、设置与边界见 [第三阶段指南](docs/retrieval-phase3-guide.md)，验证结果见 [完成记录](docs/retrieval-phase3-completion.md) 和 [真实模型闭环回执](docs/retrieval-phase3-live-demo.json)。

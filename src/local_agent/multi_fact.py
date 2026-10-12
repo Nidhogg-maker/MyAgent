@@ -43,7 +43,7 @@ class MultiFactCompiler:
     def __init__(self, registry):
         self.registry = registry
 
-    def compile(self, query, minimum_group_size=0):
+    def compile(self, query, minimum_group_size=0, aggregation_ir=None):
         contract = self.registry.contract.get('multi_fact', {})
         if not contract:
             raise ValueError('Multi-fact contract is missing')
@@ -75,7 +75,7 @@ class MultiFactCompiler:
         logical = []
         for i, identifier in enumerate(query.metric_ids):
             # 分支不能先 LIMIT 再 Join：先完整聚合，最后限制展示结果。
-            branch = compiler.compile(query.branch(identifier), minimum_group_size)
+            branch = compiler.compile(query.branch(identifier), minimum_group_size, aggregation_ir)
             # AST 由受控单事实编译器生成，不接受模型 SQL。
             import sqlglot
             sql = sqlglot.parse_one(branch['sql'], read='duckdb')

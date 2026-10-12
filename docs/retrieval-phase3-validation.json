@@ -1,0 +1,14 @@
+{
+  "new_phase3_tests": 16,
+  "full_run": {"collected": 212, "passed": 212, "failed": 0, "seconds": 269.86},
+  "final_related_tests": {"passed": 61, "failed": 0, "seconds": 14.47, "includes_two_later_model_cache_tests": true},
+  "current_total_tests": 214,
+  "results_must_not_be_added": true,
+  "real_model_demo": {"dense": "ready", "reranker": "ready", "score_type": "raw_logit_not_probability", "warm_score_cache": true, "agent_status": "COMPLETE", "live_llm": false, "average_order_value": 88.22046842854883, "raw_reconciliation": true, "template_rebinding_counts": [1311, 1379], "both_raw_counts_match": true},
+  "timeout_limits_relaxed": false,
+  "python_compile": "PASS",
+  "powershell_parser": "PASS",
+  "cli_template_cache": "PASS",
+  "git_diff_check": "PASS",
+  "model_accuracy_evaluation": "NOT_PERFORMED"
+}

@@ -86,11 +86,11 @@ class SQLCompiler:
             return exp.Div(this=exp.Cast(this=numerator, to=exp.DataType.build('DOUBLE')), expression=exp.Nullif(this=denominator, expression=exp.Literal.number(0)))
         raise ValueError('Unsupported metric aggregation')
 
-    def compile(self, query: Query, minimum_group_size=0):
+    def compile(self, query: Query, minimum_group_size=0, aggregation_ir=None):
         """表/字段来自受信合同；过滤值构建为 SQL 字面量，不能改变 SQL 结构。"""
         from .multi_fact import MultiFactQuery, MultiFactCompiler
         if isinstance(query, MultiFactQuery):
-            return MultiFactCompiler(self.registry).compile(query, minimum_group_size)
+            return MultiFactCompiler(self.registry).compile(query, minimum_group_size, aggregation_ir)
         metric = self.registry.describe(query.metric_id)
         fact = metric['fact']
         allowed = set(fact['dimensions'])
@@ -98,7 +98,8 @@ class SQLCompiler:
             raise ValueError('Illegal dimension for fact grain; no implicit joins')
         dims = [exp.column(fact['date'] if d == 'day' else d) for d in query.group_by]
         selected = [node.copy().as_(label) for node, label in zip(dims, query.group_by)]
-        statement = exp.select(*selected, self.expression(query.metric_id).as_('value')).from_(fact['table'])
+        aggregation = aggregation_ir[query.metric_id].copy() if aggregation_ir else self.expression(query.metric_id)
+        statement = exp.select(*selected, aggregation.as_('value')).from_(fact['table'])
         conditions = [exp.GTE(this=exp.column(fact['date']), expression=exp.Cast(this=exp.Literal.string(query.start.isoformat()), to=exp.DataType.build('DATE'))),
                       exp.LT(this=exp.column(fact['date']), expression=exp.Cast(this=exp.Literal.string(query.end.isoformat()), to=exp.DataType.build('DATE')))]
         conditions += [exp.EQ(this=exp.column(key), expression=exp.Literal.string(value)) for key, value in query.filters.items()]
