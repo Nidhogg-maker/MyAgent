@@ -1,0 +1,1757 @@
+{
+  "mode": "scripted model; real TheLook; no live model API request",
+  "non_alias_question": "2026年9月平均每张订单的金额是多少",
+  "retrieval_driven_answer": {
+    "session_id": "fe4fe214c88f480a8c2ab50328d897e5",
+    "question": "2026年9月平均每张订单的金额是多少",
+    "decisions": [
+      {
+        "action": "tool",
+        "tool": "run_query",
+        "arguments": {
+          "metric_id": "average_order_value@1",
+          "start": "2026-09-01",
+          "end": "2026-10-01"
+        },
+        "message": "",
+        "evidence_ids": []
+      },
+      {
+        "action": "finish",
+        "tool": null,
+        "arguments": {},
+        "message": "已根据首次检索得到的权威口径计算平均下单金额；不是实收。",
+        "evidence_ids": [
+          "e1"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "e1",
+        "tool": "run_query",
+        "arguments": {
+          "metric_id": "average_order_value@1",
+          "start": "2026-09-01",
+          "end": "2026-10-01"
+        },
+        "status": "OK",
+        "result": {
+          "columns": [
+            "value"
+          ],
+          "rows": [
+            [
+              88.22046842854883
+            ]
+          ],
+          "metric_id": "average_order_value@1",
+          "definition": "同窗口同过滤的下单金额除订单数；零分母返回null",
+          "unit": "source_amount/order",
+          "grain": "order_id",
+          "release_id": "cfd867b780994843bb9abb66d80ec383",
+          "plan_id": "00d8b2acce2142aab43efe0ff9f23fe9",
+          "result_may_be_truncated": false,
+          "logical_plan": {
+            "scan": "commerce.fct_orders",
+            "grain": "order_id",
+            "time_column": "order_date",
+            "window": {
+              "start": "2026-09-01",
+              "end": "2026-10-01",
+              "timezone": "UTC"
+            },
+            "filters": {},
+            "group_by": [],
+            "aggregation": "ratio",
+            "components": {
+              "numerator": "booked_amount@1",
+              "denominator": "order_count@1"
+            },
+            "semantic_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "join_policy": "single fact; no inferred join"
+          },
+          "semantic_resolution": {
+            "binding": {
+              "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+              "release_id": "cfd867b780994843bb9abb66d80ec383",
+              "asset_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+              "subject": "local-study-user",
+              "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1"
+            },
+            "metric_ids": [
+              "average_order_value@1"
+            ],
+            "common_dimensions": [
+              "age_band",
+              "country",
+              "day",
+              "gender",
+              "order_status",
+              "traffic_source"
+            ],
+            "relationships": []
+          },
+          "quality": {
+            "dbt_tests_passed": 11,
+            "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+          },
+          "permissions": {
+            "subject": "local-study-user",
+            "minimum_group_size": 0,
+            "row_scope": {}
+          },
+          "temporal": {
+            "mode": "snapshot-observation",
+            "observed_at": "2026-10-11T10:19:14.558627+00:00",
+            "complete_through": null,
+            "verified": false,
+            "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+          },
+          "warnings": [
+            "Synthetic source",
+            "Current dimension/status snapshot; no historical SCD2",
+            "No verified coverage watermark; no causal attribution"
+          ],
+          "provenance": "official-public-synthetic-thelook"
+        }
+      }
+    ],
+    "model_calls": [
+      {
+        "live": false,
+        "provider": "scripted-context-consumer"
+      },
+      {
+        "live": false,
+        "provider": "scripted-context-consumer"
+      }
+    ],
+    "query_context": {
+      "version": "phase1",
+      "discovery": {
+        "status": "CANDIDATES",
+        "hits": [
+          {
+            "id": "case-aov",
+            "kind": "case",
+            "text": "2026年9月各国家客单价 同窗口聚合金额除订单数，不能平均已有日均客单价",
+            "source": "knowledge/business.json#cases/case-aov",
+            "score": 15.3337,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "id": "case-sales-ambiguity",
+            "kind": "case",
+            "text": "销售额是多少 先确认下单金额还是已完成商品金额，不把任一口径称实收",
+            "source": "knowledge/business.json#cases/case-sales-ambiguity",
+            "score": 12.922,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "id": "average_order_value@1",
+            "kind": "metric",
+            "metric_id": "average_order_value@1",
+            "text": "客单价 同窗口同过滤的下单金额除订单数；零分母返回null commerce.fct_orders order_id  country gender age_band traffic_source order_status 客单价 平均订单金额 aov",
+            "source": "contracts/commerce.json#metrics/average_order_value@1",
+            "allowed_dimensions": [
+              "country",
+              "gender",
+              "age_band",
+              "traffic_source",
+              "order_status"
+            ],
+            "score": 4.4927,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "id": "booked_amount@1",
+            "kind": "metric",
+            "metric_id": "booked_amount@1",
+            "text": "下单金额 全部状态订单商品金额；不是实收或财务收入 commerce.fct_orders order_id booked_order_amount country gender age_band traffic_source order_status 下单金额 订单金额 booked amount",
+            "source": "contracts/commerce.json#metrics/booked_amount@1",
+            "allowed_dimensions": [
+              "country",
+              "gender",
+              "age_band",
+              "traffic_source",
+              "order_status"
+            ],
+            "score": 2.3845,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "id": "complete_item_amount@1",
+            "kind": "metric",
+            "metric_id": "complete_item_amount@1",
+            "text": "已完成商品金额 下单日窗口内、本次快照Complete明细金额；不是历史当日状态 commerce.fct_order_items order_item_id booked_item_amount country gender age_band traffic_source item_status category brand department distribution_center_id 已完成商品金额 complete item amount",
+            "source": "contracts/commerce.json#metrics/complete_item_amount@1",
+            "allowed_dimensions": [
+              "country",
+              "gender",
+              "age_band",
+              "traffic_source",
+              "item_status",
+              "category",
+              "brand",
+              "department",
+              "distribution_center_id"
+            ],
+            "score": 1.8618,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "id": "order_count@1",
+            "kind": "metric",
+            "metric_id": "order_count@1",
+            "text": "订单量 UTC下单日内的全部状态订单数 commerce.fct_orders order_id  country gender age_band traffic_source order_status 订单量 订单数 下单量 order count",
+            "source": "contracts/commerce.json#metrics/order_count@1",
+            "allowed_dimensions": [
+              "country",
+              "gender",
+              "age_band",
+              "traffic_source",
+              "order_status"
+            ],
+            "score": 0.4343,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          }
+        ],
+        "candidates": [
+          {
+            "metric_id": "average_order_value@1",
+            "match": "lexical",
+            "rank": 1,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "metric_id": "booked_amount@1",
+            "match": "lexical",
+            "rank": 2,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "metric_id": "complete_item_amount@1",
+            "match": "lexical",
+            "rank": 3,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "metric_id": "order_count@1",
+            "match": "lexical",
+            "rank": 4,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          }
+        ],
+        "ambiguities": [],
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+        "trace": {
+          "method": "exact + cached BM25-style lexical; no dense/RRF/reranker",
+          "scope": "authorized metric assets, cases and references",
+          "index_builds": 1,
+          "requires_structured_resolution": true,
+          "scores_are_probabilities": false
+        }
+      },
+      "semantic_context": {
+        "version": "phase1",
+        "binding": {
+          "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+          "release_id": "cfd867b780994843bb9abb66d80ec383",
+          "asset_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+          "subject": "local-study-user",
+          "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1"
+        },
+        "requested_metric_ids": [
+          "average_order_value@1",
+          "booked_amount@1"
+        ],
+        "metrics": {
+          "average_order_value@1": {
+            "label": "客单价",
+            "fact": {
+              "table": "commerce.fct_orders",
+              "grain": "order_id",
+              "date": "order_date",
+              "dimensions": [
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source",
+                "order_status"
+              ]
+            },
+            "kind": "ratio",
+            "numerator": "booked_amount@1",
+            "denominator": "order_count@1",
+            "unit": "source_amount/order",
+            "definition": "同窗口同过滤的下单金额除订单数；零分母返回null",
+            "metric_id": "average_order_value@1",
+            "contract_version": "commerce-v3-multi-fact",
+            "authority": "contracts/commerce.json#metrics/average_order_value@1"
+          },
+          "booked_amount@1": {
+            "label": "下单金额",
+            "fact": {
+              "table": "commerce.fct_orders",
+              "grain": "order_id",
+              "date": "order_date",
+              "dimensions": [
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source",
+                "order_status"
+              ]
+            },
+            "kind": "sum",
+            "column": "booked_order_amount",
+            "unit": "source_amount",
+            "definition": "全部状态订单商品金额；不是实收或财务收入",
+            "metric_id": "booked_amount@1",
+            "contract_version": "commerce-v3-multi-fact",
+            "authority": "contracts/commerce.json#metrics/booked_amount@1"
+          },
+          "order_count@1": {
+            "label": "订单量",
+            "fact": {
+              "table": "commerce.fct_orders",
+              "grain": "order_id",
+              "date": "order_date",
+              "dimensions": [
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source",
+                "order_status"
+              ]
+            },
+            "kind": "count",
+            "unit": "orders",
+            "definition": "UTC下单日内的全部状态订单数",
+            "metric_id": "order_count@1",
+            "contract_version": "commerce-v3-multi-fact",
+            "authority": "contracts/commerce.json#metrics/order_count@1"
+          }
+        },
+        "components": {
+          "average_order_value@1": [
+            "booked_amount@1",
+            "order_count@1"
+          ],
+          "booked_amount@1": [],
+          "order_count@1": []
+        },
+        "common_dimensions": [
+          "age_band",
+          "country",
+          "day",
+          "gender",
+          "order_status",
+          "traffic_source"
+        ],
+        "relationships": [],
+        "constraints": {
+          "timezone": "UTC",
+          "maximum_window_days": 31,
+          "row_scope": {},
+          "minimum_group_size": 0,
+          "formula_source": "current registry; never search text",
+          "implicit_join_allowed": false
+        },
+        "metadata": {
+          "commerce.fct_orders": {
+            "urn": "urn:local:dataset:duckdb:commerce.fct_orders",
+            "control_lineage": {
+              "edges": [
+                {
+                  "table": "commerce.dim_users",
+                  "column": "user_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "commerce.fct_order_items",
+                  "column": "order_id",
+                  "kind": "group"
+                },
+                {
+                  "table": "commerce.fct_order_items",
+                  "column": "order_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.orders",
+                  "column": "order_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.orders",
+                  "column": "user_id",
+                  "kind": "join"
+                }
+              ],
+              "unresolved": [],
+              "complete_within_supported_scope": true,
+              "scope": "Row membership/control dependencies for supported Select/CTE; not universal SQL lineage"
+            },
+            "field_lineage": {
+              "resolved_fields": [
+                "order_id",
+                "user_id",
+                "order_status",
+                "created_at",
+                "order_date",
+                "shipped_at",
+                "delivered_at",
+                "returned_at",
+                "declared_item_count",
+                "booked_order_amount",
+                "complete_item_amount",
+                "returned_item_amount",
+                "inventory_cost",
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source"
+              ],
+              "unresolved_fields": [
+                "item_count"
+              ],
+              "scope": "value-expression dependencies; excludes join/filter control dependencies",
+              "complete": false
+            },
+            "ownership": {
+              "name": "local-study-owner",
+              "verified_business_owner": false
+            },
+            "quality": {
+              "release_id": "cfd867b780994843bb9abb66d80ec383",
+              "status": "PASS",
+              "checks": [
+                "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
+                "test.thelook_lab.unique_dim_products_product_id.ef7b2a9985",
+                "test.thelook_lab.not_null_dim_users_user_id.e754bb5812",
+                "test.thelook_lab.relationships",
+                "test.thelook_lab.unique_dim_users_user_id.bcdc17b9f9",
+                "test.thelook_lab.not_null_fct_order_items_order_item_id.dbaab21f55",
+                "test.thelook_lab.unique_fct_order_items_order_item_id.0dec5f6768",
+                "test.thelook_lab.not_null_fct_orders_order_id.4e687af8d0",
+                "test.thelook_lab.reconciliation",
+                "test.thelook_lab.status_and_item_count",
+                "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
+              ],
+              "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
+              "verified_at": "2026-10-12T05:33:17.242033+00:00"
+            },
+            "schema": [
+              {
+                "name": "order_id",
+                "type": "BIGINT"
+              },
+              {
+                "name": "user_id",
+                "type": "BIGINT"
+              },
+              {
+                "name": "order_status",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "created_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "order_date",
+                "type": "DATE"
+              },
+              {
+                "name": "shipped_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "delivered_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "returned_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "declared_item_count",
+                "type": "BIGINT"
+              },
+              {
+                "name": "item_count",
+                "type": "BIGINT"
+              },
+              {
+                "name": "booked_order_amount",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "complete_item_amount",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "returned_item_amount",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "inventory_cost",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "country",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "gender",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "age_band",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "traffic_source",
+                "type": "VARCHAR"
+              }
+            ],
+            "column_lineage_complete": false
+          }
+        },
+        "dimension_values": {},
+        "unresolved": []
+      },
+      "unresolved": [],
+      "routing": "lexical_then_structured",
+      "role": "grounded candidates for decisions; not an execution plan",
+      "values_loaded": false
+    },
+    "planning": {
+      "revision": 0,
+      "selected_plan_id": null,
+      "candidates": [],
+      "superseded": []
+    },
+    "status": "COMPLETE",
+    "answer": {
+      "summary": "已根据首次检索得到的权威口径计算平均下单金额；不是实收。",
+      "summary_verified": false,
+      "causal_claim": false,
+      "evidence": [
+        {
+          "id": "e1",
+          "tool": "run_query",
+          "arguments": {
+            "metric_id": "average_order_value@1",
+            "start": "2026-09-01",
+            "end": "2026-10-01"
+          },
+          "status": "OK",
+          "result": {
+            "columns": [
+              "value"
+            ],
+            "rows": [
+              [
+                88.22046842854883
+              ]
+            ],
+            "metric_id": "average_order_value@1",
+            "definition": "同窗口同过滤的下单金额除订单数；零分母返回null",
+            "unit": "source_amount/order",
+            "grain": "order_id",
+            "release_id": "cfd867b780994843bb9abb66d80ec383",
+            "plan_id": "00d8b2acce2142aab43efe0ff9f23fe9",
+            "result_may_be_truncated": false,
+            "logical_plan": {
+              "scan": "commerce.fct_orders",
+              "grain": "order_id",
+              "time_column": "order_date",
+              "window": {
+                "start": "2026-09-01",
+                "end": "2026-10-01",
+                "timezone": "UTC"
+              },
+              "filters": {},
+              "group_by": [],
+              "aggregation": "ratio",
+              "components": {
+                "numerator": "booked_amount@1",
+                "denominator": "order_count@1"
+              },
+              "semantic_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+              "join_policy": "single fact; no inferred join"
+            },
+            "semantic_resolution": {
+              "binding": {
+                "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+                "release_id": "cfd867b780994843bb9abb66d80ec383",
+                "asset_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+                "subject": "local-study-user",
+                "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1"
+              },
+              "metric_ids": [
+                "average_order_value@1"
+              ],
+              "common_dimensions": [
+                "age_band",
+                "country",
+                "day",
+                "gender",
+                "order_status",
+                "traffic_source"
+              ],
+              "relationships": []
+            },
+            "quality": {
+              "dbt_tests_passed": 11,
+              "scope": "grain, relationships, statuses and amounts; not full temporal/funnel completeness"
+            },
+            "permissions": {
+              "subject": "local-study-user",
+              "minimum_group_size": 0,
+              "row_scope": {}
+            },
+            "temporal": {
+              "mode": "snapshot-observation",
+              "observed_at": "2026-10-11T10:19:14.558627+00:00",
+              "complete_through": null,
+              "verified": false,
+              "reason": "No producer completeness attestation; source maximum timestamp is not a watermark"
+            },
+            "warnings": [
+              "Synthetic source",
+              "Current dimension/status snapshot; no historical SCD2",
+              "No verified coverage watermark; no causal attribution"
+            ],
+            "provenance": "official-public-synthetic-thelook"
+          }
+        }
+      ]
+    },
+    "runtime": {
+      "queries_used": 1,
+      "elapsed_seconds": 7.342999999993481
+    }
+  },
+  "independent_raw_reconciliation": {
+    "actual": 88.22046842854883,
+    "expected": 88.22046842854883,
+    "pass": true
+  },
+  "ambiguous_query": {
+    "session_id": "22af390fcc45475bbf9d57491ddcb775",
+    "question": "2026年9月销售额是多少",
+    "decisions": [
+      {
+        "action": "tool",
+        "tool": "run_query",
+        "arguments": {
+          "metric_id": "booked_amount@1",
+          "start": "2026-09-01",
+          "end": "2026-10-01"
+        },
+        "message": "",
+        "evidence_ids": []
+      }
+    ],
+    "observations": [],
+    "model_calls": [
+      {
+        "live": false
+      }
+    ],
+    "query_context": {
+      "version": "phase1",
+      "discovery": {
+        "status": "CLARIFY",
+        "hits": [
+          {
+            "id": "case-sales-ambiguity",
+            "kind": "case",
+            "text": "销售额是多少 先确认下单金额还是已完成商品金额，不把任一口径称实收",
+            "source": "knowledge/business.json#cases/case-sales-ambiguity",
+            "score": 18.4979,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          },
+          {
+            "id": "case-aov",
+            "kind": "case",
+            "text": "2026年9月各国家客单价 同窗口聚合金额除订单数，不能平均已有日均客单价",
+            "source": "knowledge/business.json#cases/case-aov",
+            "score": 11.0303,
+            "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+            "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+          }
+        ],
+        "candidates": [],
+        "ambiguities": [
+          {
+            "term": "销售额",
+            "options": [
+              "booked_amount@1",
+              "complete_item_amount@1"
+            ]
+          }
+        ],
+        "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+        "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+        "trace": {
+          "method": "exact + cached BM25-style lexical; no dense/RRF/reranker",
+          "scope": "authorized metric assets, cases and references",
+          "index_builds": 1,
+          "requires_structured_resolution": true,
+          "scores_are_probabilities": false
+        }
+      },
+      "semantic_context": {
+        "version": "phase1",
+        "binding": {
+          "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+          "release_id": "cfd867b780994843bb9abb66d80ec383",
+          "asset_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+          "subject": "local-study-user",
+          "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1"
+        },
+        "requested_metric_ids": [
+          "booked_amount@1",
+          "complete_item_amount@1"
+        ],
+        "metrics": {
+          "booked_amount@1": {
+            "label": "下单金额",
+            "fact": {
+              "table": "commerce.fct_orders",
+              "grain": "order_id",
+              "date": "order_date",
+              "dimensions": [
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source",
+                "order_status"
+              ]
+            },
+            "kind": "sum",
+            "column": "booked_order_amount",
+            "unit": "source_amount",
+            "definition": "全部状态订单商品金额；不是实收或财务收入",
+            "metric_id": "booked_amount@1",
+            "contract_version": "commerce-v3-multi-fact",
+            "authority": "contracts/commerce.json#metrics/booked_amount@1"
+          },
+          "complete_item_amount@1": {
+            "label": "已完成商品金额",
+            "fact": {
+              "table": "commerce.fct_order_items",
+              "grain": "order_item_id",
+              "date": "order_date",
+              "dimensions": [
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source",
+                "item_status",
+                "category",
+                "brand",
+                "department",
+                "distribution_center_id"
+              ]
+            },
+            "kind": "conditional_sum",
+            "column": "booked_item_amount",
+            "condition_column": "item_status",
+            "condition_value": "Complete",
+            "unit": "source_amount",
+            "definition": "下单日窗口内、本次快照Complete明细金额；不是历史当日状态",
+            "metric_id": "complete_item_amount@1",
+            "contract_version": "commerce-v3-multi-fact",
+            "authority": "contracts/commerce.json#metrics/complete_item_amount@1"
+          }
+        },
+        "components": {
+          "booked_amount@1": [],
+          "complete_item_amount@1": []
+        },
+        "common_dimensions": [
+          "age_band",
+          "country",
+          "day",
+          "gender",
+          "traffic_source"
+        ],
+        "relationships": [
+          {
+            "kind": "aggregate_then_join",
+            "facts": [
+              "items",
+              "orders"
+            ],
+            "common_dimensions": [
+              "age_band",
+              "country",
+              "day",
+              "gender",
+              "traffic_source"
+            ],
+            "time_basis": {
+              "items": "order_created_at_utc_day",
+              "orders": "order_created_at_utc_day"
+            },
+            "population_requires_explicit_choice": true,
+            "raw_join_allowed": false
+          }
+        ],
+        "constraints": {
+          "timezone": "UTC",
+          "maximum_window_days": 31,
+          "row_scope": {},
+          "minimum_group_size": 0,
+          "formula_source": "current registry; never search text",
+          "implicit_join_allowed": false
+        },
+        "metadata": {
+          "commerce.fct_orders": {
+            "urn": "urn:local:dataset:duckdb:commerce.fct_orders",
+            "control_lineage": {
+              "edges": [
+                {
+                  "table": "commerce.dim_users",
+                  "column": "user_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "commerce.fct_order_items",
+                  "column": "order_id",
+                  "kind": "group"
+                },
+                {
+                  "table": "commerce.fct_order_items",
+                  "column": "order_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.orders",
+                  "column": "order_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.orders",
+                  "column": "user_id",
+                  "kind": "join"
+                }
+              ],
+              "unresolved": [],
+              "complete_within_supported_scope": true,
+              "scope": "Row membership/control dependencies for supported Select/CTE; not universal SQL lineage"
+            },
+            "field_lineage": {
+              "resolved_fields": [
+                "order_id",
+                "user_id",
+                "order_status",
+                "created_at",
+                "order_date",
+                "shipped_at",
+                "delivered_at",
+                "returned_at",
+                "declared_item_count",
+                "booked_order_amount",
+                "complete_item_amount",
+                "returned_item_amount",
+                "inventory_cost",
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source"
+              ],
+              "unresolved_fields": [
+                "item_count"
+              ],
+              "scope": "value-expression dependencies; excludes join/filter control dependencies",
+              "complete": false
+            },
+            "ownership": {
+              "name": "local-study-owner",
+              "verified_business_owner": false
+            },
+            "quality": {
+              "release_id": "cfd867b780994843bb9abb66d80ec383",
+              "status": "PASS",
+              "checks": [
+                "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
+                "test.thelook_lab.unique_dim_products_product_id.ef7b2a9985",
+                "test.thelook_lab.not_null_dim_users_user_id.e754bb5812",
+                "test.thelook_lab.relationships",
+                "test.thelook_lab.unique_dim_users_user_id.bcdc17b9f9",
+                "test.thelook_lab.not_null_fct_order_items_order_item_id.dbaab21f55",
+                "test.thelook_lab.unique_fct_order_items_order_item_id.0dec5f6768",
+                "test.thelook_lab.not_null_fct_orders_order_id.4e687af8d0",
+                "test.thelook_lab.reconciliation",
+                "test.thelook_lab.status_and_item_count",
+                "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
+              ],
+              "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
+              "verified_at": "2026-10-12T05:33:17.242033+00:00"
+            },
+            "schema": [
+              {
+                "name": "order_id",
+                "type": "BIGINT"
+              },
+              {
+                "name": "user_id",
+                "type": "BIGINT"
+              },
+              {
+                "name": "order_status",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "created_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "order_date",
+                "type": "DATE"
+              },
+              {
+                "name": "shipped_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "delivered_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "returned_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "declared_item_count",
+                "type": "BIGINT"
+              },
+              {
+                "name": "item_count",
+                "type": "BIGINT"
+              },
+              {
+                "name": "booked_order_amount",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "complete_item_amount",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "returned_item_amount",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "inventory_cost",
+                "type": "DECIMAL(38,4)"
+              },
+              {
+                "name": "country",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "gender",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "age_band",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "traffic_source",
+                "type": "VARCHAR"
+              }
+            ],
+            "column_lineage_complete": false
+          },
+          "commerce.fct_order_items": {
+            "urn": "urn:local:dataset:duckdb:commerce.fct_order_items",
+            "control_lineage": {
+              "edges": [
+                {
+                  "table": "commerce.dim_products",
+                  "column": "product_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "commerce.dim_users",
+                  "column": "user_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.inventory_items",
+                  "column": "id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.order_items",
+                  "column": "inventory_item_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.order_items",
+                  "column": "order_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.order_items",
+                  "column": "product_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.order_items",
+                  "column": "user_id",
+                  "kind": "join"
+                },
+                {
+                  "table": "raw.orders",
+                  "column": "order_id",
+                  "kind": "join"
+                }
+              ],
+              "unresolved": [],
+              "complete_within_supported_scope": true,
+              "scope": "Row membership/control dependencies for supported Select/CTE; not universal SQL lineage"
+            },
+            "field_lineage": {
+              "resolved_fields": [
+                "order_item_id",
+                "order_id",
+                "user_id",
+                "product_id",
+                "inventory_item_id",
+                "item_status",
+                "order_status",
+                "order_created_at",
+                "order_date",
+                "item_created_at",
+                "shipped_at",
+                "delivered_at",
+                "returned_at",
+                "booked_item_amount",
+                "inventory_item_cost",
+                "complete_item",
+                "returned_item",
+                "cancelled_item",
+                "country",
+                "gender",
+                "age_band",
+                "traffic_source",
+                "category",
+                "brand",
+                "department",
+                "distribution_center_id"
+              ],
+              "unresolved_fields": [],
+              "scope": "value-expression dependencies; excludes join/filter control dependencies",
+              "complete": true
+            },
+            "ownership": {
+              "name": "local-study-owner",
+              "verified_business_owner": false
+            },
+            "quality": {
+              "release_id": "cfd867b780994843bb9abb66d80ec383",
+              "status": "PASS",
+              "checks": [
+                "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
+                "test.thelook_lab.unique_dim_products_product_id.ef7b2a9985",
+                "test.thelook_lab.not_null_dim_users_user_id.e754bb5812",
+                "test.thelook_lab.relationships",
+                "test.thelook_lab.unique_dim_users_user_id.bcdc17b9f9",
+                "test.thelook_lab.not_null_fct_order_items_order_item_id.dbaab21f55",
+                "test.thelook_lab.unique_fct_order_items_order_item_id.0dec5f6768",
+                "test.thelook_lab.not_null_fct_orders_order_id.4e687af8d0",
+                "test.thelook_lab.reconciliation",
+                "test.thelook_lab.status_and_item_count",
+                "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
+              ],
+              "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
+              "verified_at": "2026-10-12T05:33:17.242033+00:00"
+            },
+            "schema": [
+              {
+                "name": "order_item_id",
+                "type": "BIGINT"
+              },
+              {
+                "name": "order_id",
+                "type": "BIGINT"
+              },
+              {
+                "name": "user_id",
+                "type": "BIGINT"
+              },
+              {
+                "name": "product_id",
+                "type": "BIGINT"
+              },
+              {
+                "name": "inventory_item_id",
+                "type": "BIGINT"
+              },
+              {
+                "name": "item_status",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "order_status",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "order_created_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "order_date",
+                "type": "DATE"
+              },
+              {
+                "name": "item_created_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "shipped_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "delivered_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "returned_at",
+                "type": "TIMESTAMP WITH TIME ZONE"
+              },
+              {
+                "name": "booked_item_amount",
+                "type": "DECIMAL(18,4)"
+              },
+              {
+                "name": "inventory_item_cost",
+                "type": "DECIMAL(18,4)"
+              },
+              {
+                "name": "complete_item",
+                "type": "INTEGER"
+              },
+              {
+                "name": "returned_item",
+                "type": "INTEGER"
+              },
+              {
+                "name": "cancelled_item",
+                "type": "INTEGER"
+              },
+              {
+                "name": "country",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "gender",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "age_band",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "traffic_source",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "category",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "brand",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "department",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "distribution_center_id",
+                "type": "BIGINT"
+              }
+            ],
+            "column_lineage_complete": false
+          }
+        },
+        "dimension_values": {},
+        "unresolved": []
+      },
+      "unresolved": [
+        "ambiguous_business_term:销售额"
+      ],
+      "routing": "lexical_then_structured",
+      "role": "grounded candidates for decisions; not an execution plan",
+      "values_loaded": false
+    },
+    "status": "CLARIFY",
+    "error": "CLARIFY: 请明确歧义指标口径，检索排名不能代替确认",
+    "answer": {
+      "question": "请明确歧义指标口径，检索排名不能代替确认"
+    },
+    "planning": {
+      "revision": 0,
+      "selected_plan_id": null,
+      "candidates": [],
+      "superseded": []
+    },
+    "runtime": {
+      "queries_used": 0,
+      "elapsed_seconds": 1.640999999945052
+    }
+  },
+  "structured_discovery": {
+    "version": "phase1",
+    "binding": {
+      "registry_version": "ff452168c540f149c5da1df31f43cf57c310cf3b14d7a91c18f64744fade8aea",
+      "release_id": "cfd867b780994843bb9abb66d80ec383",
+      "asset_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571",
+      "subject": "local-study-user",
+      "policy_hash": "da89b3ce072dd15becaeca654f63119e651f014cce6df818719b9502eb3370a1"
+    },
+    "requested_metric_ids": [
+      "items_per_order@1"
+    ],
+    "metrics": {
+      "item_count@1": {
+        "label": "商品件数",
+        "fact": {
+          "table": "commerce.fct_order_items",
+          "grain": "order_item_id",
+          "date": "order_date",
+          "dimensions": [
+            "country",
+            "gender",
+            "age_band",
+            "traffic_source",
+            "item_status",
+            "category",
+            "brand",
+            "department",
+            "distribution_center_id"
+          ]
+        },
+        "kind": "count",
+        "unit": "items",
+        "definition": "一订单明细记为一件，源没有quantity字段",
+        "metric_id": "item_count@1",
+        "contract_version": "commerce-v3-multi-fact",
+        "authority": "contracts/commerce.json#metrics/item_count@1"
+      },
+      "order_count@1": {
+        "label": "订单量",
+        "fact": {
+          "table": "commerce.fct_orders",
+          "grain": "order_id",
+          "date": "order_date",
+          "dimensions": [
+            "country",
+            "gender",
+            "age_band",
+            "traffic_source",
+            "order_status"
+          ]
+        },
+        "kind": "count",
+        "unit": "orders",
+        "definition": "UTC下单日内的全部状态订单数",
+        "metric_id": "order_count@1",
+        "contract_version": "commerce-v3-multi-fact",
+        "authority": "contracts/commerce.json#metrics/order_count@1"
+      },
+      "items_per_order@1": {
+        "numerator": "item_count@1",
+        "denominator": "order_count@1",
+        "unit": "items/order",
+        "definition": "同UTC下单日窗口、共同维度和过滤下的订单商品件数/订单数；不是跨品类分摊或支付转化率",
+        "aliases": [
+          "每单商品件数",
+          "每单件数",
+          "items_per_order@1"
+        ],
+        "metric_id": "items_per_order@1",
+        "kind": "cross_fact_ratio",
+        "authority": "contracts/commerce.json#multi_fact/ratios/items_per_order@1"
+      }
+    },
+    "components": {
+      "item_count@1": [],
+      "order_count@1": [],
+      "items_per_order@1": [
+        "item_count@1",
+        "order_count@1"
+      ]
+    },
+    "common_dimensions": [
+      "age_band",
+      "country",
+      "day",
+      "gender",
+      "traffic_source"
+    ],
+    "relationships": [
+      {
+        "kind": "aggregate_then_join",
+        "facts": [
+          "items",
+          "orders"
+        ],
+        "common_dimensions": [
+          "age_band",
+          "country",
+          "day",
+          "gender",
+          "traffic_source"
+        ],
+        "time_basis": {
+          "items": "order_created_at_utc_day",
+          "orders": "order_created_at_utc_day"
+        },
+        "population_requires_explicit_choice": true,
+        "raw_join_allowed": false
+      }
+    ],
+    "constraints": {
+      "timezone": "UTC",
+      "maximum_window_days": 31,
+      "row_scope": {},
+      "minimum_group_size": 0,
+      "formula_source": "current registry; never search text",
+      "implicit_join_allowed": false
+    },
+    "metadata": {
+      "commerce.fct_order_items": {
+        "urn": "urn:local:dataset:duckdb:commerce.fct_order_items",
+        "control_lineage": {
+          "edges": [
+            {
+              "table": "commerce.dim_products",
+              "column": "product_id",
+              "kind": "join"
+            },
+            {
+              "table": "commerce.dim_users",
+              "column": "user_id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.inventory_items",
+              "column": "id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.order_items",
+              "column": "inventory_item_id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.order_items",
+              "column": "order_id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.order_items",
+              "column": "product_id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.order_items",
+              "column": "user_id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.orders",
+              "column": "order_id",
+              "kind": "join"
+            }
+          ],
+          "unresolved": [],
+          "complete_within_supported_scope": true,
+          "scope": "Row membership/control dependencies for supported Select/CTE; not universal SQL lineage"
+        },
+        "field_lineage": {
+          "resolved_fields": [
+            "order_item_id",
+            "order_id",
+            "user_id",
+            "product_id",
+            "inventory_item_id",
+            "item_status",
+            "order_status",
+            "order_created_at",
+            "order_date",
+            "item_created_at",
+            "shipped_at",
+            "delivered_at",
+            "returned_at",
+            "booked_item_amount",
+            "inventory_item_cost",
+            "complete_item",
+            "returned_item",
+            "cancelled_item",
+            "country",
+            "gender",
+            "age_band",
+            "traffic_source",
+            "category",
+            "brand",
+            "department",
+            "distribution_center_id"
+          ],
+          "unresolved_fields": [],
+          "scope": "value-expression dependencies; excludes join/filter control dependencies",
+          "complete": true
+        },
+        "ownership": {
+          "name": "local-study-owner",
+          "verified_business_owner": false
+        },
+        "quality": {
+          "release_id": "cfd867b780994843bb9abb66d80ec383",
+          "status": "PASS",
+          "checks": [
+            "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
+            "test.thelook_lab.unique_dim_products_product_id.ef7b2a9985",
+            "test.thelook_lab.not_null_dim_users_user_id.e754bb5812",
+            "test.thelook_lab.relationships",
+            "test.thelook_lab.unique_dim_users_user_id.bcdc17b9f9",
+            "test.thelook_lab.not_null_fct_order_items_order_item_id.dbaab21f55",
+            "test.thelook_lab.unique_fct_order_items_order_item_id.0dec5f6768",
+            "test.thelook_lab.not_null_fct_orders_order_id.4e687af8d0",
+            "test.thelook_lab.reconciliation",
+            "test.thelook_lab.status_and_item_count",
+            "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
+          ],
+          "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
+          "verified_at": "2026-10-12T05:33:17.242033+00:00"
+        },
+        "schema": [
+          {
+            "name": "order_item_id",
+            "type": "BIGINT"
+          },
+          {
+            "name": "order_id",
+            "type": "BIGINT"
+          },
+          {
+            "name": "user_id",
+            "type": "BIGINT"
+          },
+          {
+            "name": "product_id",
+            "type": "BIGINT"
+          },
+          {
+            "name": "inventory_item_id",
+            "type": "BIGINT"
+          },
+          {
+            "name": "item_status",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "order_status",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "order_created_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "order_date",
+            "type": "DATE"
+          },
+          {
+            "name": "item_created_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "shipped_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "delivered_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "returned_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "booked_item_amount",
+            "type": "DECIMAL(18,4)"
+          },
+          {
+            "name": "inventory_item_cost",
+            "type": "DECIMAL(18,4)"
+          },
+          {
+            "name": "complete_item",
+            "type": "INTEGER"
+          },
+          {
+            "name": "returned_item",
+            "type": "INTEGER"
+          },
+          {
+            "name": "cancelled_item",
+            "type": "INTEGER"
+          },
+          {
+            "name": "country",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "gender",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "age_band",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "traffic_source",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "category",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "brand",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "department",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "distribution_center_id",
+            "type": "BIGINT"
+          }
+        ],
+        "column_lineage_complete": false
+      },
+      "commerce.fct_orders": {
+        "urn": "urn:local:dataset:duckdb:commerce.fct_orders",
+        "control_lineage": {
+          "edges": [
+            {
+              "table": "commerce.dim_users",
+              "column": "user_id",
+              "kind": "join"
+            },
+            {
+              "table": "commerce.fct_order_items",
+              "column": "order_id",
+              "kind": "group"
+            },
+            {
+              "table": "commerce.fct_order_items",
+              "column": "order_id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.orders",
+              "column": "order_id",
+              "kind": "join"
+            },
+            {
+              "table": "raw.orders",
+              "column": "user_id",
+              "kind": "join"
+            }
+          ],
+          "unresolved": [],
+          "complete_within_supported_scope": true,
+          "scope": "Row membership/control dependencies for supported Select/CTE; not universal SQL lineage"
+        },
+        "field_lineage": {
+          "resolved_fields": [
+            "order_id",
+            "user_id",
+            "order_status",
+            "created_at",
+            "order_date",
+            "shipped_at",
+            "delivered_at",
+            "returned_at",
+            "declared_item_count",
+            "booked_order_amount",
+            "complete_item_amount",
+            "returned_item_amount",
+            "inventory_cost",
+            "country",
+            "gender",
+            "age_band",
+            "traffic_source"
+          ],
+          "unresolved_fields": [
+            "item_count"
+          ],
+          "scope": "value-expression dependencies; excludes join/filter control dependencies",
+          "complete": false
+        },
+        "ownership": {
+          "name": "local-study-owner",
+          "verified_business_owner": false
+        },
+        "quality": {
+          "release_id": "cfd867b780994843bb9abb66d80ec383",
+          "status": "PASS",
+          "checks": [
+            "test.thelook_lab.not_null_dim_products_product_id.c8aba288d1",
+            "test.thelook_lab.unique_dim_products_product_id.ef7b2a9985",
+            "test.thelook_lab.not_null_dim_users_user_id.e754bb5812",
+            "test.thelook_lab.relationships",
+            "test.thelook_lab.unique_dim_users_user_id.bcdc17b9f9",
+            "test.thelook_lab.not_null_fct_order_items_order_item_id.dbaab21f55",
+            "test.thelook_lab.unique_fct_order_items_order_item_id.0dec5f6768",
+            "test.thelook_lab.not_null_fct_orders_order_id.4e687af8d0",
+            "test.thelook_lab.reconciliation",
+            "test.thelook_lab.status_and_item_count",
+            "test.thelook_lab.unique_fct_orders_order_id.523ddb6ce5"
+          ],
+          "scope": "snapshot dbt checks rerun locally; no funnel/temporal completeness claim",
+          "verified_at": "2026-10-12T05:33:17.242033+00:00"
+        },
+        "schema": [
+          {
+            "name": "order_id",
+            "type": "BIGINT"
+          },
+          {
+            "name": "user_id",
+            "type": "BIGINT"
+          },
+          {
+            "name": "order_status",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "created_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "order_date",
+            "type": "DATE"
+          },
+          {
+            "name": "shipped_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "delivered_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "returned_at",
+            "type": "TIMESTAMP WITH TIME ZONE"
+          },
+          {
+            "name": "declared_item_count",
+            "type": "BIGINT"
+          },
+          {
+            "name": "item_count",
+            "type": "BIGINT"
+          },
+          {
+            "name": "booked_order_amount",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "complete_item_amount",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "returned_item_amount",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "inventory_cost",
+            "type": "DECIMAL(38,4)"
+          },
+          {
+            "name": "country",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "gender",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "age_band",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "traffic_source",
+            "type": "VARCHAR"
+          }
+        ],
+        "column_lineage_complete": false
+      }
+    },
+    "dimension_values": {},
+    "unresolved": [
+      "incompatible_dimension:category"
+    ]
+  },
+  "cache": {
+    "index_builds": 1,
+    "index_version": "82df1a4f95771b08e56a36c1f056ab24b9c6f536542a70a58696d6063080e571"
+  },
+  "events": {
+    "nodes_completed": 0,
+    "skills_started": 1,
+    "tool_attempts": 1,
+    "retries": 0,
+    "failed_attempts": 0,
+    "circuits_opened": 0,
+    "queries_reused": 0,
+    "model_token_usage": {},
+    "model_calls": [
+      {
+        "live": false,
+        "provider": "scripted-context-consumer"
+      },
+      {
+        "live": false,
+        "provider": "scripted-context-consumer"
+      }
+    ],
+    "retrieval_bootstraps": 1,
+    "retrieval_context": {
+      "method": "exact + cached BM25-style lexical; no dense/RRF/reranker",
+      "scope": "authorized metric assets, cases and references",
+      "index_builds": 1,
+      "requires_structured_resolution": true,
+      "scores_are_probabilities": false
+    }
+  }
+}

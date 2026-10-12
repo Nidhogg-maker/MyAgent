@@ -51,6 +51,12 @@ class MultiPlanManager:
             raise RuntimeError('Plan revision budget exhausted')
         prepared = []
         release = self.adapter.tools.release()
+        from .semantic_context import SemanticContextResolver
+        semantic_resolver = SemanticContextResolver(self.adapter.tools)
+        def validate_query(query):
+            effective, role = self.adapter.tools.enforce_request(query)
+            self.adapter.tools.compiler.compile(effective, role['minimum_group_size'])
+            semantic_resolver.resolve_request(effective)
         for candidate in proposals.candidates:
             signatures, canonical = [], []
             for step in candidate.steps:
@@ -65,11 +71,9 @@ class MultiPlanManager:
                         check_window(data.baseline, release.get('temporal', {}))
                     # 静态预检口径/维度，不执行数据库查询，不生成可替换的模型 SQL。
                     if step.tool == 'run_query':
-                        effective, role = self.adapter.tools.enforce_request(data)
-                        self.adapter.tools.compiler.compile(effective, role['minimum_group_size'])
+                        validate_query(data)
                     elif step.tool == 'run_multi_fact':
-                        effective, role = self.adapter.tools.enforce_request(data)
-                        self.adapter.tools.compiler.compile(effective, role['minimum_group_size'])
+                        validate_query(data)
                     elif step.tool in ('describe_metric', 'get_context'):
                         self.adapter.tools.describe(data.metric_id)
                     elif step.tool == 'run_comparison':
@@ -78,14 +82,12 @@ class MultiPlanManager:
                         if (b.metric_id, b.filters, b.group_by) != (c.metric_id, c.filters, c.group_by) or b.end-b.start != c.end-c.start or not (b.end <= c.start or c.end <= b.start):
                             raise ValueError('Comparison semantics differ or overlap')
                         for q in (b, c):
-                            effective, role = self.adapter.tools.enforce_request(q)
-                            self.adapter.tools.compiler.compile(effective, role['minimum_group_size'])
+                            validate_query(q)
                     elif step.tool == 'run_diagnosis':
                         if data.kind != 'diagnose':
                             raise ValueError('Diagnosis task required')
                         for q in (data.query, data.baseline):
-                            effective, role = self.adapter.tools.enforce_request(q)
-                            self.adapter.tools.compiler.compile(effective, role['minimum_group_size'])
+                            validate_query(q)
                     body = data.model_dump(mode='json')
                     canonical.append({'tool': step.tool, 'arguments': body})
                     if self.costs[step.tool]:

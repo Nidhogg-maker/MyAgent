@@ -43,9 +43,9 @@ def compare_windows(baseline: dict, current: dict) -> dict:
 @server.tool()
 def search_business(question: str) -> dict:
     """授权后检索业务词/指标/案例，返回可核验引用，不返回原始用户明细。"""
-    from .retrieval import KnowledgeRetriever
+    from .retrieval_service import get_retrieval_service
     tools.access.role()
-    return {'hits':KnowledgeRetriever(tools).search(question),'method':'lexical + aliases + approved metric graph'}
+    return get_retrieval_service(tools).retrieve(question)
 
 @server.tool()
 def run_diagnosis(task: dict) -> dict:

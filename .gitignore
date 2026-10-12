@@ -16,6 +16,7 @@ __pycache__/
 docs/.docx-build/
 docs/github-publish-tests.xml
 docs/multi-plan-regression.xml
+docs/retrieval-phase1-regression.xml
 data/
 warehouse-commerce/target/
 warehouse-commerce/logs/

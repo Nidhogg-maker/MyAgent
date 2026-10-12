@@ -154,8 +154,10 @@ class HarnessRuntime:
         from .skill_resources import PACKAGES,resources,report_template
         skill_hash=fingerprint({'resources':{identifier:resources(identifier,references=True)['sha256'] for identifier in PACKAGES},
                                 'report_template':report_template()})
+        from .semantic_context import asset_version
         return {'subject':self.tools.principal,'policy':self.tools.access.policy_hash,
-                'release':release['release_id'],'registry':self.tools.registry.version,'mode':self.mode,'skills':skill_hash}
+                'release':release['release_id'],'registry':self.tools.registry.version,'mode':self.mode,'skills':skill_hash,
+                'retrieval_assets':asset_version(self.tools)}
 
     def authorize(self,identifier):
         session=self.store.get(identifier)

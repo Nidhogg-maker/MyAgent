@@ -27,7 +27,7 @@ def scripted(*decisions):
 QUERY = {'metric_id': 'order_count@1', 'start': '2026-09-01', 'end': '2026-10-01'}
 
 
-def test_direct_query_without_retrieval_and_persistent_evidence(tools):
+def test_direct_query_without_explicit_search_and_persistent_evidence(tools):
     def model(context, remaining):
         if not context['observations']:
             return {'action': 'tool', 'tool': 'run_query', 'arguments': QUERY}, {}

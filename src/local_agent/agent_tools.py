@@ -6,6 +6,8 @@ from .skills import Pair, SkillExecutor
 from .retrieval import KnowledgeRetriever
 from .multi_fact import MultiFactQuery
 from .multi_plan import Proposals, PlanSelection, StepRequest
+from .retrieval_service import get_retrieval_service
+from .semantic_context import SemanticContextResolver
 
 
 class SearchInput(BaseModel):
@@ -19,12 +21,21 @@ class MetricInput(BaseModel):
     metric_id: str = Field(min_length=1)
 
 
+class ResolveInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    metric_ids: tuple[str, ...] = Field(min_length=1, max_length=6)
+    requested_dimensions: tuple[str, ...] = Field(default=(), max_length=4)
+    value_dimensions: tuple[str, ...] = Field(default=(), max_length=2)
+    expected_asset_version: str | None = None
+
+
 class AgentTools:
     """固定白名单，不接受自由函数名、SQL 或模型声明的身份。"""
     inputs = {'search_business': SearchInput, 'describe_metric': MetricInput,
               'get_context': MetricInput, 'run_query': Query,
               'run_comparison': Pair, 'run_diagnosis': Task, 'run_multi_fact': MultiFactQuery,
-              'propose_plans': Proposals, 'select_plan': PlanSelection, 'run_plan_step': StepRequest}
+              'propose_plans': Proposals, 'select_plan': PlanSelection, 'run_plan_step': StepRequest,
+              'resolve_semantics': ResolveInput}
     descriptions = {
         'search_business': '检索业务知识、指标候选和分析参考；不能覆盖权威公式。',
         'describe_metric': '读取指标权威定义、grain 和合法维度。',
@@ -35,12 +46,15 @@ class AgentTools:
         'run_multi_fact': '注册共同维度下先分别聚合不同事实，再按明确union/intersection关联；不是任意Join。',
         'propose_plans': '提出2到3个同目标、不同步骤的候选方案，校验后返回服务端plan_id；最多3轮重规划。',
         'select_plan': '选择当前候选计划；禁止偷偷切换目标或已选方案。',
-        'run_plan_step': '仅执行所选计划的下一步；观察结果后可重新提出候选计划。'}
+        'run_plan_step': '仅执行所选计划的下一步；观察结果后可重新提出候选计划。',
+        'resolve_semantics': '按需从当前注册中心解析多个指标、组件、共同维度与关系；只对明确请求的维度加载枚举。'}
 
     def __init__(self, tools):
         self.tools = tools
         self.executor = SkillExecutor(tools)
         self.planner = None
+        self.retrieval = get_retrieval_service(tools)
+        self.resolver = SemanticContextResolver(tools)
 
     def specifications(self):
         return [{'name': name, 'description': self.descriptions[name],
@@ -61,11 +75,14 @@ class AgentTools:
             return {'propose_plans': self.planner.propose, 'select_plan': self.planner.select,
                     'run_plan_step': self.planner.execute_step}[name](data)
         if name == 'search_business':
-            return {'hits': KnowledgeRetriever(self.tools).search(data.question, data.limit)}
+            return self.retrieval.retrieve(data.question, data.limit)
+        if name == 'resolve_semantics':
+            return self.resolver.resolve(**data.model_dump())
         if name == 'describe_metric':
             return self.tools.describe(data.metric_id)
         if name == 'get_context':
-            return self.tools.context(data.metric_id)
+            return {**self.tools.context(data.metric_id),
+                    'semantic_context': self.resolver.resolve([data.metric_id])}
         if name == 'run_multi_fact':
             plan = self.tools.plan(data)
             return self.tools.execute(plan['plan_id'], plan['approval_hash'])

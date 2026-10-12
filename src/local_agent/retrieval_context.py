@@ -1,5 +1,5 @@
 """两路上下文保留类型和权威边界；案例不能覆盖公式和权限。"""
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 class RetrievalContext(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -15,15 +15,19 @@ class RetrievalContext(BaseModel):
     dimension_values: dict
     metric_components: dict
     retrieval_strategy: str = 'knowledge candidates followed by authoritative structured resolution'
+    semantic_context: dict = Field(default_factory=dict)
 
-def resolve_context(tools, metric_id, hits):
+def resolve_context(tools, metric_id, hits, include_values=False):
     """结构化定义重新从授权工具读取，不信任检索副本或模型提供的公式。"""
+    from .semantic_context import SemanticContextResolver
+    structured = SemanticContextResolver(tools).resolve([metric_id])
     release = tools.release()
-    context = tools.context(metric_id)
-    metric = tools.describe(metric_id)
+    metric = structured['metrics'][metric_id]
     conflicts = []
     authoritative = 'contracts/commerce.json#metrics/' + metric_id
     for hit in hits:
+        if hit.get('index_version') and hit['index_version'] != structured['binding']['asset_version']:
+            raise ValueError('Stale semantic discovery; retrieve current candidates')
         if hit.get('metric_id') == metric_id and hit.get('kind') == 'metric' and hit.get('source') != authoritative:
             conflicts.append('untrusted_metric_source')
     if conflicts:
@@ -36,9 +40,9 @@ def resolve_context(tools, metric_id, hits):
     components={name:tools.describe(metric[name]) for name in ('numerator','denominator') if name in metric}
     return RetrievalContext(metric_id=metric_id,semantic_version=tools.registry.version,
         release_id=release['release_id'],knowledge_hits=hits,semantic=metric,
-        metadata=context['metadata'],constraints={
+        metadata=structured['metadata'][metric['fact']['table']],constraints={
             'timezone':tools.registry.contract['timezone'],
             'allowed_dimensions':metric['fact']['dimensions'],
             'temporal':release['temporal'],'authority':authoritative,
             'formula_source':'semantic registry, never retrieved case text'},conflicts=[],
-        dimension_values=resolver.summary(metric_id),metric_components=components).model_dump()
+        dimension_values=resolver.summary(metric_id) if include_values else {},metric_components=components,semantic_context=structured).model_dump()

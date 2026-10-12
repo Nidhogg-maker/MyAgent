@@ -131,3 +131,8 @@ SQLite 记录任务、状态、事件、查询回执与熔断。恢复重验身�
 ## 可选进阶模式更新
 
 原ask/chat调用链保留。agent入口已增加模型自主工具选择，--multi-plan模式由模型提出候选、选择并逐步执行；semantic.SQLCompiler现在按类型分发单事实Query与MultiFactQuery。多事实请求先聚合后关联，仅支持注册共同维度和时间基础，不等于任意Join。完整调用链和限制见 [进阶说明](multi-plan-and-join-guide.md)。
+
+
+## 检索接口统一更新
+
+首次决策通过QueryContextBroker装配RetrievalService候选与SemanticContextResolver权威结构；所有服务计划新增语义绑定，原MCP search也接统一服务。默认按需加载枚举，缓存词法索引，尚未安装Dense/RRF/重排。详见 [第一阶段说明](retrieval-phase1-guide.md)。

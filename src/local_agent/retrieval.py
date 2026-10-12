@@ -15,6 +15,9 @@ class KnowledgeRetriever:
     def __init__(self, tools):
         self.tools = tools
         self.business = json.loads((ROOT / 'knowledge/business.json').read_text(encoding='utf-8'))
+        self._index_key = None
+        self._index = None
+        self.index_builds = 0
 
     def metric_candidates(self, question):
         """优先匹配最长别名，避免'平均订单金额'同时被识别成'订单金额'。"""
@@ -30,27 +33,18 @@ class KnowledgeRetriever:
         """先做授权过滤再评分；返回权威来源定位，不把检索文档当执行指令。"""
         if not 1 <= limit <= 10:
             raise ValueError('Retrieval budget exceeded')
-        docs = []
-        for metric_id, metric in self.tools.registry.contract['metrics'].items():
-            if not self.tools._metric_allowed(metric_id):
-                continue
-            described = self.tools.describe(metric_id)
-            docs.append({'id':metric_id, 'kind':'metric', 'metric_id':metric_id,
-                'text':' '.join([metric['label'],metric['definition'],described['fact']['table'],described['fact']['grain'],metric.get('column',''),*described['fact']['dimensions'],*self.business['aliases'].get(metric_id, [])]),
-                'source':'contracts/commerce.json#metrics/' + metric_id, 'allowed_dimensions':described['fact']['dimensions']})
-        for case in self.business['cases']:
-            if case.get('metric_id') and not self.tools._metric_allowed(case['metric_id']):
-                continue
-            docs.append({'id':case['id'],'kind':'case','text':case['question']+' '+case['note'], 'source':'knowledge/business.json#cases/' + case['id']})
-        # 领域参考属于知识路径，公式与约束仍从结构化合同读取。
-        for path in (ROOT/'skills/warehouse-anomaly-attribution/references').glob('*.md'):
-            docs.append({'id':'reference-'+path.stem,'kind':'reference','text':path.read_text(encoding='utf-8'),
-                         'source':str(path.relative_to(ROOT)),'source_sha256':file_hash(path)})
+        self.tools.access.role()
+        references = list((ROOT/'skills/warehouse-anomaly-attribution/references').glob('*.md'))
+        key = (self.tools.registry.version, file_hash(ROOT/'knowledge/business.json'),
+               self.tools.principal, self.tools.access.policy_hash,
+               tuple((str(p), file_hash(p)) for p in references))
+        if key != self._index_key:
+            self.business = json.loads((ROOT/'knowledge/business.json').read_text(encoding='utf-8'))
+            self._index = self._build_index(references)
+            self._index_key = key
+            self.index_builds += 1
+        docs, corpus, lengths, avg, frequency = self._index
         query_tokens = Counter(tokens(question))
-        corpus = [Counter(tokens(doc['text'])) for doc in docs]
-        lengths = [sum(doc.values()) for doc in corpus]
-        avg = sum(lengths) / max(len(lengths), 1)
-        frequency = Counter(token for doc in corpus for token in doc)
         hits = []
         direct = self.metric_candidates(question)
         for doc, counts, length in zip(docs, corpus, lengths):
@@ -65,6 +59,35 @@ class KnowledgeRetriever:
             if score:
                 hits.append({**doc, 'score':round(score, 4)})
         return sorted(hits, key=lambda doc: (-doc['score'], doc['id']))[:limit]
+
+    def _build_index(self, references):
+        """只在资产或权限绑定变化时重建词法索引；始终先过滤再索引。"""
+        docs = []
+        for metric_id, metric in self.tools.registry.contract['metrics'].items():
+            if not self.tools._metric_allowed(metric_id):
+                continue
+            described = self.tools.describe(metric_id)
+            docs.append({'id':metric_id, 'kind':'metric', 'metric_id':metric_id,
+                'text':' '.join([metric['label'],metric['definition'],described['fact']['table'],described['fact']['grain'],metric.get('column',''),*described['fact']['dimensions'],*self.business['aliases'].get(metric_id, [])]),
+                'source':'contracts/commerce.json#metrics/' + metric_id, 'allowed_dimensions':described['fact']['dimensions']})
+        for case in self.business['cases']:
+            if case.get('metric_id') and not self.tools._metric_allowed(case['metric_id']):
+                continue
+            docs.append({'id':case['id'],'kind':'case','text':case['question']+' '+case['note'], 'source':'knowledge/business.json#cases/' + case['id']})
+        for identifier, metric in self.tools.registry.contract.get('multi_fact', {}).get('ratios', {}).items():
+            if all(self.tools._metric_allowed(metric[k]) for k in ('numerator', 'denominator')):
+                docs.append({'id':identifier,'kind':'metric','metric_id':identifier,
+                    'text':' '.join([identifier,metric['definition'],metric['unit'],*metric.get('aliases',[])]),
+                    'source':'contracts/commerce.json#multi_fact/ratios/'+identifier})
+        # 领域参考属于知识路径，公式与约束仍从结构化合同读取。
+        for path in references:
+            docs.append({'id':'reference-'+path.stem,'kind':'reference','text':path.read_text(encoding='utf-8'),
+                         'source':str(path.relative_to(ROOT)),'source_sha256':file_hash(path)})
+        corpus = [Counter(tokens(doc['text'])) for doc in docs]
+        lengths = [sum(doc.values()) for doc in corpus]
+        avg = sum(lengths) / max(len(lengths), 1)
+        frequency = Counter(token for doc in corpus for token in doc)
+        return docs, corpus, lengths, avg, frequency
 
     def paths(self,question,hits):
         """两种路径的数据类型独立，权威结构不参与RRF文本投票。"""

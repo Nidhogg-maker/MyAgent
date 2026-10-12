@@ -35,6 +35,10 @@ def main(argv=None):
     diagnosis.add_argument('--task',type=Path,required=True)
     search = commands.add_parser('search')
     search.add_argument('question')
+    resolve = commands.add_parser('resolve-semantics', help='解析权威指标、组件、共同维度与按需枚举')
+    resolve.add_argument('--metric', action='append', required=True)
+    resolve.add_argument('--dimension', action='append', default=[])
+    resolve.add_argument('--values', action='append', default=[])
     commands.add_parser('capture-history')
     query = commands.add_parser('query')
     query.add_argument('--request', type=Path, required=True)
@@ -99,8 +103,11 @@ def main(argv=None):
             tools.release()
             result = tools.lineage(args.table,args.column)
         elif args.command == 'search':
-            from .retrieval import KnowledgeRetriever
-            result = KnowledgeRetriever(tools).search(args.question)
+            from .retrieval_service import get_retrieval_service
+            result = get_retrieval_service(tools).retrieve(args.question)
+        elif args.command == 'resolve-semantics':
+            from .semantic_context import SemanticContextResolver
+            result = SemanticContextResolver(tools).resolve(args.metric, args.dimension, args.values)
         elif args.command == 'capture-history':
             from .history import SnapshotHistory
             import datetime as dt

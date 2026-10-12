@@ -148,6 +148,8 @@ class AgentTools:
         query, role = self.enforce_request(query)
         check_window(query, release.get('temporal', {}))
         compiled = self.compiler.compile(query, role['minimum_group_size'])
+        from .semantic_context import SemanticContextResolver
+        semantic_context = SemanticContextResolver(self).resolve_request(query)
         metadata = self.catalog.context(compiled['table'])
         for table in compiled.get('tables', []):
             self.catalog.context(table)
@@ -156,6 +158,10 @@ class AgentTools:
                 'requested_query': requested.model_dump(mode='json'), 'policy_hash': self.access.policy_hash,
                 'minimum_group_size': role['minimum_group_size'],
                 'release_id': release['release_id'], 'metadata_urn': metadata['urn']}
+        plan['semantic_resolution'] = {'binding': semantic_context['binding'],
+            'metric_ids': semantic_context['requested_metric_ids'],
+            'common_dimensions': semantic_context['common_dimensions'],
+            'relationships': semantic_context['relationships']}
         plan['approval_hash'] = fingerprint(plan)
         self.plans[plan['plan_id']] = json.loads(json.dumps(plan))
         if len(self.plans) > 100:
@@ -203,6 +209,9 @@ class AgentTools:
         if fingerprint(payload) != approval_hash:
             raise ValueError('Plan storage tampered')
         release = self.release()
+        from .semantic_context import SemanticContextResolver
+        if plan['semantic_resolution']['binding'] != SemanticContextResolver(self).binding():
+            raise ValueError('Semantic context version changed; replan required')
         if plan['release_id'] != release['release_id'] or plan['principal'] != self.principal:
             raise ValueError('Plan identity/release mismatch')
         from .multi_fact import parse_query
@@ -250,6 +259,7 @@ class AgentTools:
                     'grain': plan['grain'], 'release_id': release['release_id'], 'plan_id': plan_id,
                     'result_may_be_truncated': bool(parse_query(plan['query']).group_by) and len(result['rows']) == plan['query']['limit'],
                     'logical_plan': plan['logical_plan'],
+                    'semantic_resolution': plan['semantic_resolution'],
                     'quality': {'dbt_tests_passed': release['dbt_tests_passed'], 'scope': release['quality_scope']},
                     'permissions': {'subject': self.principal, 'minimum_group_size': role['minimum_group_size'], 'row_scope': role['row_filters']},
                     'temporal': release.get('temporal', {}),

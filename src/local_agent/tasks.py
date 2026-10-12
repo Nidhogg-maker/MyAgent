@@ -41,7 +41,10 @@ class TaskInterpreter:
         if mode not in ('rules', 'llm'):
             raise ValueError('Unknown intent mode')
         self.tools, self.mode, self.transport = tools, mode, transport
-        self.retriever = KnowledgeRetriever(tools)
+        from .retrieval_service import get_retrieval_service, QueryContextBroker
+        self.retrieval_service = get_retrieval_service(tools)
+        self.retriever = self.retrieval_service.lexical
+        self.context_broker = QueryContextBroker(tools, self.retrieval_service)
         self.clock = DateResolver(now)
         self.last_evidence = {}
         self.conversation_task = None
@@ -86,13 +89,15 @@ class TaskInterpreter:
         if previous:
             self.tools.describe(previous.query.metric_id)
             search_text += ' ' + self.tools.describe(previous.query.metric_id)['label']
-        hits = self.retriever.search(search_text)
+        query_context = self.context_broker.prepare(search_text, self.conversation_task)
+        hits = query_context['discovery']['hits']
         hint='diagnose' if any(term in question for term in ('为什么','原因','归因','异常','比','下降','升高')) else 'query'
         self.last_evidence = {'mode':self.mode,'retrieved':hits,'clock':self.clock.now.isoformat(),'timezone':'UTC',
                              'intent_hint':hint,'skill_hint':'commerce-diagnosis' if hint=='diagnose' else 'commerce-query',
                              'relative_terms':re.findall('前天|昨天|今天|上个月|本月',question),
                              'metric_candidates':self.retriever.metric_candidates(question),
                              'expected_direction_is_user_hypothesis':True}
+        self.last_evidence['query_context'] = query_context
         self.last_evidence['retrieval_paths']=self.retriever.paths(search_text,hits)
         if self.mode == 'llm':
             # 词法候选发现后再读取权威结构；公式与合法维度不能由案例相似度覆盖。
@@ -168,6 +173,7 @@ class TaskInterpreter:
         if not os.getenv('OPENAI_API_KEY') and not all((base,key,model)):
             raise ValueError('WAITING_FOR_MODEL: configure provider or use --intent-mode rules')
         instruction = {'schema':Task.model_json_schema(), 'clock':self.clock.now.isoformat(), 'timezone':'UTC',
+                       'query_context': self.last_evidence.get('query_context'),
                        'authoritative_contexts':self.last_evidence.get('resolved_contexts',[]),
                        'previous_task':self.conversation_task,
                        'filter_value_aliases':self.retriever.business.get('filter_value_aliases',{}),
@@ -206,7 +212,7 @@ class TaskInterpreter:
         self.tools.compiler.compile(task.query)
         if task.baseline:
             self.tools.compiler.compile(task.baseline)
-        candidates=self.retriever.metric_candidates(question)
+        candidates=[c['metric_id'] for c in self.last_evidence['query_context']['discovery']['candidates'] if c['match']=='exact']
         if len(candidates)==1 and task.query.metric_id!=candidates[0]:
             raise ValueError('CLARIFY: 模型选择的指标与明确提问不一致')
         if any(term.casefold() in question.casefold() for term in self.retriever.business['ambiguous']):

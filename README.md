@@ -170,3 +170,18 @@ Agent 运行依赖 DuckDB、SQLGlot、Pydantic、LangGraph、HTTPX、MCP SDK；d
 ```
 
 本地演示使用模拟模型决策与真实数据，58个分组raw独立回算通过，不代表真实模型规划准确率。新工具属于Agent进程内适配，原MCP仍13工具、原注册Skill仍7项。详见 [Multi Plan与Join说明](docs/multi-plan-and-join-guide.md) 和 [真实数据演示回执](docs/multi-plan-live-demo.json)。
+
+
+## 双通路检索第一阶段
+
+已统一RetrievalService、SemanticContextResolver与QueryContextBroker。自主Agent首次决策自动获得轻量候选与权威语义，可继续自主search_business/resolve_semantics；Task模型、CLI search和原MCP search复用相同服务。每次查询计划重新解析Registry，记录语义/资产/release/权限绑定。
+
+词法索引复用同进程缓存；默认不扫描全部维度枚举。尚无Dense、RRF或Cross-Encoder，规则模式仍为有限语言解析。真实TheLook演示经检索选择客单价并通过raw独立回算，歧义请求零查询停止。
+
+```powershell
+.\.venv\Scripts\python.exe -m local_agent.cli search "2026年9月平均每张订单的金额是多少"
+.\.venv\Scripts\python.exe -m local_agent.cli resolve-semantics --metric items_per_order@1 --dimension country
+.\.venv\Scripts\python.exe scripts\retrieval-phase1-demo.py
+```
+
+说明见 [第一阶段使用与调用链](docs/retrieval-phase1-guide.md) 和 [真实数据回执](docs/retrieval-phase1-live-demo.json)。
